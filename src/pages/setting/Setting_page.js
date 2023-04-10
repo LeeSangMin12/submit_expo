@@ -1,32 +1,31 @@
-import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { useState, } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { useSelector } from 'react-redux';
 import { LinearProgress } from '@rneui/themed';
 
-import { Button, Chip } from '@/components/index';
-import COLORS from '../../shared/js/colors';
-
-const progress = 0.2;
+import Set_basic from '@/components/setting/Set_basic';
+import Set_university from '@/components/setting/Set_university';
+import Set_nickname from '@/components/setting/Set_nickname';
+import COLORS from '@/shared/js/colors';
+import { Button } from '@/components/components';
 
 const Setting_page = () => {
+  const {
+    name,
+    age,
+    gender,
+    nickname
+  } = useSelector((state) => state.user);
   const [state, setState] = useState({
-    name: '',
-    age: '',
-    gender: ''
+    progress: 0,
   });
+  const btn_next_disabled = (name === '' || age === '' || gender === '');
 
   /**
-   * Chip 컴포넌트 클릭 시, 선택된 성별 값 업데이트
-   * @param {string} label - 선택한 Chip의 라벨 값
-   */
-  const handle_chip_press = (label) => {
-    setState({ ...state, gender: (label === state.gender ? '' : label) });
-  };
-
-  /**
-   * 
+   * 다음으로 버튼 클릭시 다음 세팅 페이지로 넘어감
    */
   const handle_press = () => {
-    console.log('hi');
+    console.log('안녕');
   }
 
   return (
@@ -35,43 +34,26 @@ const Setting_page = () => {
       <View style={styles.progress_container}>
         <LinearProgress
           style={styles.linear_progress}
-          value={progress}
-          color={COLORS.primary_500} />
+          value={state.progress}
+          color={COLORS.primary_500}
+          variant='determine' />
       </View>
 
       <ScrollView>
-        <View style={styles.input_container}>
-          <Text style={styles.label}>이름</Text>
-          <TextInput style={styles.input} placeholder='이름을 입력해주세요' />
-        </View>
-
-        <View style={styles.input_container}>
-          <Text style={styles.label}>나이</Text>
-          <TextInput keyboardType='number-pad' returnKeyType="done" style={styles.input} placeholder='나이를 선택해주세요' />
-        </View>
-
-        <View style={styles.input_container}>
-          <Text style={styles.label}>성별을 선택해주세요</Text>
-          <View style={styles.button_container}>
-            <Chip
-              label="남성"
-              selected={state.gender === 'male'}
-              on_press={() => handle_chip_press('male')}
-            />
-            <Chip
-              label="여성"
-              selected={state.gender === 'female'}
-              on_press={() => handle_chip_press('female')}
-            />
-          </View>
-        </View>
+        {/* <Set_basic name={name} age={age} gender={gender} /> */}
+        {/* <Set_university /> */}
+        <Set_nickname nickname={nickname} />
       </ScrollView>
 
       <View style={styles.btn_next_container}>
-        <Button title="다음으로" style={styles.btn_next} on_press={handle_press}></Button>
+        <Button
+          title="다음으로"
+          style={styles.btn_next}
+          on_press={handle_press}
+          disabled={btn_next_disabled} />
       </View>
 
-    </View>
+    </View >
   );
 }
 
