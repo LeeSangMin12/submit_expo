@@ -4,6 +4,9 @@ const initial_state = {
   name: '',
   age: '',
   gender: '',
+  university: '',
+  department: '',
+  admission_year: null,
   nickname: '',
 };
 
