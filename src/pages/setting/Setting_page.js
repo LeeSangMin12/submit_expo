@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { LinearProgress } from '@rneui/themed';
 
 import Set_basic from '@/components/setting/Set_basic';
-// import Set_university from '@/components/setting/Set_university';
+import Set_university from '@/components/setting/Set_university';
 import Set_nickname from '@/components/setting/Set_nickname';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
@@ -21,7 +21,7 @@ const Setting_page = () => {
     nickname
   } = useSelector((state) => state.user);
   const [state, setState] = useState({
-    progress: 0,
+    progress: 0.2,
   });
   const btn_next_disabled = (name === '' || age === '' || gender === '');
 
@@ -30,11 +30,11 @@ const Setting_page = () => {
    */
   const handle_press = () => {
     console.log('안녕');
-  }
+  };
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.progress_container}>
+      <View style={styles.progress_container}>
         <LinearProgress
           style={styles.linear_progress}
           value={state.progress}
@@ -42,16 +42,20 @@ const Setting_page = () => {
           variant='determine' />
       </View>
 
+      <Auto_complete />
+      {/* <ScrollView>
+        <Set_university
+          university={university}
+          department={department}
+          admission_year={admission_year} />
+      </ScrollView> */}
+
       <View style={styles.btn_next_container}>
         <Button
           title="다음으로"
           style={styles.btn_next}
           on_press={handle_press}
           disabled={btn_next_disabled} />
-      </View> */}
-
-      <View>
-        <Auto_complete />
       </View>
     </View >
   );
@@ -74,12 +78,6 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginVertical: 20
-  },
-  scroll_controller: {
-    flex: 1,
-  },
-  section: {
-    marginBottom: 40,
   },
   btn_next_container: {
     paddingVertical: 10,

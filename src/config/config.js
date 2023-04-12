@@ -1,0 +1,1 @@
+export const CARRER_NET_KEY = '06c2cdaf1d5fe582073b2ed44573c969';
