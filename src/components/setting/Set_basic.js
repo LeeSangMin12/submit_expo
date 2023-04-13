@@ -49,11 +49,11 @@ export default Set_basic;
 
 const styles = StyleSheet.create({
   input_container: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
   label: {
     fontSize: 18,
-    marginVertical: 17,
+    marginVertical: 8,
   },
   input: {
     height: 50,

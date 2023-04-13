@@ -32,7 +32,7 @@ export default Set_nickname;
 const styles = StyleSheet.create({
   label: {
     fontSize: 18,
-    marginVertical: 17,
+    marginVertical: 8,
   },
   img_input_container: {
     flex: 1,

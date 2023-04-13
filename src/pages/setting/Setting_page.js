@@ -21,7 +21,23 @@ const Setting_page = () => {
   } = useSelector((state) => state.user);
   const [state, setState] = useState({
     progress: 0.2,
+    page_count: 1,
   });
+
+  /**
+   * 유저가 모든 정보 입력시 버튼 disabled를 풀어준다.
+   */
+  const check_page = () => {
+    if (name === '' || age === '' || gender === '') {
+      return true;
+    } else if (university === '' || department === '' || admission_year === '') {
+      return true;
+    } else if (university === '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
   const btn_next_disabled = (name === '' || age === '' || gender === '');
 
   /**
@@ -41,18 +57,34 @@ const Setting_page = () => {
           variant='determine' />
       </View>
 
-      <ScrollView
-        nestedScrollEnabled
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={{ paddingBottom: 200 }}
-        style={styles.scroll_controller}>
-        <Set_university
-          university={university}
-          department={department}
-          admission_year={admission_year} />
-      </ScrollView>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        enabled>
+        <ScrollView
+          nestedScrollEnabled
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          contentInsetAdjustmentBehavior="automatic"
+          contentContainerStyle={{ paddingBottom: 200 }}
+          style={styles.scroll_controller}>
+
+          <Set_basic
+            name={name}
+            age={age}
+            gender={gender}
+          />
+          {/* <Set_university
+            university={university}
+            department={department}
+            admission_year={admission_year} />
+
+          <Set_nickname
+            nickname={nickname}
+          /> */}
+
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <View style={styles.btn_next_container}>
         <Button
