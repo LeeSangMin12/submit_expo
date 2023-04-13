@@ -42,7 +42,12 @@ const Setting_page = () => {
           variant='determine' />
       </View>
 
-      <Auto_complete />
+      {/* <View style={[Platform.select({ ios: { zIndex: 1 } })]}> */}
+
+      <View style={{ flex: 1 }}>
+        <Auto_complete />
+      </View>
+      {/* </View> */}
       {/* <ScrollView>
         <Set_university
           university={university}

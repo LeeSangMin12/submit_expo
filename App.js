@@ -13,42 +13,38 @@ import List_page from '@/pages/list/List_page';
 import Alarm_page from '@/pages/alarm/Alarm_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
-import { Auto_complete } from '@/components/components';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <>
-      <Auto_complete />
-    </>
-    // <Provider store={store}>
-    //   <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
-    //   <SafeAreaView style={styles.container}>
-    //     <NavigationContainer
-    //       theme={{
-    //         ...DefaultTheme,
-    //         colors: {
-    //           ...DefaultTheme.colors,
-    //           background: COLORS.white
-    //         },
-    //       }}>
-    //       <Stack.Navigator>
-    //         <Stack.Screen
-    //           name="회원가입"
-    //           component={Setting_page}
-    //           options={{ headerTitleAlign: 'center', }}
-    //         />
-    //         <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
-    //         <Stack.Screen name="Home_page" component={Home_page} />
-    //         <Stack.Screen name="List_page" component={List_page} />
-    //         <Stack.Screen name="Alarm_page" component={Alarm_page} />
-    //         <Stack.Screen name="Community_page" component={Community_page} />
-    //         <Stack.Screen name="My_page" component={My_page} />
-    //       </Stack.Navigator>
-    //     </NavigationContainer>
-    //   </SafeAreaView>
-    // </Provider>
+    <Provider store={store}>
+      <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
+      <SafeAreaView style={styles.container}>
+        <NavigationContainer
+          theme={{
+            ...DefaultTheme,
+            colors: {
+              ...DefaultTheme.colors,
+              background: COLORS.white
+            },
+          }}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="회원가입"
+              component={Setting_page}
+              options={{ headerTitleAlign: 'center', }}
+            />
+            <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
+            <Stack.Screen name="Home_page" component={Home_page} />
+            <Stack.Screen name="List_page" component={List_page} />
+            <Stack.Screen name="Alarm_page" component={Alarm_page} />
+            <Stack.Screen name="Community_page" component={Community_page} />
+            <Stack.Screen name="My_page" component={My_page} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </Provider>
   );
 }
 
