@@ -8,7 +8,6 @@ import Set_university from '@/components/setting/Set_university';
 import Set_nickname from '@/components/setting/Set_nickname';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
-import { Auto_complete } from '@/components/components';
 
 const Setting_page = () => {
   const {
@@ -42,18 +41,18 @@ const Setting_page = () => {
           variant='determine' />
       </View>
 
-      {/* <View style={[Platform.select({ ios: { zIndex: 1 } })]}> */}
-
-      <View style={{ flex: 1 }}>
-        <Auto_complete />
-      </View>
-      {/* </View> */}
-      {/* <ScrollView>
+      <ScrollView
+        nestedScrollEnabled
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={{ paddingBottom: 200 }}
+        style={styles.scroll_controller}>
         <Set_university
           university={university}
           department={department}
           admission_year={admission_year} />
-      </ScrollView> */}
+      </ScrollView>
 
       <View style={styles.btn_next_container}>
         <Button
@@ -83,6 +82,9 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginVertical: 20
+  },
+  scroll_controller: {
+    flex: 1,
   },
   btn_next_container: {
     paddingVertical: 10,
