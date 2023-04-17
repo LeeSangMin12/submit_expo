@@ -1,30 +1,21 @@
+/**
+ * todo items 와 value 차이점 알기
+ * value 설정시 학번에 값 들어가는지 확인하기
+ */
 import { useState } from 'react';
 import { StyleSheet, } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import COLORS from '@/shared/js/colors';
 
-const Drop_down = () => {
+/**
+ * dropdown 생성
+ * @param {Array} items - dropdown에 들어갈 arr
+ * @param {function} set_items - dropdown의 값알 설정하는 function
+ */
+const Drop_down = ({ items, set_items }) => {
   const [open, set_open] = useState(false);
   const [value, set_value] = useState(null);
-  const [items, set_items] = useState([
-    { "label": "24학번", "value": 24 },
-    { "label": "23학번", "value": 23 },
-    { "label": "22학번", "value": 22 },
-    { "label": "21학번", "value": 21 },
-    { "label": "20학번", "value": 20 },
-    { "label": "19학번", "value": 19 },
-    { "label": "18학번", "value": 18 },
-    { "label": "17학번", "value": 17 },
-    { "label": "16학번", "value": 16 },
-    { "label": "15학번", "value": 15 },
-    { "label": "14학번", "value": 14 },
-    { "label": "13학번", "value": 13 },
-    { "label": "12학번", "value": 12 },
-    { "label": "11학번", "value": 11 },
-    { "label": "10학번", "value": 10 },
-  ]);
-
 
   return (
     <DropDownPicker
@@ -36,7 +27,7 @@ const Drop_down = () => {
       items={items}
       setOpen={set_open}
       setValue={set_value}
-      setItems={set_items}
+      setItems={(value) => console.log(value)}
       listMode="SCROLLVIEW"
       dropDownContainerStyle={styles.drop_down_container}
       listItemContainerStyle={styles.drop_down_list_item_container}

@@ -5,7 +5,7 @@ import { set_store_info } from '@/shared/js/common';
 
 const Set_nickname = (props) => {
   return (
-    <>
+    <View>
       <Text style={styles.label}>닉네임</Text>
 
       <View style={styles.img_input_container}>
@@ -23,7 +23,7 @@ const Set_nickname = (props) => {
 
       <Text style={[styles.message, styles.error]}>사용중인 닉네임입니다.</Text>
       <Text style={[styles.message, styles.success]}>사용 가능한 닉네임입니다.</Text>
-    </>
+    </View>
   );
 };
 

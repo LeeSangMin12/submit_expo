@@ -1,12 +1,5 @@
-/**
- * @todo button disabled 동적으로 설정
- * @todo 설정시 progress bar 증가시키기
- * @todo dropdown 동적으로 생성하기
- * @todo dropdown data 밖으로 빼기
- * @todo autocomplete 2개 구현
- */
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, FlatList, KeyboardAvoidingView, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { LinearProgress } from '@rneui/themed';
 
@@ -26,20 +19,31 @@ const Setting_page = ({ page_count, set_page_count }) => {
     admission_year,
     nickname
   } = useSelector((state) => state.user);
-  const [progress, set_progress] = useState(0.3);
+  const [progress, set_progress] = useState(0);
   const [btn_next_disabled, set_btn_next_disabled] = useState(true);
+
+  /**
+   * progress bar 업데이트
+   * : 데이터 입력시 progress bar 증가
+   */
+  useEffect(() => {
+    const input_data = [name, age, gender, university, department, admission_year, nickname];
+    const filled_data_count = input_data.filter(item => item).length;
+    const progress = filled_data_count / input_data.length;
+    set_progress(progress);
+  }, [name, age, gender, university, department, admission_year, nickname]);
 
   /**
    * button disabled 상태 업데이트
    */
   useEffect(() => {
-    set_btn_next_disabled(check_set_info());
-  }, [name, age, gender]);
+    set_btn_next_disabled(check_btn_next_disabled());
+  }, [page_count, name, age, gender, university, department, admission_year, nickname]);
 
   /**
-   * 유저가 모든 정보 입력시 버튼 disabled를 풀어줌.
+   * 유저가 모든 데이터를 입력했는지 확인 후 disabled 풀어줌
    */
-  const check_set_info = () => {
+  const check_btn_next_disabled = () => {
     if (page_count === 1 && name && age && gender) {
       return false;
     } else if (page_count === 2 && university && department && admission_year) {
@@ -48,13 +52,6 @@ const Setting_page = ({ page_count, set_page_count }) => {
       return false;
     }
     return true;
-  };
-
-  /**
-   * 다음으로 버튼 클릭시 다음 세팅 페이지로 넘어감
-   */
-  const handle_press = () => {
-    set_page_count(page_count + 1);
   };
 
   return (
@@ -75,7 +72,7 @@ const Setting_page = ({ page_count, set_page_count }) => {
           nestedScrollEnabled
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
-          contentInsetAdjustmentBehavior="automatic"
+          contentInsetAdjustmentBehavior="safe"
           contentContainerStyle={{ flexGrow: 1 }}>
 
           {
@@ -91,7 +88,7 @@ const Setting_page = ({ page_count, set_page_count }) => {
         <Button
           title="다음으로"
           style={styles.btn_next}
-          on_press={handle_press}
+          on_press={() => set_page_count(page_count + 1)}
           disabled={btn_next_disabled} />
       </View>
     </View >
