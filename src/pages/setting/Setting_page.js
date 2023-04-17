@@ -1,5 +1,12 @@
-import { useState, } from 'react';
-import { View, StyleSheet, ScrollView, FlatList, KeyboardAvoidingView } from 'react-native';
+/**
+ * @todo button disabled 동적으로 설정
+ * @todo 설정시 progress bar 증가시키기
+ * @todo dropdown 동적으로 생성하기
+ * @todo dropdown data 밖으로 빼기
+ * @todo autocomplete 2개 구현
+ */
+import { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, FlatList, KeyboardAvoidingView, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { LinearProgress } from '@rneui/themed';
 
@@ -9,7 +16,7 @@ import Set_nickname from '@/components/setting/Set_nickname';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
 
-const Setting_page = () => {
+const Setting_page = ({ page_count, set_page_count }) => {
   const {
     name,
     age,
@@ -19,32 +26,35 @@ const Setting_page = () => {
     admission_year,
     nickname
   } = useSelector((state) => state.user);
-  const [state, setState] = useState({
-    progress: 0.2,
-    page_count: 1,
-  });
+  const [progress, set_progress] = useState(0.3);
+  const [btn_next_disabled, set_btn_next_disabled] = useState(true);
 
   /**
-   * 유저가 모든 정보 입력시 버튼 disabled를 풀어준다.
+   * button disabled 상태 업데이트
    */
-  const check_page = () => {
-    if (name === '' || age === '' || gender === '') {
-      return true;
-    } else if (university === '' || department === '' || admission_year === '') {
-      return true;
-    } else if (university === '') {
-      return true;
-    } else {
+  useEffect(() => {
+    set_btn_next_disabled(check_set_info());
+  }, [name, age, gender]);
+
+  /**
+   * 유저가 모든 정보 입력시 버튼 disabled를 풀어줌.
+   */
+  const check_set_info = () => {
+    if (page_count === 1 && name && age && gender) {
+      return false;
+    } else if (page_count === 2 && university && department && admission_year) {
+      return false;
+    } else if (page_count === 3 && nickname) {
       return false;
     }
-  }
-  const btn_next_disabled = (name === '' || age === '' || gender === '');
+    return true;
+  };
 
   /**
    * 다음으로 버튼 클릭시 다음 세팅 페이지로 넘어감
    */
   const handle_press = () => {
-    console.log('안녕');
+    set_page_count(page_count + 1);
   };
 
   return (
@@ -52,13 +62,13 @@ const Setting_page = () => {
       <View style={styles.progress_container}>
         <LinearProgress
           style={styles.linear_progress}
-          value={state.progress}
+          value={progress}
           color={COLORS.primary_500}
           variant='determine' />
       </View>
 
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{ flex: 1, }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         enabled>
         <ScrollView
@@ -66,22 +76,13 @@ const Setting_page = () => {
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"
           contentInsetAdjustmentBehavior="automatic"
-          contentContainerStyle={{ paddingBottom: 200 }}
-          style={styles.scroll_controller}>
+          contentContainerStyle={{ flexGrow: 1 }}>
 
-          <Set_basic
-            name={name}
-            age={age}
-            gender={gender}
-          />
-          {/* <Set_university
-            university={university}
-            department={department}
-            admission_year={admission_year} />
-
-          <Set_nickname
-            nickname={nickname}
-          /> */}
+          {
+            page_count === 1 ? <Set_basic name={name} age={age} gender={gender} /> :
+              page_count === 2 ? <Set_university university={university} department={department} admission_year={admission_year} /> :
+                page_count === 3 ? <Set_nickname nickname={nickname} /> : null
+          }
 
         </ScrollView>
       </KeyboardAvoidingView>
@@ -114,9 +115,6 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
     marginVertical: 20
-  },
-  scroll_controller: {
-    flex: 1,
   },
   btn_next_container: {
     paddingVertical: 10,

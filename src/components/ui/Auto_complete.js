@@ -1,12 +1,11 @@
 import React, { memo, useCallback, useRef, useState } from 'react'
-import { Button, Dimensions, Platform, Text, View } from 'react-native'
+import { Dimensions, Platform, Text, View } from 'react-native'
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
+import axios from 'axios';
 
 import COLORS from '@/shared/js/colors';
 import Feather from 'react-native-vector-icons/Feather'
 Feather.loadFont()
-
-
 
 const Auto_complete = memo(() => {
   const [loading, setLoading] = useState(false)
@@ -23,16 +22,46 @@ const Auto_complete = memo(() => {
       setSuggestionsList(null)
       return
     }
+
     setLoading(true)
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts')
-    const items = await response.json()
-    const suggestions = items
-      .filter(item => item.title.toLowerCase().includes(filterToken))
-      .map(item => ({
-        id: item.id,
-        title: item.title,
-      }))
-    setSuggestionsList(suggestions)
+    axios.get('http://www.career.go.kr/cnet/openapi/getOpenApi', {
+      params: {
+        apiKey: '06c2cdaf1d5fe582073b2ed44573c969',
+        svcType: 'api',
+        svcCode: 'SCHOOL',
+        contentType: 'json',
+        gubun: 'univ_list',
+        searchSchulNm: q,
+      }
+    })
+      .then(response => {
+        const data = response.data.dataSearch.content;
+        // console.log('data', data);
+
+        const suggestions = data
+          .filter(item => item.schoolName.toLowerCase().includes(filterToken))
+          .map(item => ({
+            seq: item.seq,
+            title: item.schoolName,
+          }));
+
+        console.log(suggestions)
+        setSuggestionsList(suggestions);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    // const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+    // const items = await response.json();
+
+    // const suggestions = items
+    //   .filter(item => item.title.toLowerCase().includes(filterToken))
+    //   .map(item => ({
+    //     id: item.id,
+    //     title: item.title,
+    //   }))
+    // setSuggestionsList(suggestions)
     setLoading(false)
   }, [])
 
@@ -49,7 +78,7 @@ const Auto_complete = memo(() => {
           { flex: 1, flexDirection: 'row', alignItems: 'center' },
           Platform.select({ ios: { zIndex: 1 } }),
         ]}>
-        <View style={{ width: 10 }} />
+        <View style={{ width: 1 }} />
         <AutocompleteDropdown
           ref={searchRef}
           closeOnBlur={false}
@@ -97,8 +126,6 @@ const Auto_complete = memo(() => {
             return <Text style={{ color: '#383b42', padding: 15 }}>{item.title}</Text>
           }}
           ChevronIconComponent={<Feather name="chevron-down" size={20} color="#383b42" />}
-          //inputHeight={50}
-          //   showChevron={false}
           showClear={false}
         />
       </View>

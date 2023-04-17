@@ -8,6 +8,7 @@ const Drop_down = () => {
   const [open, set_open] = useState(false);
   const [value, set_value] = useState(null);
   const [items, set_items] = useState([
+    { "label": "24학번", "value": 24 },
     { "label": "23학번", "value": 23 },
     { "label": "22학번", "value": 22 },
     { "label": "21학번", "value": 21 },
@@ -37,6 +38,8 @@ const Drop_down = () => {
       setValue={set_value}
       setItems={set_items}
       listMode="SCROLLVIEW"
+      dropDownContainerStyle={styles.drop_down_container}
+      listItemContainerStyle={styles.drop_down_list_item_container}
     />
   );
 };
@@ -51,5 +54,12 @@ const styles = StyleSheet.create({
   },
   drop_down_placeholder: {
     color: COLORS.gray_500,
+  },
+  drop_down_container: {
+    borderColor: COLORS.gray_480,
+  },
+  drop_down_list_item_container: {
+    borderWidth: 1,
+    borderColor: COLORS.gray_480,
   }
 });

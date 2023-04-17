@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 import COLORS from '@/shared/js/colors';
 import { set_store_info } from '@/shared/js/common';
@@ -8,7 +8,7 @@ import { Auto_complete } from '@/components/components';
 const Set_university = (props) => {
 
   return (
-    <>
+    <View style={styles.container}>
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 100 } })]}>
         <Text style={styles.label}>대학교</Text>
         <Auto_complete />
@@ -20,16 +20,19 @@ const Set_university = (props) => {
       </View >
 
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 98 } })]}>
-        <Text style={styles.label}>입학년도</Text>
+        <Text style={styles.label}>학번</Text>
         <Drop_down />
       </View >
-    </>
+    </View>
   );
 };
 
 export default Set_university;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   input_container: {
     marginBottom: 30,
   },
