@@ -9,7 +9,7 @@ const Set_university = (props) => {
   const [admission_year_arr, set_admission_year_arr] = useState([]);
 
   /**
-   * 현재 년도를 기반으로 학번 arr를 만듬
+   * 현재 년도를 기반으로 입학년도 arr를 만듬
    */
   useState(() => {
     let now_year = String(new Date().getFullYear()).slice(-2);
@@ -26,6 +26,8 @@ const Set_university = (props) => {
     set_admission_year_arr([...make_admission_year]);
   }, []);
 
+
+
   /**
    * 입학년도 dropdown의 값을 설정
    */
@@ -37,13 +39,17 @@ const Set_university = (props) => {
     <View style={styles.container}>
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 100 } })]}>
         <Text style={styles.label}>대학교</Text>
-        <Auto_complete />
+        <Auto_complete
+          place_holder={'학교명을 입력해 주세요'}
+        />
       </View >
 
-      <View style={[styles.input_container, Platform.select({ ios: { zIndex: 99 } })]}>
+      {/* <View style={[styles.input_container, Platform.select({ ios: { zIndex: 99 } })]}>
         <Text style={styles.label}>학과</Text>
-        <Auto_complete />
-      </View >
+        <Auto_complete 
+          
+        />
+      </View > */}
 
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 98 } })]}>
         <Text style={styles.label}>입학년도</Text>
