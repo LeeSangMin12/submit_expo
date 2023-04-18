@@ -5,7 +5,6 @@ import { set_store_info } from '@/shared/js/common';
 import { Drop_down } from '@/components/components';
 import { Auto_complete } from '@/components/components';
 
-
 const Set_university = (props) => {
   const [admission_year_arr, set_admission_year_arr] = useState([]);
 
@@ -27,6 +26,13 @@ const Set_university = (props) => {
     set_admission_year_arr([...make_admission_year]);
   }, []);
 
+  /**
+   * 입학년도 dropdown의 값을 설정
+   */
+  const dropdown_set_value = (now_value) => {
+    set_store_info('user', 'admission_year', now_value);
+  }
+
   return (
     <View style={styles.container}>
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 100 } })]}>
@@ -40,10 +46,12 @@ const Set_university = (props) => {
       </View >
 
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 98 } })]}>
-        <Text style={styles.label}>학번</Text>
+        <Text style={styles.label}>입학년도</Text>
         <Drop_down
           items={admission_year_arr}
-          set_items={set_store_info}
+          value={props.admission_year}
+          set_items={set_admission_year_arr}
+          set_value={dropdown_set_value}
         />
       </View >
 
