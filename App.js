@@ -17,6 +17,19 @@ import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
 
 const Stack = createNativeStackNavigator();
+const BottomTab = createBottomTabNavigator();
+
+const Bottom_navigation = () => {
+  return (
+    <BottomTab.Navigator initialRouteName="홈" screenOptions={{ headerShown: false }}>
+      <BottomTab.Screen name="홈" component={Home_page} />
+      <BottomTab.Screen name="리스트" component={List_page} />
+      <BottomTab.Screen name="알림" component={Alarm_page} />
+      <BottomTab.Screen name="커뮤니티" component={Community_page} />
+      <BottomTab.Screen name="마이" component={My_page} />
+    </BottomTab.Navigator>
+  );
+};
 
 const App = () => {
   const [page_count, set_page_count] = useState(1);
@@ -68,11 +81,8 @@ const App = () => {
                   set_page_count={set_page_count}
                 />)}
             </Stack.Screen> */}
-            <Stack.Screen name="Home_page" component={Home_page} />
-            <Stack.Screen name="List_page" component={List_page} />
-            <Stack.Screen name="Alarm_page" component={Alarm_page} />
-            <Stack.Screen name="Community_page" component={Community_page} />
-            <Stack.Screen name="My_page" component={My_page} />
+
+            <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
