@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
+import { StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import store from '@/store/store'
 import COLORS from '@/shared/js/colors';
 
@@ -42,7 +43,8 @@ const App = () => {
             },
           }}>
           <Stack.Navigator>
-            <Stack.Screen
+            {/* <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} /> */}
+            {/* <Stack.Screen
               name="회원가입"
               options={({ navigation }) => ({
                 headerTitleAlign: 'center',
@@ -65,8 +67,7 @@ const App = () => {
                   page_count={page_count}
                   set_page_count={set_page_count}
                 />)}
-            </Stack.Screen>
-            <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
+            </Stack.Screen> */}
             <Stack.Screen name="Home_page" component={Home_page} />
             <Stack.Screen name="List_page" component={List_page} />
             <Stack.Screen name="Alarm_page" component={Alarm_page} />
