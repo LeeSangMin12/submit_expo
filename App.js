@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
+import { Text, View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import store from '@/store/store'
 import COLORS from '@/shared/js/colors';
@@ -16,18 +16,71 @@ import Alarm_page from '@/pages/alarm/Alarm_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
 
+import home_inactive from '@/assets/img/bottom_tab/home_inactive.png'
+import list_inactive from '@/assets/img/bottom_tab/list_inactive.png'
+import alarm_inactive from '@/assets/img/bottom_tab/alarm_inactive.png'
+import community_inactive from '@/assets/img/bottom_tab/community_inactive.png'
+import my_inactive from '@/assets/img/bottom_tab/my_inactive.png'
+import home_active from '@/assets/img/bottom_tab/home_active.png'
+import list_active from '@/assets/img/bottom_tab/list_active.png'
+import alarm_active from '@/assets/img/bottom_tab/alarm_active.png'
+import community_active from '@/assets/img/bottom_tab/community_active.png'
+import my_active from '@/assets/img/bottom_tab/my_active.png'
+
 const Stack = createNativeStackNavigator();
-const BottomTab = createBottomTabNavigator();
+const Bottom_tab = createBottomTabNavigator();
 
 const Bottom_navigation = () => {
   return (
-    <BottomTab.Navigator initialRouteName="홈" screenOptions={{ headerShown: false }}>
-      <BottomTab.Screen name="홈" component={Home_page} />
-      <BottomTab.Screen name="리스트" component={List_page} />
-      <BottomTab.Screen name="알림" component={Alarm_page} />
-      <BottomTab.Screen name="커뮤니티" component={Community_page} />
-      <BottomTab.Screen name="마이" component={My_page} />
-    </BottomTab.Navigator>
+    <Bottom_tab.Navigator
+      initialRouteName="홈"
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { height: 80, backgroundColor: COLORS.primary_480 },
+        tabBarShowLabel: false,
+      }}
+    >
+      <Bottom_tab.Screen
+        name="홈"
+        component={Home_page}
+        options={() => ({
+          tabBarIcon: ({ focused }) => (
+            <Image style={styles.img_bottom_tabs} source={focused ? home_active : home_inactive} />
+          ),
+        })} />
+      <Bottom_tab.Screen
+        name="리스트"
+        component={List_page}
+        options={() => ({
+          tabBarIcon: ({ focused }) => (
+            <Image style={styles.img_bottom_tabs} source={focused ? list_active : list_inactive} />
+          ),
+        })} />
+      <Bottom_tab.Screen
+        name="알림"
+        component={Alarm_page}
+        options={() => ({
+          tabBarIcon: ({ focused }) => (
+            <Image style={styles.img_bottom_tabs} source={focused ? alarm_active : alarm_inactive} />
+          ),
+        })} />
+      <Bottom_tab.Screen
+        name="커뮤니티"
+        component={Community_page}
+        options={() => ({
+          tabBarIcon: ({ focused }) => (
+            <Image style={styles.img_bottom_tabs} source={focused ? community_active : community_inactive} />
+          ),
+        })} />
+      <Bottom_tab.Screen
+        name="마이"
+        component={My_page}
+        options={() => ({
+          tabBarIcon: ({ focused }) => (
+            <Image style={styles.img_bottom_tabs} source={focused ? my_active : my_inactive} />
+          ),
+        })} />
+    </Bottom_tab.Navigator>
   );
 };
 
@@ -46,46 +99,45 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
-        <NavigationContainer
-          theme={{
-            ...DefaultTheme,
-            colors: {
-              ...DefaultTheme.colors,
-              background: COLORS.white
-            },
-          }}>
-          <Stack.Navigator>
-            {/* <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} /> */}
-            {/* <Stack.Screen
-              name="회원가입"
-              options={({ navigation }) => ({
-                headerTitleAlign: 'center',
-                headerLeft: () => (
-                  <Ionicons
-                    name="chevron-back"
-                    size={35}
-                    color="black"
-                    onPress={() => {
-                      if (page_count === 1) {
-                        create_two_button_alert({ navigation });
-                      } else {
-                        set_page_count(page_count - 1);
-                      }
-                    }}
-                  />)
-              })}>
-              {() => (
-                <Setting_page
-                  page_count={page_count}
-                  set_page_count={set_page_count}
-                />)}
-            </Stack.Screen> */}
-
-            <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaView>
+      {/* <SafeAreaView style={styles.container}> */}
+      <NavigationContainer
+        theme={{
+          ...DefaultTheme,
+          colors: {
+            ...DefaultTheme.colors,
+            background: COLORS.white
+          },
+        }}>
+        <Stack.Navigator>
+          {/* <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} /> */}
+          {/* <Stack.Screen
+            name="회원가입"
+            options={({ navigation }) => ({
+              headerTitleAlign: 'center',
+              headerLeft: () => (
+                <Ionicons
+                  name="chevron-back"
+                  size={35}
+                  color="black"
+                  onPress={() => {
+                    if (page_count === 1) {
+                      create_two_button_alert({ navigation });
+                    } else {
+                      set_page_count(page_count - 1);
+                    }
+                  }}
+                />)
+            })}>
+            {() => (
+              <Setting_page
+                page_count={page_count}
+                set_page_count={set_page_count}
+              />)}
+          </Stack.Screen> */}
+          <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      {/* </SafeAreaView> */}
     </Provider>
   );
 }
@@ -96,4 +148,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  img_bottom_tabs: {
+    width: 40,
+    height: 40,
+  }
 });

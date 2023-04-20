@@ -1,8 +1,11 @@
-import { Text } from "react-native";
+import { View, Text } from "react-native";
 
 const Home_page = () => {
   return (
-    <Text >Home_page</Text>
+    <View>
+      <Text >Home_page</Text>
+
+    </View>
   );
 }
 

@@ -1,7 +1,7 @@
 const COLORS = {
+  primary_480: '#F5F5FD',
+  primary_490: '#E2E4FF',
   primary_500: '#5344FF',
-  primary_510: '#E2E4FF',
-  primary_520: '#F5F5FD',
   system_green: '#23CF69',
   system_red: '#F54141',
   white: '#FFFFFF',
