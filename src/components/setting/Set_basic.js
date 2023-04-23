@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 import COLORS from '@/shared/js/colors';
 import { Chip } from '@/components/components';
