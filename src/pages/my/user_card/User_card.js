@@ -17,7 +17,7 @@ const User_card = () => {
             <Text style={styles.text_university}>대동대학교</Text>
           </View>
           <View style={styles.text_container}>
-            <View style={[styles.chip, { backgroundColor: COLORS.primary_490, }]}>
+            <View style={[styles.chip, { backgroundColor: COLORS.primary_490, marginRight: 10 }]}>
               <Text style={[styles.text_chip, { color: COLORS.primary_500 }]}>경영학과</Text>
             </View>
             <View style={[styles.chip, { backgroundColor: COLORS.gray_470_bg, }]}>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   text_container: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   text_name: {
     fontWeight: 'bold',
