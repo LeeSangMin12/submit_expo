@@ -4,7 +4,7 @@ import COLORS from '../../shared/js/colors';
 
 const Chip = ({ label, selected, on_press }) => {
   const backgroundColor = selected ? COLORS.primary_500 : COLORS.gray_470_bg;
-  const textColor = selected ? COLORS.white : COLORS.gray_500;
+  const textColor = selected ? COLORS.white : 'black';
 
   return (
     <TouchableOpacity

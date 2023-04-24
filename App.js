@@ -124,6 +124,7 @@ const App = () => {
                 set_page_count={set_page_count}
               />)}
           </Stack.Screen> */}
+          <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
           <Stack.Screen
             name="프로필 수정"
             component={Edit_profile}
@@ -140,7 +141,7 @@ const App = () => {
                 />)
             })}
           />
-          <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
+
         </Stack.Navigator>
       </NavigationContainer>
       {/* </SafeAreaView> */}

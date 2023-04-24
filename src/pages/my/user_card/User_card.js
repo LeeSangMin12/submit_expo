@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import user_profile from '@/assets/img/my/user_card/user_profile.png';
 import COLORS from '@/shared/js/colors';
+import { Design_chip } from '@/components/components';
 
 const User_card = () => {
   const navigation = useNavigation();
@@ -19,12 +20,13 @@ const User_card = () => {
             <Text style={styles.text_university}>대동대학교</Text>
           </View>
           <View style={styles.text_container}>
-            <View style={[styles.chip, { backgroundColor: COLORS.primary_490, marginRight: 10 }]}>
-              <Text style={[styles.text_chip, { color: COLORS.primary_500 }]}>경영학과</Text>
-            </View>
-            <View style={[styles.chip, { backgroundColor: COLORS.gray_470_bg, }]}>
-              <Text style={styles.text_chip}>19학번</Text>
-            </View>
+            <Design_chip
+              title='경영학과'
+              style={{ marginRight: 5 }} />
+
+            <Design_chip
+              title='19학번'
+              background_color={COLORS.gray_470_bg} />
           </View>
         </View>
       </View>

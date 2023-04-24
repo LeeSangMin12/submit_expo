@@ -4,13 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import { Chip } from '@/components/components';
+import { Chip, Design_chip } from '@/components/components';
 import owl_logo from '@/assets/img/logo/owl_nav.png'
 
 const List_page = () => {
   return (
     <>
-      <View style={{ backgroundColor: COLORS.primary_490, padding: 20 }}>
+      <View style={{ backgroundColor: COLORS.primary_480, padding: 22 }}>
 
         <SafeAreaView>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -25,18 +25,25 @@ const List_page = () => {
             <Fontisto
               name="plus-a"
               size={24}
-              color={COLORS.gray_520} />
+              color={COLORS.gray_520}
+              style={{ marginRight: 5, marginTop: 5 }} />
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' }}>
             <View>
               <View >
                 <View style={{ paddingVertical: 10 }}>
-                  <Text style={{ fontSize: 20 }}>이번 학기는 과제</Text>
-                  <Text style={{ fontSize: 20 }}>5개가 남았어요!</Text>
+                  <Text style={{ fontSize: 23 }}>이번 학기는 과제</Text>
+                  <Text style={{ fontSize: 23 }}><Text style={{ color: COLORS.primary_500 }}>5개</Text>가 남았어요!</Text>
                 </View>
               </View>
-              <Text style={{ paddingVertical: 15 }}>70% 완료 총 15개중 10개 완료</Text>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 15 }}>
+                <Design_chip
+                  title='70% 완료' />
+                <Text style={{ color: COLORS.gray_500, fontSize: 13 }}>  총 15개 중</Text>
+                <Text style={{ color: COLORS.primary_500, fontSize: 13 }}> 10개 완료</Text>
+              </View>
             </View>
 
             <View>
@@ -47,7 +54,9 @@ const List_page = () => {
           <LinearProgress
             value={0.5}
             color={COLORS.primary_500}
-            variant='determine' />
+            variant='determine'
+            style={styles.assignment_progress}
+          />
 
         </SafeAreaView>
       </View>
@@ -75,5 +84,10 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: COLORS.gray_500
-  }
+  },
+  assignment_progress: {
+    backgroundColor: COLORS.white,
+    height: 11,
+    borderRadius: 6,
+  },
 });
