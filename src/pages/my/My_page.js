@@ -2,7 +2,7 @@ import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 import COLORS from '@/shared/js/colors';
 
 import User_card from "@/pages/my/user_card/User_card";
-import User_log from "@/pages/my/user_log/User_log";
+// import User_log from "@/pages/my/user_log/User_log";
 import User_setting from "@/pages/my/user_setting/User_setting";
 
 const My_page = () => {
@@ -11,7 +11,7 @@ const My_page = () => {
       <SafeAreaView>
         <View style={styles.user_info_container}>
           <User_card />
-          <User_log />
+          {/* <User_log /> */}
         </View>
         <View style={styles.divider} />
         <ScrollView>
@@ -26,6 +26,7 @@ export default My_page;
 
 const styles = StyleSheet.create({
   user_info_container: {
+    marginTop: 10,
     padding: 20
   },
   divider: {

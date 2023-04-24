@@ -12,18 +12,16 @@ import Login_page from '@/pages/login/Login_page';
 import Setting_page from '@/pages/setting/Setting_page';
 import Home_page from '@/pages/home/Home_page';
 import List_page from '@/pages/list/List_page';
-import Alarm_page from '@/pages/alarm/Alarm_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
+import Edit_profile from '@/pages/my/user_card/edit_profile/Edit_profile.js'
 
 import home_inactive from '@/assets/img/bottom_tab/home_inactive.png'
 import list_inactive from '@/assets/img/bottom_tab/list_inactive.png'
-import alarm_inactive from '@/assets/img/bottom_tab/alarm_inactive.png'
 import community_inactive from '@/assets/img/bottom_tab/community_inactive.png'
 import my_inactive from '@/assets/img/bottom_tab/my_inactive.png'
 import home_active from '@/assets/img/bottom_tab/home_active.png'
 import list_active from '@/assets/img/bottom_tab/list_active.png'
-import alarm_active from '@/assets/img/bottom_tab/alarm_active.png'
 import community_active from '@/assets/img/bottom_tab/community_active.png'
 import my_active from '@/assets/img/bottom_tab/my_active.png'
 
@@ -54,14 +52,6 @@ const Bottom_navigation = () => {
         options={() => ({
           tabBarIcon: ({ focused }) => (
             <Image style={styles.img_bottom_tabs} source={focused ? list_active : list_inactive} />
-          ),
-        })} />
-      <Bottom_tab.Screen
-        name="알림"
-        component={Alarm_page}
-        options={() => ({
-          tabBarIcon: ({ focused }) => (
-            <Image style={styles.img_bottom_tabs} source={focused ? alarm_active : alarm_inactive} />
           ),
         })} />
       <Bottom_tab.Screen
@@ -134,6 +124,22 @@ const App = () => {
                 set_page_count={set_page_count}
               />)}
           </Stack.Screen> */}
+          <Stack.Screen
+            name="프로필 수정"
+            component={Edit_profile}
+            options={({ navigation }) => ({
+              headerTitleAlign: 'cenㅋter',
+              headerLeft: () => (
+                <Ionicons
+                  name="chevron-back"
+                  size={35}
+                  color="black"
+                  onPress={() => {
+                    navigation.navigate('Bottom_navigation', { screen: '마이' });
+                  }}
+                />)
+            })}
+          />
           <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
 
 import Custom_modal from "@/components/ui/Custom_modal";
-import { Button } from '@/components/components';
 import COLORS from '@/shared/js/colors';
 
 

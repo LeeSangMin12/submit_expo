@@ -1,5 +1,5 @@
 import { Modal, StyleSheet, Text, View } from 'react-native';
-import { Button } from '@/components/components';
+import Button from './Button';
 
 /**
  * modal 생성
@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
   },
   btn1: {
     margin: 10,
-    height: 40,
+    height: 45,
     backgroundColor: 'gray'
   },
   btn2: {
     margin: 10,
-    height: 40
+    height: 45
   }
 });
 

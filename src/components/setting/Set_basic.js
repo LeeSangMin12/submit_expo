@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    marginVertical: 8,
+    marginVertical: 12,
   },
   input: {
     height: 50,

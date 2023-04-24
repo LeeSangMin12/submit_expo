@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   btn_next_container: {
-    paddingVertical: 10,
+    paddingVertical: 30,
   },
   btn_next: {
     height: 56,

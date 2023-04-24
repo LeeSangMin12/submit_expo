@@ -1,10 +1,12 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 import user_profile from '@/assets/img/my/user_card/user_profile.png';
-import { Chip } from '@/components/components';
 import COLORS from '@/shared/js/colors';
 
 const User_card = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
 
@@ -28,7 +30,9 @@ const User_card = () => {
       </View>
 
       <View>
-        <Text style={styles.text_edit_profile}>프로필 수정</Text>
+        <Pressable onPress={() => navigation.navigate('프로필 수정')}>
+          <Text style={styles.text_edit_profile}>프로필 수정</Text>
+        </Pressable>
       </View>
     </View>
   );
