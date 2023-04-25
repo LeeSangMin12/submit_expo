@@ -1,17 +1,50 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+
 import COLORS from '../../shared/js/colors';
 
-const Chip = ({ label, selected, on_press }) => {
-  const backgroundColor = selected ? COLORS.primary_500 : COLORS.gray_470_bg;
-  const textColor = selected ? COLORS.white : 'black';
+const label_color_map = {
+  [COLORS.primary_500]: COLORS.white,
+  [COLORS.primary_490]: COLORS.primary_500,
+  [COLORS.gray_470_bg]: COLORS.black,
+};
+
+/**
+ * chip 생성
+ * : 선택할 수 있는 칩만 selected_background_color를 추가해야함
+ * : (선택할 수 없이 칩 디자인 만 하는 경우)
+ * 필수@param {str} label - chip 이름
+ * 선택@param {boolean} selected - chip 선택 여부
+ * 선택@param {str} background_color -chip 배경색
+ * 선택@param {str} selected_background_color - chip 선택시 배경색
+ * 선택@param {function} on_press - press시 동작할 이벤트
+ */
+const Chip = ({
+  label = '',
+  selected = false,
+  background_color = COLORS.white,
+  selected_background_color = COLORS.primary_500,
+  on_press }) => {
+
+  const chip_style = [
+    styles.container,
+    { backgroundColor: selected ? selected_background_color : background_color }
+  ];
+  const label_style = [
+    styles.label,
+    {
+      color: selected ?
+        label_color_map[selected_background_color] :
+        label_color_map[background_color]
+    }
+  ];
 
   return (
     <TouchableOpacity
       onPress={on_press}
-      style={[styles.container, { backgroundColor }]}
+      style={chip_style}
     >
-      <Text style={[styles.label, { color: textColor }]}>{label}</Text>
+      <Text style={label_style}>{label}</Text>
     </TouchableOpacity>
   );
 };

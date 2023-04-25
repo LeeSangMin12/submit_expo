@@ -6,6 +6,7 @@ const COLORS = {
   system_green: '#23CF69',
   system_red: '#F54141',
   white: '#FFFFFF',
+  black: '#000000',
   gray_470_bg: '#F6F8F9',
   gray_480: '#EDEEEE',
   gray_490_inactive: '#DDDDDD',

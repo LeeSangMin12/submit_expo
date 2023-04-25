@@ -10,21 +10,7 @@ const User_setting = () => {
 
   return (
     <>
-      <Custom_modal
-        title='로그아웃 하시겠습니까?'
-        control_modal={{
-          modal_visible: log_out_modal,
-          set_modal_visible: set_log_out_modal
-        }}
-        btn_1={{
-          title: '뒤로가기',
-          on_press: () => set_log_out_modal(false)
-        }}
-        btn_2={{
-          title: '로그아웃',
-          on_press: () => console.log('logout')
-        }}
-      />
+
 
       <View style={styles.setting_container}>
         <Text style={styles.setting_text}>공지사항</Text>
@@ -63,6 +49,21 @@ const User_setting = () => {
       </Pressable>
       <View style={styles.divider} />
 
+      <Custom_modal
+        title='로그아웃 하시겠습니까?'
+        control_modal={{
+          modal_visible: log_out_modal,
+          set_modal_visible: set_log_out_modal
+        }}
+        btn_1={{
+          title: '뒤로가기',
+          on_press: () => set_log_out_modal(false)
+        }}
+        btn_2={{
+          title: '로그아웃',
+          on_press: () => console.log('logout')
+        }}
+      />
     </>
   );
 };

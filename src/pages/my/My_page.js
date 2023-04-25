@@ -26,7 +26,7 @@ export default My_page;
 
 const styles = StyleSheet.create({
   user_info_container: {
-    marginTop: 10,
+    marginTop: 15,
     padding: 20
   },
   divider: {
