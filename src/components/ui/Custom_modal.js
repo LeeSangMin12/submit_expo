@@ -1,78 +1,72 @@
-import { Modal, StyleSheet, Text, View } from 'react-native';
-import Button from './Button';
+import { Modal, StyleSheet, View } from 'react-native';
+import COLORS from '@/shared/js/colors';
 
 /**
  * modal 생성
- * @param {string} title - modal 제목
- * @param {obj} control_modal - modal 컨트롤 변수
- * @param {obj} btn_1 - 첫번째 button값
- * @param {obj} btn_2 - 2번째 button 값
+ * @param {obj} modal_visible - modal 표시 여부
+ * @param {component} content_component - modal안에 들어갈 component값
  */
-const Custom_modal = ({ title, control_modal, btn_1, btn_2 }) => {
+const Custom_modal = ({ modal_visible, position, content_component }) => {
+  const view_position =
+    position === 'center' ? styles.centered_view :
+      position === 'bottom' ? styles.bottom_view : null;
 
   return (
-    <View style={styles.centered_view}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={control_modal.modal_visible}
-      >
-        <View style={styles.centered_view}>
-          <View style={styles.modal_view}>
-            <Text style={styles.modal_text}>{title}</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Button
-                title={btn_1.title}
-                on_press={btn_1.on_press}
-                style={styles.btn1} />
-              <Button
-                title={btn_2.title}
-                on_press={btn_2.on_press}
-                style={styles.btn2} />
-            </View>
-          </View>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modal_visible}>
+      <View style={view_position.container}>
+        <View style={view_position.modal}>
+          {content_component()}
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   centered_view: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modal_view: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 25,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 22,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    modal: {
+      backgroundColor: 'white',
+      borderRadius: 20,
+      padding: 25,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    }
   },
-  modal_text: {
-    marginBottom: 15,
-    fontSize: 17,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  bottom_view: {
+    container: {
+      flex: 1,
+      height: '25%',
+      width: '100%',
+      position: 'absolute',
+      bottom: 0,
+      backgroundColor: 'white',
+      borderWidth: 1,
+      borderColor: COLORS.gray_500,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+    },
+    modal: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    }
   },
-  btn1: {
-    margin: 10,
-    height: 45,
-    backgroundColor: 'gray'
-  },
-  btn2: {
-    margin: 10,
-    height: 45
-  }
 });
 
 export default Custom_modal;

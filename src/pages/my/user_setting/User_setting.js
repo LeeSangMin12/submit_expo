@@ -1,17 +1,32 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
 
-import Custom_modal from "@/components/ui/Custom_modal";
+import { Button, Custom_modal } from "@/components/components";
 import COLORS from '@/shared/js/colors';
-
 
 const User_setting = () => {
   const [log_out_modal, set_log_out_modal] = useState(false);
 
+  const Modal_log_out = () => {
+    return (
+      <>
+        <Text style={styles.Modal_log_out.title}>로그아웃 하시겠습니까?</Text>
+        <View style={styles.Modal_log_out.button_container}>
+          <Button
+            title='취소'
+            on_press={() => set_log_out_modal(false)}
+            style={styles.Modal_log_out.btn_cancel} />
+          <Button
+            title='로그아웃'
+            on_press={() => console.log('logout')}
+            style={styles.Modal_log_out.btn_logout} />
+        </View>
+      </>
+    );
+  };
+
   return (
     <>
-
-
       <View style={styles.setting_container}>
         <Text style={styles.setting_text}>공지사항</Text>
       </View>
@@ -50,19 +65,9 @@ const User_setting = () => {
       <View style={styles.divider} />
 
       <Custom_modal
-        title='로그아웃 하시겠습니까?'
-        control_modal={{
-          modal_visible: log_out_modal,
-          set_modal_visible: set_log_out_modal
-        }}
-        btn_1={{
-          title: '뒤로가기',
-          on_press: () => set_log_out_modal(false)
-        }}
-        btn_2={{
-          title: '로그아웃',
-          on_press: () => console.log('logout')
-        }}
+        modal_visible={log_out_modal}
+        position='center'
+        content_component={() => <Modal_log_out />}
       />
     </>
   );
@@ -82,5 +87,25 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: COLORS.gray_480
+  },
+  Modal_log_out: {
+    title: {
+      marginBottom: 15,
+      fontSize: 17,
+      fontWeight: 'bold',
+      textAlign: 'center',
+    },
+    button_container: {
+      flexDirection: 'row'
+    },
+    btn_cancel: {
+      margin: 10,
+      height: 45,
+      backgroundColor: 'gray'
+    },
+    btn_logout: {
+      margin: 10,
+      height: 45,
+    }
   }
 });

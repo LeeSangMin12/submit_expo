@@ -20,11 +20,11 @@ const Edit_profile = () => {
           contentInsetAdjustmentBehavior="safe"
           contentContainerStyle={{ flexGrow: 1 }}>
 
+          <Set_image />
+
           <View style={styles.set_nickname_container}>
             <Set_nickname nickname={''} />
           </View>
-
-          <Set_image />
 
         </ScrollView>
       </KeyboardAvoidingView>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   set_nickname_container: {
-    marginBottom: 30
+    marginTop: 0
   },
   btn_next_container: {
     paddingVertical: 30,

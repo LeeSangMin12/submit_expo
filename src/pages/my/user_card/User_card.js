@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
-import user_profile from '@/assets/img/my/user_card/user_profile.png';
+import user_profile_sm from '@/assets/img/my/user_card/user_profile_sm.png';
 import COLORS from '@/shared/js/colors';
 import { Design_chip } from '@/components/components';
 
@@ -12,7 +12,7 @@ const User_card = () => {
     <View style={styles.container}>
 
       <View style={styles.card_container}>
-        <Image source={user_profile} />
+        <Image source={user_profile_sm} />
 
         <View style={styles.card_text_container}>
           <View style={[styles.text_container, { alignItems: 'center' }]}>
