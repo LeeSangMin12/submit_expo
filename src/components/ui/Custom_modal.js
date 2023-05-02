@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   bottom_view: {
     container: {
       flex: 1,
-      height: '25%',
+      height: '27%',
       width: '100%',
       position: 'absolute',
       bottom: 0,
