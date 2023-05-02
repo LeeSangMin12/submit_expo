@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Toast from 'react-native-toast-message';
 import store from '@/store/store'
 import COLORS from '@/shared/js/colors';
 
@@ -55,12 +56,14 @@ const Bottom_navigation = () => {
           ),
         })} />
       <Bottom_tab.Screen
-        name="커뮤니티"
+        name="전공 커뮤니티"
         component={Community_page}
         options={() => ({
           tabBarIcon: ({ focused }) => (
             <Image style={styles.img_bottom_tabs} source={focused ? community_active : community_inactive} />
           ),
+          headerShown: true,
+          headerTitleAlign: 'center',
         })} />
       <Bottom_tab.Screen
         name="마이"
@@ -77,6 +80,7 @@ const Bottom_navigation = () => {
 const App = () => {
   const [page_count, set_page_count] = useState(1);
 
+
   const create_two_button_alert = ({ navigation }) =>
     Alert.alert('회원가입 취소', '홈 화면으로 이동합니다.', [
       {
@@ -89,7 +93,6 @@ const App = () => {
   return (
     <Provider store={store}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
-      {/* <SafeAreaView style={styles.container}> */}
       <NavigationContainer
         theme={{
           ...DefaultTheme,
@@ -129,7 +132,7 @@ const App = () => {
             name="프로필 수정"
             component={Edit_profile}
             options={({ navigation }) => ({
-              headerTitleAlign: 'cenㅋter',
+              headerTitleAlign: 'center',
               headerLeft: () => (
                 <Ionicons
                   name="chevron-back"
@@ -144,7 +147,7 @@ const App = () => {
 
         </Stack.Navigator>
       </NavigationContainer>
-      {/* </SafeAreaView> */}
+      <Toast />
     </Provider>
   );
 }
@@ -152,9 +155,6 @@ const App = () => {
 export default App;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   img_bottom_tabs: {
     width: 40,
     height: 40,
