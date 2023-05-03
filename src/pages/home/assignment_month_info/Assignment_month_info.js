@@ -1,25 +1,29 @@
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png'
+import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png';
 
 const Assignment_month_info = () => {
+  const navigation = useNavigation();
+
   return (
     <>
       <View style={styles.header_container}>
-        <View style={styles.header_left_container}>
-          <Text style={styles.text_semester}>2023년 1학기</Text>
-        </View>
 
-        <Pressable onPress={() => console.log('hi')}>
-          <Ionicons
-            name="list"
-            size={33}
-            color={COLORS.black_500}
-            style={styles.icon_list} />
+        <Pressable onPress={() => navigation.navigate('캘린더 목록')}>
+          <View style={styles.header_left_container}>
+            <Text style={{ color: COLORS.primary_500 }}>22학년도 1학기</Text>
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={COLORS.primary_500} />
+          </View>
         </Pressable>
+
+
       </View>
 
       <View style={styles.content_container}>
@@ -56,7 +60,8 @@ export default Assignment_month_info;
 const styles = StyleSheet.create({
   header_container: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginVertical: 8
   },
   header_left_container: {
     flexDirection: 'row',
@@ -64,10 +69,6 @@ const styles = StyleSheet.create({
   },
   text_semester: {
     color: COLORS.primary_500
-  },
-  icon_list: {
-    marginRight: 5,
-    marginTop: 5
   },
   content_container: {
     flexDirection: 'row',

@@ -4,6 +4,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
+import { Fontisto } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
@@ -16,6 +17,7 @@ import List_page from '@/pages/list/List_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
 import Edit_profile from '@/pages/my/user_card/edit_profile/Edit_profile.js'
+import Set_semester from '@/components/set_semester/Set_semester.js'
 
 import home_inactive from '@/assets/img/bottom_tab/home_inactive.png'
 import list_inactive from '@/assets/img/bottom_tab/list_inactive.png'
@@ -150,9 +152,34 @@ const App = () => {
                   size={35}
                   color="black"
                   onPress={() => {
-                    navigation.navigate('Bottom_navigation', { screen: '마이' });
+                    navigation.goBack();
                   }}
                 />)
+            })}
+          />
+          <Stack.Screen
+            name="캘린더 목록"
+            component={Set_semester}
+            options={({ navigation }) => ({
+              headerTitleAlign: 'center',
+              headerLeft: () => (
+                <Ionicons
+                  name="chevron-back"
+                  size={35}
+                  color="black"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />),
+              headerRight: () => (
+                <Fontisto
+                  name="plus-a"
+                  size={24}
+                  color={COLORS.gray_520}
+                  onPress={() => {
+                    console.log('hi');
+                  }} />
+              )
             })}
           />
 

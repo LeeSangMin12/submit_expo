@@ -1,4 +1,4 @@
-import { View, SafeAreaView, StyleSheet, } from 'react-native';
+import { View, SafeAreaView, StyleSheet } from 'react-native';
 
 import COLORS from '@/shared/js/colors';
 import Semester_info from '@/pages/list/assignment_info/Semester_info';

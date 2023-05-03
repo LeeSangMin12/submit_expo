@@ -12,11 +12,11 @@ const Semester_info = () => {
     <>
       <View style={styles.header_container}>
         <View style={styles.header_left_container}>
-          <Text >22학년도 1학기</Text>
+          <Text style={{ color: COLORS.primary_500 }}>22학년도 1학기</Text>
           <Ionicons
             name="chevron-forward"
             size={20}
-            color={COLORS.gray_500} />
+            color={COLORS.primary_500} />
         </View>
 
         <Pressable onPress={() => console.log('hi')}>
