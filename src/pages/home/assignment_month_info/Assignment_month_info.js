@@ -17,7 +17,7 @@ const Assignment_month_info = () => {
           <Ionicons
             name="list"
             size={33}
-            color={COLORS.black}
+            color={COLORS.black_500}
             style={styles.icon_list} />
         </Pressable>
       </View>

@@ -26,6 +26,8 @@ import list_active from '@/assets/img/bottom_tab/list_active.png'
 import community_active from '@/assets/img/bottom_tab/community_active.png'
 import my_active from '@/assets/img/bottom_tab/my_active.png'
 
+import success_check from '@/assets/img/icon/success_check.png'
+
 const Stack = createNativeStackNavigator();
 const Bottom_tab = createBottomTabNavigator();
 
@@ -75,6 +77,15 @@ const Bottom_navigation = () => {
         })} />
     </Bottom_tab.Navigator>
   );
+};
+
+const toast_config = {
+  primary_success_toast: ({ text1 }) => (
+    <View style={styles.primary_success_toast.container}>
+      <Image source={success_check} style={styles.primary_success_toast.img_success_check} />
+      <Text style={styles.primary_success_toast.text1}>{text1}</Text>
+    </View>
+  )
 };
 
 const App = () => {
@@ -147,7 +158,7 @@ const App = () => {
 
         </Stack.Navigator>
       </NavigationContainer>
-      <Toast />
+      <Toast config={toast_config} />
     </Provider>
   );
 }
@@ -158,5 +169,22 @@ const styles = StyleSheet.create({
   img_bottom_tabs: {
     width: 40,
     height: 40,
+  },
+  primary_success_toast: {
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      height: 60,
+      width: '90%',
+      backgroundColor: COLORS.black_490,
+      borderRadius: 10,
+    },
+    img_success_check: {
+      marginHorizontal: 8
+    },
+    text1: {
+      color: 'white',
+      fontSize: 15
+    }
   }
 });

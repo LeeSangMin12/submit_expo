@@ -6,7 +6,7 @@ import COLORS from '../../shared/js/colors';
 const label_color_map = {
   [COLORS.primary_500]: COLORS.white,
   [COLORS.primary_490]: COLORS.primary_500,
-  [COLORS.gray_470_bg]: COLORS.black,
+  [COLORS.gray_470_bg]: COLORS.black_500,
 };
 
 /**

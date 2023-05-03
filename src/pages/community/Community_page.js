@@ -9,7 +9,7 @@ const Community_page = () => {
 
   const show_toast = () => {
     Toast.show({
-      type: 'success',
+      type: 'primary_success_toast',
       position: 'bottom',
       text1: '커뮤니티가 신청 되었습니다!',
     });
