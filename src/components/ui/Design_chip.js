@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   text_chip: {
-    fontSize: 11,
+    fontSize: 12,
     color: COLORS.gray_500,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
 });
