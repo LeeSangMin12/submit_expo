@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 const Assignment_calender = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());

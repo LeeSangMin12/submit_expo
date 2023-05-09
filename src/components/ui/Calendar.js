@@ -1,0 +1,129 @@
+import { Text, View, SafeAreaView, StyleSheet } from "react-native";
+import { useEffect } from "react";
+
+import Button from "./Button";
+import COLORS from "@/shared/js/colors";
+
+let date = new Date();
+
+/**
+ * 캘린더 그리기
+ */
+const render_calender = () => {
+  const view_year = date.getFullYear();
+  const view_month = date.getMonth() + 1;
+
+  // document.querySelector('.year_month_container').textContent = `${view_year}년 ${view_month}월`;
+
+  const prev_month_last = new Date(view_year, view_month - 1, 0);  //지난 달 마지막 Date
+  const this_month_last = new Date(view_year, view_month, 0);  //이번 달 마지막 Date
+
+  const prev_month_date = prev_month_last.getDate();
+  const prev_month_day = prev_month_last.getDay();
+
+  const this_month_date = this_month_last.getDate();
+  const this_month_day = this_month_last.getDay();
+
+  const prev_dates_arr = [];
+  const this_dates_arr = [...Array(this_month_date + 1).keys()].slice(1);
+  const next_dates_arr = [];
+
+  if (prev_month_day !== 6) {  //지난달 마지막 요일이 토요일이 아닐때
+    for (let i = 0; i < prev_month_day + 1; i++) {
+      prev_dates_arr.unshift(prev_month_date - i);
+    }
+  }
+
+  for (let i = 1; i < 7 - this_month_day; i++) {
+    next_dates_arr.push(i);
+  };
+
+  const dates = [...prev_dates_arr, ...this_dates_arr, ...next_dates_arr];
+
+  const first_date_index = dates.indexOf(1);
+  const last_date_index = dates.lastIndexOf(this_month_date);
+
+  dates.forEach((date, i) => {
+    const condition = i >= first_date_index && i < last_date_index + 1
+      ? 'this'
+      : 'other';
+
+    dates[i] =
+      (<View style={styles.date}>
+        <Text style={styles.condition}>{date}</Text>
+      </View>);
+  });
+  // document.querySelector('.dates_container').innerHTML = dates.join('');
+
+  // const today = new Date();
+  // if (view_month === today.getMonth() + 1 && view_year === today.getFullYear()) {
+  //   document.querySelectorAll('.this').forEach((date) => {
+  //     if (Number(date.innerText) === today.getDate()) {
+  //       date.classList.add('today');
+  //       return false;
+  //     }
+  //   });
+  // }
+
+  return dates;
+};
+
+const Calendar = () => {
+  useEffect(() => {
+    render_calender();
+  }, []);
+
+  return (
+    <View style={styles.calendar}>
+      <View style={styles.days_container}>
+        <Text style={styles.day}>일</Text>
+        <Text style={styles.day}>월</Text>
+        <Text style={styles.day}>화</Text>
+        <Text style={styles.day}>수</Text>
+        <Text style={styles.day}>목</Text>
+        <Text style={styles.day}>금</Text>
+        <Text style={styles.day}>토</Text>
+      </View>
+      <View style={styles.dates_container}>
+        {render_calender()}
+      </View>
+    </View>
+  );
+};
+
+export default Calendar;
+
+const styles = StyleSheet.create({
+  calendar: {
+    backgroundColor: 'green',
+    flex: 1,
+  },
+  days_container: {
+    flexDirection: 'row',
+  },
+  day: {
+    width: '14.2857%', // 7일에 대한 백분율 (100 / 7)
+    textAlign: 'center',
+    marginVertical: 10,
+    color: COLORS.gray_500
+  },
+  dates_container: {
+    flex: 1,
+    backgroundColor: 'red',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderColor: 'gray',
+    borderTopWidth: 0.5,
+  },
+  date: {
+    backgroundColor: 'yellow',
+    width: '14.2857%', // 7일에 대한 백분율 (100 / 7)
+    height: 50,
+    // padding: 15,
+    textAlign: 'center',
+    borderColor: 'gray',
+    borderBottomWidth: 0.5,
+    borderLeftColor: 0.5,
+
+  }
+});
