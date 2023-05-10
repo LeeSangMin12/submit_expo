@@ -49,18 +49,21 @@ const render_calender = () => {
   const first_date_index = dates.indexOf(1);
   const last_date_index = dates.lastIndexOf(this_month_date);
 
-  const date_height = dates.length > 35 ? 100 / 6 : 100 / 5;  //높이를 date의 갯수에 따라 동적으로 지정
+  const date_height =
+    dates.length > 35 ? (100 / 6) :
+      dates.length < 35 ? (100 / 4) : (100 / 5);  //date의 갯수에 따라 높이 지정
 
-  dates.forEach((date, i) => {
-    const condition = i >= first_date_index && i < last_date_index + 1
-      ? 'this'
-      : 'other';
+  const rendered_dates = dates.map((date, i) => {
+    const condition = i >= first_date_index && i < last_date_index + 1 ? 'this' : 'other';
 
-    dates[i] =
-      (<View style={[styles.date, { height: `${date_height}%` }]} key={i}>
+    return (
+      <View style={[styles.date, { height: `${date_height}%` }]} key={i}>
         <Text style={styles.condition}>{date}</Text>
-      </View>);
-  });
+      </View>
+    );
+  })
+  return rendered_dates;
+
   // document.querySelector('.dates_container').innerHTML = dates.join('');
 
   // const today = new Date();
@@ -73,7 +76,7 @@ const render_calender = () => {
   //   });
   // }
 
-  return dates;
+
 };
 
 const Calendar = () => {
