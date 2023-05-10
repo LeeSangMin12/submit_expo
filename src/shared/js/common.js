@@ -1,4 +1,5 @@
 import { set_user } from '@/store/modules/user_slice';
+import { set_calendar } from '@/store/modules/calendar_slice';
 import store from '@/store/store';
 
 /**
@@ -9,7 +10,8 @@ import store from '@/store/store';
  */
 export const set_store_info = (store_name, key, value) => {
   const set_store_map_obj = {
-    user: set_user
+    user: set_user,
+    calendar: set_calendar
   };
 
   //useDispatch 훅은 함수형 컴포넌트 내부에서만 사용 가능하기에 store를 직접 부름.

@@ -1,13 +1,30 @@
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
+import { set_store_info } from '@/shared/js/common';
+import { Button } from '@/components/components';
 import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png';
+
+const go_prev_month = () => {
+
+}
+const go_today_month = () => {
+
+}
+const go_next_month = () => {
+
+}
 
 const Assignment_month_info = () => {
   const navigation = useNavigation();
+
+  const {
+    year_month,
+  } = useSelector((state) => state.calendar);
 
   return (
     <>
@@ -37,7 +54,18 @@ const Assignment_month_info = () => {
           </View>
 
           <View style={styles.now_month_container}>
-            <Text style={styles.text_now_month}> 2023 03 </Text>
+            <Pressable onPress={() => set_store_info('calendar', 'year_month', '3')}>
+              <Ionicons
+                name="chevron-back"
+                size={19} />
+            </Pressable>
+            <Text style={styles.text_now_month}> {year_month} </Text>
+
+            <Pressable onPress={() => set_store_info('calendar', 'year_month', '3')}>
+              <Ionicons
+                name="chevron-forward"
+                size={19} />
+            </Pressable>
           </View>
         </View>
 
@@ -85,10 +113,12 @@ const styles = StyleSheet.create({
     color: COLORS.primary_500
   },
   now_month_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 15
   },
   text_now_month: {
-    fontSize: 16
+    fontSize: 16,
   },
   img_owl_nav: {
     marginRight: 15,

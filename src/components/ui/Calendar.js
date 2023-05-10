@@ -5,7 +5,6 @@ import { PixelRatio } from 'react-native';
 import Button from "./Button";
 import COLORS from "@/shared/js/colors";
 
-const window_height = Dimensions.get('window').height;
 const window_width = Dimensions.get('window').width;
 
 const date_width = window_width / 7;  //7일에 대한 백분율 (100 / 7)
@@ -55,10 +54,18 @@ const render_calender = () => {
 
   const rendered_dates = dates.map((date, i) => {
     const condition = i >= first_date_index && i < last_date_index + 1 ? 'this' : 'other';
+    const container_style = [styles.date, { height: `${date_height}%` }];
+    const text_style = [styles[condition]]
+
+    if (i % 7 === 0) {
+      text_style.push({ color: 'red' });  //일요일에 빨간색 적용
+    } else if ((i + 1) % 7 === 0) {
+      text_style.push({ color: 'blue' });  //토요일에 파란색 적용
+    }
 
     return (
-      <View style={[styles.date, { height: `${date_height}%` }]} key={i}>
-        <Text style={styles.condition}>{date}</Text>
+      <View style={container_style} key={i}>
+        <Text style={text_style}>{date}</Text>
       </View>
     );
   })
@@ -87,13 +94,13 @@ const Calendar = () => {
   return (
     <View style={styles.calendar}>
       <View style={styles.days_container}>
-        <Text style={styles.day}>일</Text>
+        <Text style={[styles.day, { color: 'red' }]}>일</Text>
         <Text style={styles.day}>월</Text>
         <Text style={styles.day}>화</Text>
         <Text style={styles.day}>수</Text>
         <Text style={styles.day}>목</Text>
         <Text style={styles.day}>금</Text>
-        <Text style={styles.day}>토</Text>
+        <Text style={[styles.day, { color: 'blue' }]}>토</Text>
       </View>
       <View style={styles.dates_container}>
         {render_calender()}
@@ -107,7 +114,6 @@ export default Calendar;
 const styles = StyleSheet.create({
   calendar: {
     flex: 1,
-    backgroundColor: 'green',
   },
   days_container: {
     flexDirection: 'row',
@@ -120,7 +126,6 @@ const styles = StyleSheet.create({
   },
   dates_container: {
     flex: 1,
-    backgroundColor: 'red',
     flexDirection: 'row',
     flexWrap: 'wrap',
     borderColor: 'gray',
@@ -128,12 +133,13 @@ const styles = StyleSheet.create({
     alignItems: 'stretch'
   },
   date: {
-    backgroundColor: 'yellow',
     width: date_width,
-    // padding: 15,
-    textAlign: 'center',
+    alignItems: 'center',
     borderColor: 'gray',
     borderBottomWidth: 0.5,
-    borderLeftColor: 0.5,
+    borderLeftWidth: 0.5,
+  },
+  other: {
+    opacity: 0.3,
   }
 });

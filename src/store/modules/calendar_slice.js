@@ -1,7 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+
+
+const set_year_month = () => {
+  let date = new Date();
+
+  const view_year = date.getFullYear();
+  const view_month = date.getMonth() + 1;
+
+  return `${view_year}.${view_month}`
+}
+
 const initial_state = {
-  year_month: '',
+  year_month: set_year_month(),
 };
 
 const calendar_slice = createSlice({
