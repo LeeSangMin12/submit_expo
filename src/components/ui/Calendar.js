@@ -1,8 +1,14 @@
-import { Text, View, SafeAreaView, StyleSheet } from "react-native";
+import { Text, View, SafeAreaView, StyleSheet, Dimensions } from "react-native";
 import { useEffect } from "react";
+import { PixelRatio } from 'react-native';
 
 import Button from "./Button";
 import COLORS from "@/shared/js/colors";
+
+const window_height = Dimensions.get('window').height;
+const window_width = Dimensions.get('window').width;
+
+const date_width = window_width / 7;  //7일에 대한 백분율 (100 / 7)
 
 let date = new Date();
 
@@ -43,13 +49,15 @@ const render_calender = () => {
   const first_date_index = dates.indexOf(1);
   const last_date_index = dates.lastIndexOf(this_month_date);
 
+  const date_height = dates.length > 35 ? 100 / 6 : 100 / 5;  //높이를 date의 갯수에 따라 동적으로 지정
+
   dates.forEach((date, i) => {
     const condition = i >= first_date_index && i < last_date_index + 1
       ? 'this'
       : 'other';
 
     dates[i] =
-      (<View style={styles.date}>
+      (<View style={[styles.date, { height: `${date_height}%` }]} key={i}>
         <Text style={styles.condition}>{date}</Text>
       </View>);
   });
@@ -95,14 +103,14 @@ export default Calendar;
 
 const styles = StyleSheet.create({
   calendar: {
-    backgroundColor: 'green',
     flex: 1,
+    backgroundColor: 'green',
   },
   days_container: {
     flexDirection: 'row',
   },
   day: {
-    width: '14.2857%', // 7일에 대한 백분율 (100 / 7)
+    width: date_width,
     textAlign: 'center',
     marginVertical: 10,
     color: COLORS.gray_500
@@ -114,16 +122,15 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     borderColor: 'gray',
     borderTopWidth: 0.5,
+    alignItems: 'stretch'
   },
   date: {
     backgroundColor: 'yellow',
-    width: '14.2857%', // 7일에 대한 백분율 (100 / 7)
-    height: 50,
+    width: date_width,
     // padding: 15,
     textAlign: 'center',
     borderColor: 'gray',
     borderBottomWidth: 0.5,
     borderLeftColor: 0.5,
-
   }
 });
