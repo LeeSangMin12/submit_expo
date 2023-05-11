@@ -1,30 +1,29 @@
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import { set_store_info } from '@/shared/js/common';
+import store from '@/store/store';
+import { go_prev_month, go_next_month, go_today } from '@/store/modules/calendar_slice';
 import { Button } from '@/components/components';
 import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png';
 
-const go_prev_month = () => {
-
-}
-const go_today_month = () => {
-
-}
-const go_next_month = () => {
-
-}
-
 const Assignment_month_info = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const {
-    year_month,
+    year,
+    month
   } = useSelector((state) => state.calendar);
+
+  const get_year_month = (year, month) => {
+    const formatted_month = String(month).padStart(2, '0')
+
+    return `${year}.${formatted_month}`;
+  }
 
   return (
     <>
@@ -54,17 +53,26 @@ const Assignment_month_info = () => {
           </View>
 
           <View style={styles.now_month_container}>
-            <Pressable onPress={() => set_store_info('calendar', 'year_month', '3')}>
+            <Pressable onPress={() => dispatch(go_prev_month())}>
               <Ionicons
                 name="chevron-back"
                 size={19} />
             </Pressable>
-            <Text style={styles.text_now_month}> {year_month} </Text>
 
-            <Pressable onPress={() => set_store_info('calendar', 'year_month', '3')}>
+            <Text style={styles.text_now_month}> {get_year_month(year, month)} </Text>
+
+            <Pressable onPress={() => dispatch(go_next_month())}>
               <Ionicons
                 name="chevron-forward"
                 size={19} />
+            </Pressable>
+
+            <Pressable onPress={() => dispatch(go_today())}>
+              <Ionicons
+                name="today-outline"
+                style={{ marginLeft: 35 }}
+                size={22}
+                color={COLORS.primary_500} />
             </Pressable>
           </View>
         </View>
@@ -72,7 +80,7 @@ const Assignment_month_info = () => {
         <View>
           <Image source={owl_nav_sm} style={styles.img_owl_nav} />
         </View>
-      </View>
+      </View >
 
       <LinearProgress
         value={0.5}

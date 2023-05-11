@@ -1,6 +1,6 @@
-import { Text, View, SafeAreaView, StyleSheet, Dimensions } from "react-native";
+import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { useEffect } from "react";
-import { PixelRatio } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import Button from "./Button";
 import COLORS from "@/shared/js/colors";
@@ -14,11 +14,11 @@ let date = new Date();
 /**
  * 캘린더 그리기
  */
-const render_calender = () => {
+const render_calender = (year, month) => {
+  const date = new Date(year, month - 1);
+
   const view_year = date.getFullYear();
   const view_month = date.getMonth() + 1;
-
-  // document.querySelector('.year_month_container').textContent = `${view_year}년 ${view_month}월`;
 
   const prev_month_last = new Date(view_year, view_month - 1, 0);  //지난 달 마지막 Date
   const this_month_last = new Date(view_year, view_month, 0);  //이번 달 마지막 Date
@@ -34,12 +34,11 @@ const render_calender = () => {
   const next_dates_arr = [];
 
   if (prev_month_day !== 6) {  //지난달 마지막 요일이 토요일이 아닐때
-    for (let i = 0; i < prev_month_day + 1; i++) {
+    for (let i = 0; i < prev_month_day + 1; i++) {  //남는 지난달 날짜 추가
       prev_dates_arr.unshift(prev_month_date - i);
     }
   }
-
-  for (let i = 1; i < 7 - this_month_day; i++) {
+  for (let i = 1; i < 7 - this_month_day; i++) {  //남는 다음달 날짜 추가
     next_dates_arr.push(i);
   };
 
@@ -52,10 +51,18 @@ const render_calender = () => {
     dates.length > 35 ? (100 / 6) :
       dates.length < 35 ? (100 / 4) : (100 / 5);  //date의 갯수에 따라 높이 지정
 
+  const today = new Date();
+
   const rendered_dates = dates.map((date, i) => {
+
+    const is_today =
+      view_year === today.getFullYear() &&
+      view_month === today.getMonth() + 1 &&
+      date === today.getDate();
+
     const condition = i >= first_date_index && i < last_date_index + 1 ? 'this' : 'other';
     const container_style = [styles.date, { height: `${date_height}%` }];
-    const text_style = [styles[condition]]
+    const text_style = [styles[condition], is_today && { color: 'white' }]
 
     if (i % 7 === 0) {
       text_style.push({ color: 'red' });  //일요일에 빨간색 적용
@@ -65,13 +72,14 @@ const render_calender = () => {
 
     return (
       <View style={container_style} key={i}>
+        {is_today && <View style={styles.today_circle} />}
         <Text style={text_style}>{date}</Text>
       </View>
     );
   })
   return rendered_dates;
 
-  // document.querySelector('.dates_container').innerHTML = dates.join('');
+
 
   // const today = new Date();
   // if (view_month === today.getMonth() + 1 && view_year === today.getFullYear()) {
@@ -82,14 +90,17 @@ const render_calender = () => {
   //     }
   //   });
   // }
-
-
 };
 
 const Calendar = () => {
-  useEffect(() => {
-    render_calender();
-  }, []);
+  // useEffect(() => {
+  //   render_calender();
+  // }, []);
+
+  const {
+    year,
+    month,
+  } = useSelector((state) => state.calendar);
 
   return (
     <View style={styles.calendar}>
@@ -103,7 +114,7 @@ const Calendar = () => {
         <Text style={[styles.day, { color: 'blue' }]}>토</Text>
       </View>
       <View style={styles.dates_container}>
-        {render_calender()}
+        {render_calender(year, month)}
       </View>
     </View>
   );
@@ -138,8 +149,21 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderBottomWidth: 0.5,
     borderLeftWidth: 0.5,
+    padding: 5,
+    overflow: 'hidden',
   },
   other: {
     opacity: 0.3,
-  }
+  },
+  today_circle: {
+    width: 23,
+    height: 23,
+    borderRadius: 100,
+    backgroundColor: COLORS.primary_500,
+    position: 'absolute',
+    top: 3,
+    left: (date_width - 22) / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
