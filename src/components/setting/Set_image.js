@@ -90,6 +90,7 @@ const Set_image = () => {
       <Custom_modal
         modal_visible={user_img_modal}
         position='bottom'
+        bottom_height='27%'
         content_component={() => <Modal_set_user_img />}
       />
     </View>

@@ -6,10 +6,10 @@ import COLORS from '@/shared/js/colors';
  * @param {obj} modal_visible - modal 표시 여부
  * @param {component} content_component - modal안에 들어갈 component값
  */
-const Custom_modal = ({ modal_visible, position, content_component }) => {
+const Custom_modal = ({ modal_visible, position, bottom_height, content_component }) => {
   const view_position =
     position === 'center' ? styles.centered_view :
-      position === 'bottom' ? styles.bottom_view : null;
+      position === 'bottom' ? { ...styles.bottom_view, container: { ...styles.bottom_view.container, height: bottom_height } } : null;
 
   return (
     <Modal

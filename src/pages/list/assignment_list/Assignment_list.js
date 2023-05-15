@@ -1,51 +1,174 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Text, View, StyleSheet, TextInput, ScrollView, Image } from 'react-native';
 import { CheckBox } from '@rneui/themed';
+import { Ionicons } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import { Chip } from '@/components/components';
-import { useState } from 'react';
+import { Chip, Custom_modal, Button, Date_time_picker } from '@/components/components';
+
 
 const Assignment_list = () => {
   const [checked, setChecked] = useState(true);
-  const toggleCheckbox = () => setChecked(!checked);
+  const [assignment_submit_modal, set_assignment_submit_modal] = useState(false);
+  const [submit_way, set_submit_way] = useState('email');
+  const toggle_checkbox = () => setChecked(!checked);
+
+  const Modal_assignment_submit = () => {
+    return (
+      <View style={styles.Modal_assignment_submit.container}>
+
+        <View style={styles.Modal_assignment_submit.header_container}>
+          <View style={{ flex: 1, }}>
+            <Ionicons name="close-outline" size={30} color="black" style={{ marginLeft: 10 }} />
+          </View>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={styles.Modal_assignment_submit.header_text}>제출하기</Text>
+          </View>
+          <View style={{ flex: 1 }} />
+        </View>
+
+        <View style={styles.divider} />
+
+        <ScrollView style={styles.Modal_assignment_submit.content_container}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 12, paddingHorizontal: 15 }}>
+            <Chip
+              label="E-mail"
+              selected={submit_way === 'email'}
+              on_press={() => set_submit_way('email')} />
+
+            <Chip
+              label="LMS"
+              selected={submit_way === 'lms'}
+              on_press={() => set_submit_way('lms')} />
+          </View>
+
+          <View style={{ alignItems: 'center' }}>
+            <View style={{ height: 5, backgroundColor: COLORS.gray_480, width: '90%' }} />
+          </View>
+
+          {submit_way === 'email' ?
+            <>
+              <View style={styles.Modal_assignment_submit.input_container}>
+                <TextInput
+                  style={styles.Modal_assignment_submit.input}
+                  placeholder='제출일자'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+
+
+              <View style={styles.Modal_assignment_submit.input_container}>
+                <TextInput
+                  style={styles.Modal_assignment_submit.input}
+                  placeholder='메일제목'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+
+              <View style={styles.Modal_assignment_submit.input_container}>
+                <TextInput
+                  style={styles.Modal_assignment_submit.input}
+                  placeholder='제출할 메일주소'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+
+              <View style={styles.Modal_assignment_submit.input_container}>
+                <TextInput
+                  style={{
+                    padding: 10,
+                    height: 120,
+                    fontSize: 15,
+                    borderWidth: 1,
+                    borderColor: COLORS.gray_480,
+                    width: '90%'
+                  }}
+                  multiline
+                  returnKeyType='done'
+                  numberOfLines={4}
+                  maxLength={100}
+                  placeholder='과제내용'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+
+              <View style={styles.Modal_assignment_submit.input_container}>
+                <TextInput
+                  style={styles.Modal_assignment_submit.input}
+                  placeholder='첨부파일 없음'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+            </>
+            :
+
+            <>
+              <View style={styles.Modal_assignment_submit.input_container}>
+                <TextInput
+                  style={styles.Modal_assignment_submit.input}
+                  placeholder='링크를 입력해주세요'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+
+              <View style={styles.Modal_assignment_submit.input_container}>
+                <TextInput
+                  style={styles.Modal_assignment_submit.input}
+                  placeholder='첨부파일 없음'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+            </>
+          }
+
+        </ScrollView>
+
+        <View style={styles.Modal_assignment_submit.cancel_button_container}>
+          <Button
+            title="저장하기"
+            on_press={() => set_assignment_submit_modal(false)}
+            style={styles.Modal_assignment_submit.btn_cancel} />
+        </View>
+      </View >
+    );
+  };
+
   return (
     <View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 2 }}>
-        <View style={{ flexDirection: 'row' }}>
+      <Date_time_picker />
+      <View style={styles.assignment.container}>
+        <View style={styles.assignment.title_container}>
           <CheckBox
             checked={checked}
-            onPress={toggleCheckbox}
+            onPress={toggle_checkbox}
             iconType="material-community"
             checkedIcon="checkbox-outline"
             uncheckedIcon={'checkbox-blank-outline'}
             size={36}
             title='경영학개론'
-            textStyle={{ fontSize: 17, textDecorationLine: checked ? 'line-through' : 'none' }}
+            textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
             checkedColor={COLORS.primary_500}
           />
         </View>
-        <View style={{ marginRight: 15 }}>
+        <View style={styles.assignment.chip_container}>
           <Chip
             label="완료"
+            on_press={() => { set_assignment_submit_modal(true) }}
             background_color={COLORS.gray_470_bg} />
         </View>
-
       </View>
       <View style={styles.divider} />
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 2 }}>
-        <CheckBox
-          checked={checked}
-          onPress={toggleCheckbox}
-          iconType="material-community"
-          checkedIcon="checkbox-outline"
-          uncheckedIcon={'checkbox-blank-outline'}
-          size={36}
-          title='네크워크'
-          textStyle={{ fontSize: 17, textDecorationLine: checked ? 'line-through' : 'none' }}
-          checkedColor={COLORS.primary_500}
-        />
-        <View style={{ marginRight: 15 }}>
+
+
+      <View style={styles.assignment.container}>
+        <View style={styles.assignment.title_container}>
+          <CheckBox
+            checked={checked}
+            onPress={toggle_checkbox}
+            iconType="material-community"
+            checkedIcon="checkbox-outline"
+            uncheckedIcon={'checkbox-blank-outline'}
+            size={36}
+            title='네크워크'
+            textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
+            checkedColor={COLORS.primary_500}
+          />
+        </View>
+        <View style={styles.assignment.chip_container}>
           <Chip
             label="설정"
             background_color={COLORS.primary_500} />
@@ -53,26 +176,34 @@ const Assignment_list = () => {
       </View>
       <View style={styles.divider} />
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 2 }}>
-        <CheckBox
-          checked={checked}
-          onPress={toggleCheckbox}
-          iconType="material-community"
-          checkedIcon="checkbox-outline"
-          uncheckedIcon={'checkbox-blank-outline'}
-          size={36}
-          title='간호 심리학'
-          textStyle={{ fontSize: 17, textDecorationLine: checked ? 'line-through' : 'none' }}
-          numberOfLines={1}
-          checkedColor={COLORS.primary_500}
-        />
-        <View style={{ marginRight: 15 }}>
+      <View style={styles.assignment.container}>
+        <View style={styles.assignment.title_container}>
+          <CheckBox
+            checked={checked}
+            onPress={toggle_checkbox}
+            iconType="material-community"
+            checkedIcon="checkbox-outline"
+            uncheckedIcon={'checkbox-blank-outline'}
+            size={36}
+            title='간호 심리학'
+            textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
+            checkedColor={COLORS.primary_500}
+          />
+        </View>
+        <View style={styles.assignment.chip_container}>
           <Chip
             label="예정"
             background_color={COLORS.primary_490} />
         </View>
       </View>
       <View style={styles.divider} />
+
+      <Custom_modal
+        modal_visible={assignment_submit_modal}
+        position='bottom'
+        bottom_height='85%'
+        content_component={() => <Modal_assignment_submit />}
+      />
     </View>
   );
 }
@@ -80,10 +211,73 @@ const Assignment_list = () => {
 export default Assignment_list;
 
 const styles = StyleSheet.create({
+  assignment: {
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 2
+    },
+    title_container: {
+      flexDirection: 'row'
+    },
+    checkbox: {
+      fontSize: 17,
+    },
+    chip_container: {
+      marginRight: 15
+    }
+  },
   divider: {
     height: 1,
-    backgroundColor: COLORS.gray_500
+    backgroundColor: COLORS.gray_490_inactive
   },
+  Modal_assignment_submit: {
+    container: {
+      flex: 1,
+      width: '100%',
+      justifyContent: 'space-between',
+    },
+    header_container: {
+      flexDirection: 'row',
+      // justifyContent: 'space-evenly',
+      alignItems: 'center',
+      paddingVertical: 15,
+    },
+    header_text: {
+      fontSize: 20
+    },
+    content_container: {
+      flex: 1,
+      // alignItems: 'center',
+    },
+    input_container: {
+      marginTop: 20,
+      alignItems: 'center'
+    },
+    input: {
+      height: 50,
+      fontSize: 15,
+      borderBottomWidth: 1,
+      borderColor: COLORS.gray_480,
+      paddingHorizontal: 6,
+      width: '90%'
+    },
+    edit_img_container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS.gray_490_inactive,
+    },
+    cancel_button_container: {
+      alignItems: 'center'
+    },
+    btn_cancel: {
+      width: '90%',
+      marginBottom: 15,
+    }
+  }
 });
 
 

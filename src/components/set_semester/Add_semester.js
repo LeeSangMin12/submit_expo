@@ -3,7 +3,6 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import COLORS from '@/shared/js/colors';
-import { Chip } from '@/components/components';
 import { set_store_info } from '@/shared/js/common';
 
 const Add_semester = () => {

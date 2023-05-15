@@ -146,9 +146,10 @@ const styles = StyleSheet.create({
   date: {
     width: date_width,
     alignItems: 'center',
-    borderColor: 'gray',
+    // borderColor: 'gray',
+    borderColor: COLORS.gray_490_inactive,
     borderBottomWidth: 0.5,
-    borderLeftWidth: 0.5,
+    // borderLeftWidth: 0.5,
     padding: 5,
     overflow: 'hidden',
   },
