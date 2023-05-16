@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, ScrollView, Image } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
 import { CheckBox } from '@rneui/themed';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -15,120 +15,118 @@ const Assignment_list = () => {
 
   const Modal_assignment_submit = () => {
     return (
-      <View style={styles.Modal_assignment_submit.container}>
+      <KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
+        <View style={styles.Modal_assignment_submit.container}>
 
-        <View style={styles.Modal_assignment_submit.header_container}>
-          <View style={{ flex: 1, }}>
-            <Ionicons name="close-outline" size={30} color="black" style={{ marginLeft: 10 }} />
-          </View>
-          <View style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={styles.Modal_assignment_submit.header_text}>제출하기</Text>
-          </View>
-          <View style={{ flex: 1 }} />
-        </View>
-
-        <View style={styles.divider} />
-
-        <ScrollView style={styles.Modal_assignment_submit.content_container}>
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 12, paddingHorizontal: 15 }}>
-            <Chip
-              label="E-mail"
-              selected={submit_way === 'email'}
-              on_press={() => set_submit_way('email')} />
-
-            <Chip
-              label="LMS"
-              selected={submit_way === 'lms'}
-              on_press={() => set_submit_way('lms')} />
+          <View style={styles.Modal_assignment_submit.header_container}>
+            <View style={{ flex: 1, }}>
+              <Ionicons name="close-outline" size={30} color="black" style={{ marginLeft: 10 }} />
+            </View>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <Text style={styles.Modal_assignment_submit.header_text}>제출하기</Text>
+            </View>
+            <View style={{ flex: 1 }} />
           </View>
 
-          <View style={{ alignItems: 'center' }}>
-            <View style={{ height: 5, backgroundColor: COLORS.gray_480, width: '90%' }} />
+          <View style={styles.divider} />
+
+          <ScrollView style={styles.Modal_assignment_submit.content_container}>
+
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 12, paddingHorizontal: 15 }}>
+              <Chip
+                label="E-mail"
+                selected={submit_way === 'email'}
+                on_press={() => set_submit_way('email')} />
+
+              <Chip
+                label="LMS"
+                selected={submit_way === 'lms'}
+                on_press={() => set_submit_way('lms')} />
+            </View>
+
+            <View style={{ alignItems: 'center' }}>
+              <View style={{ height: 5, backgroundColor: COLORS.gray_480, width: '90%' }} />
+            </View>
+
+            {submit_way === 'email' ?
+              < >
+                <View style={styles.Modal_assignment_submit.input_container}>
+                  <Date_time_picker />
+                </View>
+
+                <View style={{ alignItems: 'center' }}>
+                  <TextInput
+                    style={styles.Modal_assignment_submit.input}
+                    placeholder='메일제목'
+                    placeholderTextColor={COLORS.gray_500} />
+                </View>
+
+                <View style={styles.Modal_assignment_submit.input_container}>
+                  <TextInput
+                    style={styles.Modal_assignment_submit.input}
+                    placeholder='제출할 메일주소'
+                    placeholderTextColor={COLORS.gray_500} />
+                </View>
+
+                <View style={styles.Modal_assignment_submit.input_container} >
+                  <TextInput
+                    style={{
+                      padding: 10,
+                      height: 120,
+                      fontSize: 15,
+                      borderWidth: 1,
+                      borderColor: COLORS.gray_480,
+                      width: '90%'
+                    }}
+                    multiline
+                    returnKeyType='done'
+                    numberOfLines={4}
+                    maxLength={100}
+                    placeholder='과제내용'
+                    placeholderTextColor={COLORS.gray_500} />
+                </View>
+
+                <View style={styles.Modal_assignment_submit.input_container}>
+                  <TextInput
+                    style={styles.Modal_assignment_submit.input}
+                    placeholder='첨부파일 없음'
+                    placeholderTextColor={COLORS.gray_500} />
+                </View>
+              </>
+              :
+
+              <>
+                <View style={styles.Modal_assignment_submit.input_container}>
+                  <TextInput
+                    style={styles.Modal_assignment_submit.input}
+                    placeholder='링크를 입력해주세요'
+                    placeholderTextColor={COLORS.gray_500} />
+                </View>
+
+                <View style={styles.Modal_assignment_submit.input_container}>
+                  <TextInput
+                    style={styles.Modal_assignment_submit.input}
+                    placeholder='첨부파일 없음'
+                    placeholderTextColor={COLORS.gray_500} />
+                </View>
+              </>
+            }
+
+          </ScrollView>
+
+          <View style={styles.Modal_assignment_submit.cancel_button_container}>
+            <Button
+              title="저장하기"
+              on_press={() => set_assignment_submit_modal(false)}
+              style={styles.Modal_assignment_submit.btn_cancel} />
           </View>
-
-          {submit_way === 'email' ?
-            <>
-              <View style={styles.Modal_assignment_submit.input_container}>
-                <TextInput
-                  style={styles.Modal_assignment_submit.input}
-                  placeholder='제출일자'
-                  placeholderTextColor={COLORS.gray_500} />
-              </View>
-
-
-              <View style={styles.Modal_assignment_submit.input_container}>
-                <TextInput
-                  style={styles.Modal_assignment_submit.input}
-                  placeholder='메일제목'
-                  placeholderTextColor={COLORS.gray_500} />
-              </View>
-
-              <View style={styles.Modal_assignment_submit.input_container}>
-                <TextInput
-                  style={styles.Modal_assignment_submit.input}
-                  placeholder='제출할 메일주소'
-                  placeholderTextColor={COLORS.gray_500} />
-              </View>
-
-              <View style={styles.Modal_assignment_submit.input_container}>
-                <TextInput
-                  style={{
-                    padding: 10,
-                    height: 120,
-                    fontSize: 15,
-                    borderWidth: 1,
-                    borderColor: COLORS.gray_480,
-                    width: '90%'
-                  }}
-                  multiline
-                  returnKeyType='done'
-                  numberOfLines={4}
-                  maxLength={100}
-                  placeholder='과제내용'
-                  placeholderTextColor={COLORS.gray_500} />
-              </View>
-
-              <View style={styles.Modal_assignment_submit.input_container}>
-                <TextInput
-                  style={styles.Modal_assignment_submit.input}
-                  placeholder='첨부파일 없음'
-                  placeholderTextColor={COLORS.gray_500} />
-              </View>
-            </>
-            :
-
-            <>
-              <View style={styles.Modal_assignment_submit.input_container}>
-                <TextInput
-                  style={styles.Modal_assignment_submit.input}
-                  placeholder='링크를 입력해주세요'
-                  placeholderTextColor={COLORS.gray_500} />
-              </View>
-
-              <View style={styles.Modal_assignment_submit.input_container}>
-                <TextInput
-                  style={styles.Modal_assignment_submit.input}
-                  placeholder='첨부파일 없음'
-                  placeholderTextColor={COLORS.gray_500} />
-              </View>
-            </>
-          }
-
-        </ScrollView>
-
-        <View style={styles.Modal_assignment_submit.cancel_button_container}>
-          <Button
-            title="저장하기"
-            on_press={() => set_assignment_submit_modal(false)}
-            style={styles.Modal_assignment_submit.btn_cancel} />
-        </View>
-      </View >
+        </View >
+      </KeyboardAvoidingView>
     );
   };
 
   return (
     <View>
-      <Date_time_picker />
       <View style={styles.assignment.container}>
         <View style={styles.assignment.title_container}>
           <CheckBox
@@ -249,10 +247,10 @@ const styles = StyleSheet.create({
     },
     content_container: {
       flex: 1,
-      // alignItems: 'center',
+      padding: 5
     },
     input_container: {
-      marginTop: 20,
+      marginTop: 22,
       alignItems: 'center'
     },
     input: {

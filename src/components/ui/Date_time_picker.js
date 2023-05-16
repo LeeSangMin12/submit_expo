@@ -1,106 +1,83 @@
+import React, { useState } from "react";
+import { View, Button, Text, Platform, Pressable, TextInput } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useState } from "react";
+import { Input } from '@rneui/themed';
 
-import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import COLORS from '@/shared/js/colors';
 
-export default function Date_time_picker() {
-  const [datePicker, setDatePicker] = useState(false);
-
+const Date_time_picker = () => {
   const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
 
-  const [timePicker, setTimePicker] = useState(false);
-
-  const [time, setTime] = useState(new Date(Date.now()));
-
-  function showDatePicker() {
-    setDatePicker(true);
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    if (Platform.OS === 'android') {
+      setShow(false);
+      // for iOS, add a button that closes the picker
+    }
+    setDate(currentDate);
+    setShow(false);
   };
 
-  function showTimePicker() {
-    setTimePicker(true);
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
   };
 
-  function onDateSelected(event, value) {
-    setDate(value);
-    setDatePicker(false);
+  const showDatepicker = () => {
+    showMode('date');
   };
 
-  function onTimeSelected(event, value) {
-    setTime(value);
-    setTimePicker(false);
+  const showTimepicker = () => {
+    showMode('time');
+  };
+
+  const get_date = (year, month, date) => {
+    const formatted_month = String(month).padStart(2, '0');
+    const formatted_date = String(date).padStart(2, '0');
+
+    return `${year}.${formatted_month}.${formatted_date}`;
+  };
+
+  const get_time = (hours, minutes) => {
+    const formatted_hours = String(hours).padStart(2, '0');
+    const formatted_minutes = String(minutes).padStart(2, '0');
+
+    return `${formatted_hours}:${formatted_minutes}`;
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styleSheet.MainContainer}>
+    <>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', }}>
 
-        <Text style={styleSheet.text}>Date = {date.toDateString()}</Text>
+        <Pressable style={{ flex: 1 }} onPress={showDatepicker}>
+          <Input
+            label='제출날짜'
+            value={get_date(date.getFullYear(), date.getMonth() + 1, date.getDate())}
+            disabled={true} />
+        </Pressable>
 
-        <Text style={styleSheet.text}>Time = {time.toLocaleTimeString('en-US')}</Text>
-
-        {datePicker && (
-          <DateTimePicker
-            value={date}
-            mode={'date'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={true}
-            onChange={onDateSelected}
-            style={styleSheet.datePicker}
-          />
-        )}
-
-        {timePicker && (
-          <DateTimePicker
-            value={time}
-            mode={'time'}
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            is24Hour={false}
-            onChange={onTimeSelected}
-            style={styleSheet.datePicker}
-          />
-        )}
-
-        {!datePicker && (
-          <View style={{ margin: 10 }}>
-            <Button title="Show Date Picker" color="green" onPress={showDatePicker} />
-          </View>
-        )}
-
-        {!timePicker && (
-          <View style={{ margin: 10 }}>
-            <Button title="Show Time Picker" color="green" onPress={showTimePicker} />
-          </View>
-        )}
-
+        <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
+          <Input
+            label='제출시간'
+            value={get_time(date.getHours(), date.getMinutes())}
+            disabled={true} />
+        </Pressable>
       </View>
-    </SafeAreaView>
+
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          display="default"
+          locale="ko"
+          onChange={onChange}
+        />
+      )}
+    </>
   );
-}
+};
 
-const styleSheet = StyleSheet.create({
-
-  MainContainer: {
-    flex: 1,
-    padding: 6,
-    alignItems: 'center',
-    backgroundColor: 'white'
-  },
-
-  text: {
-    fontSize: 25,
-    color: 'red',
-    padding: 3,
-    marginBottom: 10,
-    textAlign: 'center'
-  },
-
-  // Style for iOS ONLY...
-  datePicker: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    width: 320,
-    height: 260,
-    display: 'flex',
-  },
-
-});
+export default Date_time_picker;
