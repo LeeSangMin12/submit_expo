@@ -1,17 +1,37 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Pressable, } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
+import { useSelector } from 'react-redux';
 import { CheckBox } from '@rneui/themed';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
+import { set_store_info } from '@/shared/js/common';
 import { Chip, Custom_modal, Button, Date_time_picker } from '@/components/components';
 
 
 const Assignment_list = () => {
+  const {
+    attached_files,
+  } = useSelector((state) => state.assignment_submit);
+
   const [checked, setChecked] = useState(true);
   const [assignment_submit_modal, set_assignment_submit_modal] = useState(false);
   const [submit_way, set_submit_way] = useState('email');
   const toggle_checkbox = () => setChecked(!checked);
+
+  const selectFile = async () => {
+    try {
+      const file = await DocumentPicker.getDocumentAsync();
+      if (file.type === 'success') {
+        console.log('Selected file:', file.uri);
+        set_store_info('assignment_submit', 'attached_files', file.uri);
+        // 여기서 파일을 업로드하거나 처리합니다.
+      }
+    } catch (error) {
+      console.log('Error selecting file:', error);
+    }
+  };
 
   const Modal_assignment_submit = () => {
     return (
@@ -32,7 +52,7 @@ const Assignment_list = () => {
 
           <ScrollView style={styles.Modal_assignment_submit.content_container}>
 
-            <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 12, paddingHorizontal: 15 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 9, paddingHorizontal: 15 }}>
               <Chip
                 label="E-mail"
                 selected={submit_way === 'email'}
@@ -86,15 +106,22 @@ const Assignment_list = () => {
                     placeholderTextColor={COLORS.gray_500} />
                 </View>
 
-                <View style={styles.Modal_assignment_submit.input_container}>
-                  <TextInput
-                    style={styles.Modal_assignment_submit.input}
-                    placeholder='첨부파일 없음'
-                    placeholderTextColor={COLORS.gray_500} />
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 25, }}>
+                  <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Pressable style={{ flexDirection: 'row', }} onPress={selectFile}>
+                      <Fontisto name="link" size={20} color={COLORS.gray_500} />
+                      <Text style={{ color: COLORS.gray_500, marginLeft: 10 }}>{attached_files}</Text>
+                    </Pressable>
+                    <MaterialIcons
+                      name="cancel"
+                      size={27}
+                      color={COLORS.gray_500}
+                      onPress={() => { console.log('hi') }} />
+                  </View>
                 </View>
+
               </>
               :
-
               <>
                 <View style={styles.Modal_assignment_submit.input_container}>
                   <TextInput
@@ -103,11 +130,18 @@ const Assignment_list = () => {
                     placeholderTextColor={COLORS.gray_500} />
                 </View>
 
-                <View style={styles.Modal_assignment_submit.input_container}>
-                  <TextInput
-                    style={styles.Modal_assignment_submit.input}
-                    placeholder='첨부파일 없음'
-                    placeholderTextColor={COLORS.gray_500} />
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 25, }}>
+                  <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Pressable style={{ flexDirection: 'row', }} onPress={() => { console.log('hi') }}>
+                      <Fontisto name="link" size={20} color={COLORS.gray_500} />
+                      <Text style={{ color: COLORS.gray_500, marginLeft: 10 }}>첨부파일 없음</Text>
+                    </Pressable>
+                    <MaterialIcons
+                      name="cancel"
+                      size={27}
+                      color={COLORS.gray_500}
+                      onPress={() => { console.log('hi') }} />
+                  </View>
                 </View>
               </>
             }
@@ -123,7 +157,7 @@ const Assignment_list = () => {
 
 
         </View >
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView >
     );
   };
 
@@ -248,10 +282,10 @@ const styles = StyleSheet.create({
     },
     content_container: {
       flex: 1,
-      padding: 5
+      padding: 5,
     },
     input_container: {
-      marginTop: 22,
+      marginTop: 25,
       alignItems: 'center'
     },
     input: {
