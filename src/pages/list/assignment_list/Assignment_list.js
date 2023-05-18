@@ -15,7 +15,7 @@ const Assignment_list = () => {
 
   const Modal_assignment_submit = () => {
     return (
-      <KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior='position' contentContainerStyle={{ flex: 1 }} style={{ flex: 1, width: '100%' }}>
         <View style={styles.Modal_assignment_submit.container}>
 
           <View style={styles.Modal_assignment_submit.header_container}>
@@ -120,6 +120,8 @@ const Assignment_list = () => {
               on_press={() => set_assignment_submit_modal(false)}
               style={styles.Modal_assignment_submit.btn_cancel} />
           </View>
+
+
         </View >
       </KeyboardAvoidingView>
     );
@@ -238,7 +240,6 @@ const styles = StyleSheet.create({
     },
     header_container: {
       flexDirection: 'row',
-      // justifyContent: 'space-evenly',
       alignItems: 'center',
       paddingVertical: 15,
     },
