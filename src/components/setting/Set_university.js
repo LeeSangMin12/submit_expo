@@ -74,15 +74,15 @@ const Set_university = (props) => {
    * 현재 년도를 기반으로 입학년도 arr를 만듬
    */
   useState(() => {
-    let now_year = String(new Date().getFullYear()).slice(-2);
+    let now_year = String(new Date().getFullYear());
     let year_arr = [];
-    for (let i = Number(now_year); i >= 10; i--) {
+    for (let i = Number(now_year); i >= 2010; i--) {
       year_arr.push(i);
     }
-    const make_admission_year = year_arr.map((item) => {
+    const make_admission_year = year_arr.map((year) => {
       return {
-        label: `${item}학번`,
-        value: item
+        label: `${year}학번`,
+        value: year
       };
     });
     set_admission_year_arr([...make_admission_year]);

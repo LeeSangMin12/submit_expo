@@ -38,8 +38,6 @@ const Assignment_month_info = () => {
               color={COLORS.primary_500} />
           </View>
         </Pressable>
-
-
       </View>
 
       <View style={styles.content_container}>

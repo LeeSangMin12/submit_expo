@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Pressable, } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import * as DocumentPicker from 'expo-document-picker';
-import { useSelector } from 'react-redux';
 import { CheckBox } from '@rneui/themed';
 import { Ionicons, Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import { set_store_info } from '@/shared/js/common';
+import { add_attached_file, remove_attached_file } from '@/store/modules/assignment_submit_slice';
 import { Chip, Custom_modal, Button, Date_time_picker } from '@/components/components';
 
 
 const Assignment_list = () => {
+  const dispatch = useDispatch();
+
   const {
     attached_files,
   } = useSelector((state) => state.assignment_submit);
@@ -20,18 +22,28 @@ const Assignment_list = () => {
   const [submit_way, set_submit_way] = useState('email');
   const toggle_checkbox = () => setChecked(!checked);
 
-  const selectFile = async () => {
+  const select_file = async () => {
     try {
       const file = await DocumentPicker.getDocumentAsync();
       if (file.type === 'success') {
-        console.log('Selected file:', file.uri);
-        set_store_info('assignment_submit', 'attached_files', file.uri);
-        // 여기서 파일을 업로드하거나 처리합니다.
+        dispatch(add_attached_file({
+          name: file.name,
+          size: file.size,
+          uri: file.uri
+        }));
       }
     } catch (error) {
       console.log('Error selecting file:', error);
     }
   };
+
+  /**
+   * 선택된 파일 선택 해제
+   * @param {nul} file_num : 선택 해제할 파일 번호
+   */
+  const de_select_file = (file_num) => {
+    dispatch(remove_attached_file(file_num));
+  }
 
   const Modal_assignment_submit = () => {
     return (
@@ -77,14 +89,14 @@ const Assignment_list = () => {
                 <View style={{ alignItems: 'center' }}>
                   <TextInput
                     style={styles.Modal_assignment_submit.input}
-                    placeholder='메일제목'
+                    placeholder='제출할 메일주소'
                     placeholderTextColor={COLORS.gray_500} />
                 </View>
 
                 <View style={styles.Modal_assignment_submit.input_container}>
                   <TextInput
                     style={styles.Modal_assignment_submit.input}
-                    placeholder='제출할 메일주소'
+                    placeholder='메일 제목'
                     placeholderTextColor={COLORS.gray_500} />
                 </View>
 
@@ -108,7 +120,7 @@ const Assignment_list = () => {
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 25, }}>
                   <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Pressable style={{ flexDirection: 'row', }} onPress={selectFile}>
+                    <Pressable style={{ flexDirection: 'row', }} onPress={select_file}>
                       <Fontisto name="link" size={20} color={COLORS.gray_500} />
                       <Text style={{ color: COLORS.gray_500, marginLeft: 10 }}>{attached_files}</Text>
                     </Pressable>
@@ -130,18 +142,34 @@ const Assignment_list = () => {
                     placeholderTextColor={COLORS.gray_500} />
                 </View>
 
-                <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 25, }}>
-                  <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Pressable style={{ flexDirection: 'row', }} onPress={() => { console.log('hi') }}>
-                      <Fontisto name="link" size={20} color={COLORS.gray_500} />
-                      <Text style={{ color: COLORS.gray_500, marginLeft: 10 }}>첨부파일 없음</Text>
-                    </Pressable>
-                    <MaterialIcons
-                      name="cancel"
-                      size={27}
-                      color={COLORS.gray_500}
-                      onPress={() => { console.log('hi') }} />
+                <View style={{ marginTop: 30 }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 7, }}>
+                    <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Pressable style={{ flexDirection: 'row', }} onPress={select_file}>
+                        <Fontisto name="link" size={20} color={COLORS.gray_500} />
+                        <Text style={{ color: COLORS.gray_500, marginLeft: 10 }}>첨부파일 없음</Text>
+                      </Pressable>
+                    </View>
                   </View>
+                  {
+                    attached_files.map((val, idx) => {
+                      return (
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 7, }} key={idx}>
+                          <View style={{ width: '90%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Pressable style={{ flexDirection: 'row', }} >
+                              <Fontisto name="link" size={20} color={COLORS.primary_500} />
+                              <Text style={{ color: COLORS.black_500, marginLeft: 10, maxWidth: '80%', }} numberOfLines='1' >{val.name}</Text>
+                            </Pressable>
+                            <MaterialIcons
+                              name="cancel"
+                              size={26}
+                              color={COLORS.gray_500}
+                              onPress={() => de_select_file(idx)} />
+                          </View>
+                        </View>
+                      )
+                    })
+                  }
                 </View>
               </>
             }

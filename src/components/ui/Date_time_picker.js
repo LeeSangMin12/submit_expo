@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, Text, Platform, Pressable, TextInput } from "react-native";
+import { View, Platform, Pressable, TextInput } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Input } from '@rneui/themed';
 
@@ -55,14 +55,16 @@ const Date_time_picker = () => {
           <Input
             label='제출날짜'
             value={get_date(date.getFullYear(), date.getMonth() + 1, date.getDate())}
-            disabled={true} />
+            disabled={true}
+            disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
         </Pressable>
 
         <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
           <Input
             label='제출시간'
             value={get_time(date.getHours(), date.getMinutes())}
-            disabled={true} />
+            disabled={true}
+            disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
         </Pressable>
       </View>
 
