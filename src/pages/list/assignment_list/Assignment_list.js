@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Pressable, } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import * as DocumentPicker from 'expo-document-picker';
 import { CheckBox } from '@rneui/themed';
@@ -11,6 +12,7 @@ import { Chip, Custom_modal, Button, Date_time_picker } from '@/components/compo
 
 
 const Assignment_list = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const {
@@ -183,7 +185,6 @@ const Assignment_list = () => {
               style={styles.Modal_assignment_submit.btn_cancel} />
           </View>
 
-
         </View >
       </KeyboardAvoidingView >
     );
@@ -214,8 +215,6 @@ const Assignment_list = () => {
       </View>
       <View style={styles.divider} />
 
-
-
       <View style={styles.assignment.container}>
         <View style={styles.assignment.title_container}>
           <CheckBox
@@ -233,6 +232,7 @@ const Assignment_list = () => {
         <View style={styles.assignment.chip_container}>
           <Chip
             label="설정"
+            on_press={() => navigation.navigate('제출하기')}
             background_color={COLORS.primary_500} />
         </View>
       </View>

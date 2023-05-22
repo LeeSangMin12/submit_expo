@@ -18,6 +18,7 @@ import List_page from '@/pages/list/List_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
 import Edit_profile from '@/pages/my/user_card/edit_profile/Edit_profile.js'
+import Submit_assignment from '@/components/set_assignment/Submit_assignment.js'
 import Set_semester from '@/components/set_semester/Set_semester.js'
 import Add_semester from '@/components/set_semester/Add_semester.js'
 
@@ -143,6 +144,22 @@ const App = () => {
               />)}
           </Stack.Screen> */}
           <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="제출하기"
+            component={Submit_assignment}
+            options={({ navigation }) => ({
+              headerTitleAlign: 'center',
+              headerLeft: () => (
+                <Ionicons
+                  name="chevron-back"
+                  size={35}
+                  color="black"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />)
+            })}
+          />
           <Stack.Screen
             name="프로필 수정"
             component={Edit_profile}
