@@ -53,7 +53,7 @@ const Assignment_list = () => {
         <View style={styles.assignment.chip_container}>
           <Chip
             label="설정"
-            on_press={() => navigation.navigate('제출하기')}
+            on_press={() => navigation.navigate('과제 제출')}
             background_color={COLORS.primary_500} />
         </View>
       </View>

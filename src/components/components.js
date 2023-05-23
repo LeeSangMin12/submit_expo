@@ -10,6 +10,7 @@ import Drop_down from '@/components/ui/Drop_down';
 import Custom_modal from '@/components/ui/Custom_modal';
 import Date_time_picker from '@/components/ui/Date_time_picker';
 import File_select from '@/components/ui/File_select';
+import Alarm_select from '@/components/ui/Alarm_select';
 
 /**
  * setting
@@ -23,5 +24,6 @@ export {
   Drop_down,
   Custom_modal,
   Date_time_picker,
-  File_select
+  File_select,
+  Alarm_select
 };

@@ -5,7 +5,7 @@ import { Input } from '@rneui/themed';
 
 import COLORS from '@/shared/js/colors';
 
-const Date_time_picker = () => {
+const Date_time_picker = ({ date_title, time_title }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -53,7 +53,7 @@ const Date_time_picker = () => {
 
         <Pressable style={{ flex: 1 }} onPress={showDatepicker}>
           <Input
-            label='제출날짜'
+            label={date_title}
             value={get_date(date.getFullYear(), date.getMonth() + 1, date.getDate())}
             disabled={true}
             disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
@@ -61,7 +61,7 @@ const Date_time_picker = () => {
 
         <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
           <Input
-            label='제출시간'
+            label={time_title}
             value={get_time(date.getHours(), date.getMinutes())}
             disabled={true}
             disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />

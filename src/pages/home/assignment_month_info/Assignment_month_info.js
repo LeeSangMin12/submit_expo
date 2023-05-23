@@ -2,7 +2,7 @@ import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Fontisto } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
 import store from '@/store/store';
@@ -38,6 +38,12 @@ const Assignment_month_info = () => {
               color={COLORS.primary_500} />
           </View>
         </Pressable>
+
+        <Fontisto
+          onPress={() => navigation.navigate('과제 등록')}
+          name="plus-a"
+          size={24}
+          color={COLORS.gray_520} />
       </View>
 
       <View style={styles.content_container}>

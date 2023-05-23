@@ -18,9 +18,11 @@ import List_page from '@/pages/list/List_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
 import Edit_profile from '@/pages/my/user_card/edit_profile/Edit_profile.js'
+import Add_assignment from '@/components/set_assignment/Add_assignment.js'
 import Submit_assignment from '@/components/set_assignment/Submit_assignment.js'
 import Set_semester from '@/components/set_semester/Set_semester.js'
 import Add_semester from '@/components/set_semester/Add_semester.js'
+import Set_alarm from '@/components/setting/Set_alarm';
 
 import home_inactive from '@/assets/img/bottom_tab/home_inactive.png'
 import list_inactive from '@/assets/img/bottom_tab/list_inactive.png'
@@ -145,7 +147,55 @@ const App = () => {
           </Stack.Screen> */}
           <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
           <Stack.Screen
-            name="제출하기"
+            name="과제 등록"
+            component={Add_assignment}
+            options={({ navigation }) => ({
+              headerTitleAlign: 'center',
+              headerLeft: () => (
+                <Ionicons
+                  name="chevron-back"
+                  size={35}
+                  color="black"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />),
+              headerRight: () => (
+                <Design_chip
+                  title='완료'
+                  style={{
+                    paddingHorizontal: 14,
+                    paddingVertical: 9,
+                    borderRadius: 50,
+                  }} />)
+            })}
+          />
+          <Stack.Screen
+            name="과제 알림 설정"
+            component={Set_alarm}
+            options={({ navigation }) => ({
+              headerTitleAlign: 'center',
+              headerLeft: () => (
+                <Ionicons
+                  name="chevron-back"
+                  size={35}
+                  color="black"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />),
+              headerRight: () => (
+                <Design_chip
+                  title='완료'
+                  style={{
+                    paddingHorizontal: 14,
+                    paddingVertical: 9,
+                    borderRadius: 50,
+                  }} />)
+            })}
+          />
+          <Stack.Screen
+            name="과제 제출"
             component={Submit_assignment}
             options={({ navigation }) => ({
               headerTitleAlign: 'center',

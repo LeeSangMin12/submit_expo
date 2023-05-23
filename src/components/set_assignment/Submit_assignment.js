@@ -60,7 +60,9 @@ const Submit_assignment = () => {
         {submit_method === 'email' ?
           < >
             <View style={styles.input_container}>
-              <Date_time_picker />
+              <Date_time_picker
+                date_title='제출날짜'
+                time_title='제출시간' />
             </View>
 
             <View style={{ alignItems: 'center' }}>
@@ -88,6 +90,7 @@ const Submit_assignment = () => {
                   width: '100%'
                 }}
                 multiline
+                textAlignVertical="top"
                 numberOfLines={4}
                 maxLength={100}
                 placeholder='과제내용'

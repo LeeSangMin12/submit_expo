@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, Pressable, } from 'react-native';
 import { Fontisto, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
+import { useNavigation } from '@react-navigation/native';
 
 import COLORS from '@/shared/js/colors';
 
@@ -12,23 +13,25 @@ import COLORS from '@/shared/js/colors';
  * @param {function} de_select - file 선택 해제 이벤트
  * @param {obj} container_style - file container style
  */
-const File_select = ({
+const Alarm_select = ({
   file_name,
   file_list,
   select,
   de_select,
   container_style
 }) => {
+  const navigation = useNavigation();
 
-  const select_file = async () => {
-    try {
-      const file = await DocumentPicker.getDocumentAsync();
-      if (file.type === 'success') {
-        select(file_name, file);
-      }
-    } catch (error) {
-      console.log('Error selecting file:', error);
-    }
+  const open_alarm_set = async () => {
+    // try {
+    //   const file = await DocumentPicker.getDocumentAsync();
+    //   if (file.type === 'success') {
+    //     select(file_name, file);
+    //   }
+    // } catch (error) {
+    //   console.log('Error selecting file:', error);
+    // }
+    navigation.navigate('과제 알림 설정');
   };
 
   const de_select_file = (file_num) => {
@@ -37,13 +40,14 @@ const File_select = ({
 
   return (
     <>
-      <Pressable style={[styles.add_file.container, container_style]} onPress={select_file}>
+      <Pressable style={[styles.add_file.container, container_style]} onPress={open_alarm_set}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Fontisto
-            name="link"
-            size={20}
+          <Ionicons
+            name="alarm-outline"
+            size={24}
             color={COLORS.gray_500} />
-          <Text style={styles.add_file.title}>첨부파일 추가</Text>
+
+          <Text style={styles.add_file.title}>알림 추가</Text>
         </View>
 
         <Ionicons
@@ -51,7 +55,7 @@ const File_select = ({
           size={24}
           color={COLORS.gray_500} />
       </Pressable>
-      {
+      {/* {
         file_list.map((file, idx) => {
           return (
             <View style={styles.file_list.container} key={idx}>
@@ -68,12 +72,12 @@ const File_select = ({
             </View>
           )
         })
-      }
+      } */}
     </>
   );
 }
 
-export default File_select;
+export default Alarm_select;
 
 const styles = StyleSheet.create({
   add_file: {
@@ -85,9 +89,8 @@ const styles = StyleSheet.create({
     },
     title: {
       color: COLORS.gray_500,
-      marginLeft: 10,
+      marginLeft: 7,
       maxWidth: '80%',
-      fontSize: 14
     }
   },
   file_list: {
