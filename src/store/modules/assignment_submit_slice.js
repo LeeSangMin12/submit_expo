@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initial_state = {
-  attached_files: [],
+  email_attached_files: [],
+  lms_attached_files: [],
 };
 
 const assignment_submit_slice = createSlice({
@@ -16,17 +17,17 @@ const assignment_submit_slice = createSlice({
       };
     },
     add_attached_file: (state, actions) => {
-      const new_file = actions.payload;
+      const { method, new_file } = actions.payload;
       return {
         ...state,
-        attached_files: [...state.attached_files, new_file]
+        [method]: [...state[method], new_file]
       };
     },
     remove_attached_file: (state, actions) => {
-      const file_num = actions.payload;
+      const { method, file_num } = actions.payload;
       return {
         ...state,
-        attached_files: state.attached_files.filter((file, idx) => idx !== file_num)
+        [method]: state[method].filter((file, idx) => idx !== file_num)
       };
     }
   }

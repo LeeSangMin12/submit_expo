@@ -1,52 +1,37 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Pressable, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Fontisto, MaterialIcons } from '@expo/vector-icons';
+import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
 import { add_attached_file, remove_attached_file } from '@/store/modules/assignment_submit_slice';
-import { Chip, Button, Date_time_picker, File_select } from '@/components/components';
-
+import { Chip, Date_time_picker, File_select } from '@/components/components';
 
 const Submit_assignment = () => {
   const dispatch = useDispatch();
   const {
-    attached_files,
+    email_attached_files,
+    lms_attached_files
   } = useSelector((state) => state.assignment_submit);
-
-  console.log('attached_files', attached_files);
 
   const [submit_method, set_submit_method] = useState('email');
 
-  // const select_file = async () => {
-  //   try {
-  //     const file = await DocumentPicker.getDocumentAsync();
-  //     if (file.type === 'success') {
-  //       dispatch(add_attached_file({
-  //         name: file.name,
-  //         size: file.size,
-  //         uri: file.uri
-  //       }));
-  //     }
-  //   } catch (error) {
-  //     console.log('Error selecting file:', error);
-  //   }
-  // };
-
-  const select_file = async (file) => {
+  const select_file = async (file_name, file) => {
     dispatch(add_attached_file({
-      name: file.name,
-      size: file.size,
-      uri: file.uri
+      method: file_name,
+      new_file: {
+        name: file.name,
+        size: file.size,
+        uri: file.uri
+      }
     }));
   };
-  /**
-   * 선택된 파일 선택 해제
-   * @param {nul} file_num : 선택 해제할 파일 번호
-   */
-  const de_select_file = (file_num) => {
-    dispatch(remove_attached_file(file_num));
-  }
+
+  const de_select_File = (file_name, file_num) => {
+    dispatch(remove_attached_file({
+      method: file_name,
+      file_num
+    }));
+  };
 
   return (
     <KeyboardAvoidingView
@@ -109,6 +94,13 @@ const Submit_assignment = () => {
                 placeholderTextColor={COLORS.gray_500} />
             </View>
 
+            <File_select
+              file_name='email_attached_files'
+              file_list={email_attached_files}
+              select={select_file}
+              de_select={de_select_File}
+              container_style={{ marginTop: 30, marginBottom: 10 }}
+            />
           </>
           :
           <>
@@ -120,9 +112,11 @@ const Submit_assignment = () => {
             </View>
 
             <File_select
-              file_arr={attached_files}
+              file_name='lms_attached_files'
+              file_list={lms_attached_files}
               select={select_file}
-              de_select={de_select_file}
+              de_select={de_select_File}
+              container_style={{ marginTop: 30, marginBottom: 10 }}
             />
           </>
         }

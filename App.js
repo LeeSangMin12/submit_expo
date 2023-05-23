@@ -157,7 +157,15 @@ const App = () => {
                   onPress={() => {
                     navigation.goBack();
                   }}
-                />)
+                />),
+              headerRight: () => (
+                <Design_chip
+                  title='완료'
+                  style={{
+                    paddingHorizontal: 14,
+                    paddingVertical: 9,
+                    borderRadius: 50,
+                  }} />)
             })}
           />
           <Stack.Screen
