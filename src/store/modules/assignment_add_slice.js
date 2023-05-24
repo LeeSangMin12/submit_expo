@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initial_state = {
-  alarm_cycle
+  alarm_cycle: '',
+  alarm_period: '',
+  alarm_time: '',
 };
 
 const assignment_add_slice = createSlice({

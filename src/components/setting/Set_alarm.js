@@ -1,39 +1,30 @@
-import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
+import { useState, useRef } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable, Animated, ScrollView } from 'react-native';
 import { Fontisto, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
-import { Chip } from '@/components/components';
+import { Date_time_picker } from '@/components/components';
 import { set_store_info } from '@/shared/js/common';
 
+
 const Set_alarm = (props) => {
-  const { alarm_cycle } = useSelector(state => state.assignment_add);
+  const { alarm_cycle, alarm_period, alarm_time } = useSelector(state => state.assignment_add);
 
   const [select_cycle, set_select_cycle] = useState(false);
+  const [select_period, set_select_period] = useState(false);
+  const [select_time, set_select_time] = useState(false);
 
   return (
     <View style={{ flex: 1, padding: 15 }}>
-
-      {/* <View style={styles.input_container}>
-        <TextInput
-          value={props.name}
-          style={styles.input}
-          placeholder='주기를 선택해주세요'
-          onChangeText={(label) => set_store_info('user', 'name', label)} />
-
-        <Ionicons
-          name="alarm-outline"
-          size={24}
-          color={COLORS.gray_500} />
-      </View> */}
-
       {
         select_cycle === true ?
-          <View style={styles.cycle.container} >
+          <View style={styles.select_alarm.container} >
             <Pressable
-              style={styles.cycle.pressable_container}
-              onPress={() => { set_select_cycle(!select_cycle) }}>
+              style={styles.select_alarm.pressable_container}
+              onPress={() => {
+                set_select_cycle(!select_cycle)
+              }}>
               <TextInput
                 style={styles.input}
                 placeholder="몇일 주기로"
@@ -56,21 +47,22 @@ const Set_alarm = (props) => {
                       ? styles.cycle.select_cycle
                       : styles.cycle.unselect_cycle
                   }
-                  onPress={() => set_store_info('assignment_add', 'alarm_cycle', cycle_value)}
+                  onPress={() => {
+                    set_store_info('assignment_add', 'alarm_cycle', cycle_value)
+                    set_select_cycle(false)
+                  }}
                 >
                   <Text
                     style={
                       alarm_cycle === cycle_value
                         ? styles.cycle.select_cycle_text
-                        : null
-                    }
-                  >
+                        : null}>
                     {cycle_value}
                   </Text>
                 </Pressable>
               ))}
-
             </View>
+
           </View>
           :
           <Pressable
@@ -78,7 +70,7 @@ const Set_alarm = (props) => {
             onPress={() => { set_select_cycle(!select_cycle) }}>
             <TextInput
               style={styles.input}
-              placeholder="주기를 선택해주세요"
+              placeholder={alarm_cycle !== '' ? `${alarm_cycle}일 주기로` : '주기를 선택해주세요'}
               editable={false}
               pointerEvents="none"
             />
@@ -90,36 +82,97 @@ const Set_alarm = (props) => {
           </Pressable>
       }
 
+      {
+        select_period === true ?
+          <View style={styles.select_alarm.container} >
+            <Pressable
+              style={styles.select_alarm.pressable_container}
+              onPress={() => {
+                set_select_period(!select_period)
+              }}>
+              <TextInput
+                style={styles.input}
+                placeholder="몇일전부터"
+                editable={false}
+                pointerEvents="none" />
 
-      <View style={styles.input_container}>
-        <TextInput
-          style={styles.input}
-          placeholder="기간을 선택해주세요"
-          editable={false}
-          value={props.nickname}
-          onChangeText={(label) => set_store_info('user', 'nickname', label)}
-        />
+              <Ionicons
+                name="chevron-up"
+                size={24}
+                color="black" />
+            </Pressable>
 
-        <Ionicons
-          name="chevron-down"
-          size={24}
-          color="black" />
-      </View>
+            <View style={styles.time.content_container}>
+              <ScrollView >
+                <Date_time_picker
+                  picker_mode='time'
+                  time_title='등록날짜' />
+              </ScrollView>
+            </View>
+          </View>
+          :
+          <Pressable
+            style={styles.input_container}
+            onPress={() => { set_select_period(!select_period) }}>
+            <TextInput
+              style={styles.input}
+              placeholder="기간을 선택해주세요"
+              editable={false}
+              pointerEvents="none"
+            />
 
-      <View style={styles.input_container}>
-        <TextInput
-          style={styles.input}
-          placeholder="시간을 선택해주세요"
-          editable={false}
-          value={props.nickname}
-          onChangeText={(label) => set_store_info('user', 'nickname', label)}
-        />
+            <Ionicons
+              name="chevron-down"
+              size={24}
+              color="black" />
+          </Pressable>
+      }
 
-        <Ionicons
-          name="chevron-down"
-          size={24}
-          color="black" />
-      </View>
+      {
+        select_time === true ?
+          <View style={styles.select_alarm.container} >
+            <Pressable
+              style={styles.select_alarm.pressable_container}
+              onPress={() => {
+                set_select_time(!select_time)
+              }}>
+              <TextInput
+                style={styles.input}
+                placeholder="몇시에"
+                editable={false}
+                pointerEvents="none" />
+
+              <Ionicons
+                name="chevron-up"
+                size={24}
+                color="black" />
+            </Pressable>
+
+            <View style={styles.time.content_container}>
+              {/* <ScrollView > */}
+              <Date_time_picker
+                picker_mode='time'
+                time_title='등록시간' />
+              {/* </ScrollView> */}
+            </View>
+          </View>
+          :
+          <Pressable
+            style={styles.input_container}
+            onPress={() => { set_select_time(!select_time) }}>
+            <TextInput
+              style={styles.input}
+              placeholder="시간을 선택해주세요"
+              editable={false}
+              pointerEvents="none"
+            />
+
+            <Ionicons
+              name="chevron-down"
+              size={24}
+              color="black" />
+          </Pressable>
+      }
 
     </View >
   );
@@ -143,10 +196,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     paddingHorizontal: 3,
   },
-  chip_container: {
-    flexDirection: 'row',
-  },
-  cycle: {
+  select_alarm: {
     container: {
       marginBottom: 20,
       borderWidth: 1,
@@ -159,19 +209,12 @@ const styles = StyleSheet.create({
       backgroundColor: COLORS.gray_480,
       paddingHorizontal: 12,
     },
+  },
+  cycle: {
     content_container: {
       flexDirection: 'row',
       justifyContent: 'space-around',
       padding: 10
-    },
-    unselect_cycle: {
-      width: 35,
-      height: 35,
-      borderRadius: 50,
-      backgroundColor: COLORS.gray_470_bg,
-      position: 'relative',
-      justifyContent: 'center',
-      alignItems: 'center',
     },
     select_cycle: {
       width: 35,
@@ -184,6 +227,21 @@ const styles = StyleSheet.create({
     },
     select_cycle_text: {
       color: COLORS.white
-    }
+    },
+    unselect_cycle: {
+      width: 35,
+      height: 35,
+      borderRadius: 50,
+      backgroundColor: COLORS.gray_470_bg,
+      position: 'relative',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  },
+  time: {
+    content_container: {
+      marginTop: 10,
+      padding: 10,
+    },
   }
 });

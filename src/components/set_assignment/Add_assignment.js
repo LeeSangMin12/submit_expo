@@ -50,6 +50,7 @@ const Add_assignment = () => {
 
         <View style={styles.input_container}>
           <Date_time_picker
+            picker_mode='date_time'
             date_title='등록날짜'
             time_title='등록시간' />
         </View>

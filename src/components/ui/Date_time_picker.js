@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import { View, Platform, Pressable, TextInput } from "react-native";
+import { View, Platform, Pressable, Text } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Input } from '@rneui/themed';
 
 import COLORS from '@/shared/js/colors';
 
-const Date_time_picker = ({ date_title, time_title }) => {
+/**
+ * : 무조건 scrollview로 감싸야됨(날짜, 시간 설정시 설정하는 input창이 나와야 하므로)
+ * @param {*} param0 
+ * @returns 
+ */
+const Date_time_picker = ({ picker_mode, date_title, time_title }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -17,7 +23,6 @@ const Date_time_picker = ({ date_title, time_title }) => {
       // for iOS, add a button that closes the picker
     }
     setDate(currentDate);
-    setShow(false);
   };
 
   const showMode = (currentMode) => {
@@ -49,34 +54,54 @@ const Date_time_picker = ({ date_title, time_title }) => {
 
   return (
     <>
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', }}>
+      <View style={{ flexDirection: 'row' }}>
+        {
+          picker_mode === 'date_time' ?
+            <>
+              <Pressable style={{ flex: 1 }} onPress={showDatepicker}>
+                <Input
+                  label={date_title}
+                  value={get_date(date.getFullYear(), date.getMonth() + 1, date.getDate())}
+                  disabled={true}
+                  disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
+              </Pressable>
 
-        <Pressable style={{ flex: 1 }} onPress={showDatepicker}>
-          <Input
-            label={date_title}
-            value={get_date(date.getFullYear(), date.getMonth() + 1, date.getDate())}
-            disabled={true}
-            disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
-        </Pressable>
-
-        <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
-          <Input
-            label={time_title}
-            value={get_time(date.getHours(), date.getMinutes())}
-            disabled={true}
-            disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
-        </Pressable>
+              <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
+                <Input
+                  label={time_title}
+                  value={get_time(date.getHours(), date.getMinutes())}
+                  disabled={true}
+                  disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
+              </Pressable>
+            </>
+            :
+            <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
+              <Input
+                label={time_title}
+                value={get_time(date.getHours(), date.getMinutes())}
+                disabled={true}
+                disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
+            </Pressable>
+        }
       </View>
 
       {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          display="default"
-          locale="ko"
-          onChange={onChange}
-        />
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            display="default"
+            locale="ko"
+            onChange={onChange}
+          />
+          <MaterialIcons
+            style={{ marginLeft: 10 }}
+            name="cancel"
+            size={26}
+            color={COLORS.gray_500}
+            onPress={() => setShow(false)} />
+        </View>
       )}
     </>
   );
