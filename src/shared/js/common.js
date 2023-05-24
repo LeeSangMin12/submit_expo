@@ -1,5 +1,6 @@
 import { set_user } from '@/store/modules/user_slice';
 import { set_calendar } from '@/store/modules/calendar_slice';
+import { set_assignment_add } from '@/store/modules/assignment_add_slice';
 import { set_assignment_submit } from '@/store/modules/assignment_submit_slice';
 import store from '@/store/store';
 
@@ -13,6 +14,7 @@ export const set_store_info = (store_name, key, value) => {
   const set_store_map_obj = {
     user: set_user,
     calendar: set_calendar,
+    assignment_add: set_assignment_add,
     assignment_submit: set_assignment_submit
   };
 
