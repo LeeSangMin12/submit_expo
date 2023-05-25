@@ -1,64 +1,30 @@
-import { View, Text } from 'react-native';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { Ionicons } from '@expo/vector-icons';
-
-LocaleConfig.locales['ko'] = {
-  monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-  monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-  dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-  today: '오늘',
-};
-LocaleConfig.defaultLocale = 'ko';
+import React, { useState } from 'react';
+import { Calendar } from 'react-native-calendars';
 
 const Calendar_mini = () => {
-  const renderCustomHeader = () => {
-    const renderArrow = (direction) => {
-      const text = direction === 'left' ? '<' : '>';
-      return (
-        <Text>{text}</Text>
-      );
-    };
+  const [selectedDates, setSelectedDates] = useState({});
 
-    return (
-      <View style={styles.headerContainer}>
-        {renderArrow('left')}
-        <Text style={styles.headerText}>Custom Header</Text>
-        {renderArrow('right')}
-      </View>
-    );
-  };
+  const onDayPress = (day) => {
+    const { dateString } = day;
+    const updatedDates = { ...selectedDates };
 
+    if (updatedDates[dateString]) {
+      // 이미 선택한 날짜를 클릭한 경우 선택 해제
+      delete updatedDates[dateString];
+    } else {
+      // 새로운 날짜를 선택한 경우 기간 선택
+      updatedDates[dateString] = { startingDay: true, endingDay: true };
+    }
 
-  const render_header = (date) => {
-    const header_text = `${date.toString('yyyy년')} ${date.toString('MMMM')}`;
-
-    return <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{header_text}</Text>;
+    setSelectedDates(updatedDates);
   };
 
   return (
     <Calendar
-      renderHeader={renderCustomHeader}
-      enableSwipeMonths={true}
-      minDate={'2023-05-10'}
-      maxDate={'2023-05-25'}
+      onDayPress={onDayPress}
+      markedDates={selectedDates}
     />
   );
-};
-
-const styles = {
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: 'lightgray',
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
 };
 
 export default Calendar_mini;

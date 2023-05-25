@@ -163,7 +163,7 @@ const App = () => {
               headerRight: () => (
                 <Design_chip
                   title='완료'
-                  style={{
+                  container_style={{
                     paddingHorizontal: 14,
                     paddingVertical: 9,
                     borderRadius: 50,
@@ -187,7 +187,7 @@ const App = () => {
               headerRight: () => (
                 <Design_chip
                   title='완료'
-                  style={{
+                  container_style={{
                     paddingHorizontal: 14,
                     paddingVertical: 9,
                     borderRadius: 50,
@@ -211,7 +211,7 @@ const App = () => {
               headerRight: () => (
                 <Design_chip
                   title='완료'
-                  style={{
+                  container_style={{
                     paddingHorizontal: 14,
                     paddingVertical: 9,
                     borderRadius: 50,
@@ -280,7 +280,7 @@ const App = () => {
               headerRight: () => (
                 <Design_chip
                   title='완료'
-                  style={{
+                  container_style={{
                     paddingHorizontal: 14,
                     paddingVertical: 9,
                     borderRadius: 50,

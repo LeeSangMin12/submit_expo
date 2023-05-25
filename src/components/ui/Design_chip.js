@@ -16,7 +16,7 @@ const text_color_map = {
 const Design_chip = ({
   title = '',
   background_color = COLORS.primary_490,
-  style = {},
+  container_style = {},
 }) => {
 
   const text_color = text_color_map[background_color] || 'black';
@@ -25,7 +25,7 @@ const Design_chip = ({
     <View style={[
       styles.chip,
       { backgroundColor: background_color },
-      style]}>
+      container_style]}>
       <Text style={[styles.text_chip, { color: text_color }]}>{title}</Text>
     </View>
   );

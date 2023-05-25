@@ -22,7 +22,7 @@ const User_card = () => {
           <View style={styles.text_container}>
             <Design_chip
               title='경영학과'
-              style={{ marginRight: 5 }} />
+              container_style={{ marginRight: 5 }} />
 
             <Design_chip
               title='19학번'

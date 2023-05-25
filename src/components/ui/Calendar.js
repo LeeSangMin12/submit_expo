@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { useEffect } from "react";
 import { useSelector } from 'react-redux';
 
-import Button from "./Button";
+import Design_chip from "./Design_chip";
 import COLORS from "@/shared/js/colors";
 
 const window_width = Dimensions.get('window').width;
@@ -74,6 +74,7 @@ const render_calender = (year, month) => {
       <View style={container_style} key={i}>
         {is_today && <View style={styles.today_circle} />}
         <Text style={text_style}>{date}</Text>
+        <Design_chip title='국어' />
       </View>
     );
   })

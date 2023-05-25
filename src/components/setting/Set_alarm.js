@@ -38,7 +38,7 @@ const Set_alarm = (props) => {
 
             <View style={styles.cycle.content_container}>
 
-              {['7', '6', '5', '4', '3', '2', '1'].map((cycle_value) => (
+              {['1', '2', '3', '4', '5', '6', '7'].map((cycle_value) => (
                 <Pressable
                   key={cycle_value}
                   style={
