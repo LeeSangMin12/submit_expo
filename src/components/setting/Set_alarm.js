@@ -1,12 +1,11 @@
 import { useState, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, Animated, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, Animated, ScrollView, TouchableOpacity } from 'react-native';
 import { Fontisto, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
-import { Date_time_picker } from '@/components/components';
+import { Date_time_picker, Calendar_mini } from '@/components/components';
 import { set_store_info } from '@/shared/js/common';
-
 
 const Set_alarm = (props) => {
   const { alarm_cycle, alarm_period, alarm_time } = useSelector(state => state.assignment_add);
@@ -49,7 +48,6 @@ const Set_alarm = (props) => {
                   }
                   onPress={() => {
                     set_store_info('assignment_add', 'alarm_cycle', cycle_value)
-                    set_select_cycle(false)
                   }}
                 >
                   <Text
@@ -103,11 +101,12 @@ const Set_alarm = (props) => {
             </Pressable>
 
             <View style={styles.time.content_container}>
-              <ScrollView >
-                <Date_time_picker
-                  picker_mode='time'
-                  time_title='등록날짜' />
-              </ScrollView>
+              <View style={{ flexDirection: 'row', padding: 10 }}>
+                <Text>과제 제출일</Text>
+              </View>
+
+
+              <Calendar_mini />
             </View>
           </View>
           :
@@ -149,11 +148,9 @@ const Set_alarm = (props) => {
             </Pressable>
 
             <View style={styles.time.content_container}>
-              {/* <ScrollView > */}
               <Date_time_picker
                 picker_mode='time'
                 time_title='등록시간' />
-              {/* </ScrollView> */}
             </View>
           </View>
           :
@@ -237,6 +234,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
     },
+  },
+  calendar: {
+
   },
   time: {
     content_container: {
