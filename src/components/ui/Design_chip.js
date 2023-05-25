@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, } from "react-native";
 import COLORS from '@/shared/js/colors';
 
 const text_color_map = {
+  [COLORS.primary_500]: COLORS.white,
   [COLORS.primary_490]: COLORS.primary_500,
   [COLORS.gray_470_bg]: COLORS.gray_500
 };
@@ -17,6 +18,7 @@ const Design_chip = ({
   title = '',
   background_color = COLORS.primary_490,
   container_style = {},
+  title_style = {}
 }) => {
 
   const text_color = text_color_map[background_color] || 'black';
@@ -26,7 +28,7 @@ const Design_chip = ({
       styles.chip,
       { backgroundColor: background_color },
       container_style]}>
-      <Text style={[styles.text_chip, { color: text_color }]}>{title}</Text>
+      <Text numberOfLines={1} style={[styles.text_chip, { color: text_color }, title_style]}>{title}</Text>
     </View>
   );
 };
