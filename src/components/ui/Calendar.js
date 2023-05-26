@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, Pressable, ScrollView } from "react-native";
 import { useSelector } from 'react-redux';
+import { Feather, Fontisto } from '@expo/vector-icons';
+import { CheckBox } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
 
-import Assignment_list from "@/pages/list/assignment_list/Assignment_list";
 import Design_chip from "./Design_chip";
 import Custom_modal from "./Custom_modal";
+import Chip from "./Chip";
 import COLORS from "@/shared/js/colors";
 
 const window_width = Dimensions.get('window').width;
 const date_width = window_width / 7;  //7일에 대한 백분율 (100 / 7)
 
-
-
-
 /**
  * 캘린더 그리기
  */
-const render_calender = (year, month, set_assignment_list_modal) => {
+const render_calender = (year, month, open_assignment_list_modal) => {
   const date = new Date(year, month - 1);
 
   const view_year = date.getFullYear();
@@ -56,6 +56,22 @@ const render_calender = (year, month, set_assignment_list_modal) => {
   const today = new Date();
 
   const rendered_dates = dates.map((date, i) => {
+    const designed_chip_arr = [{
+      title: '국어',
+      backgorund_color: COLORS.primary_500
+    },
+    {
+      title: '과제1',
+      backgorund_color: COLORS.primary_500
+    },
+    {
+      title: '과제2',
+      backgorund_color: COLORS.primary_500
+    },
+    {
+      title: '과제3',
+      backgorund_color: COLORS.primary_500
+    }]
 
     const is_today =
       view_year === today.getFullYear() &&
@@ -73,44 +89,22 @@ const render_calender = (year, month, set_assignment_list_modal) => {
     }
 
     return (
-      <Pressable style={container_style} key={i} onPress={() => set_assignment_list_modal(true)}>
+      <Pressable style={container_style} key={i} onPress={() => open_assignment_list_modal(date)}>
         {is_today && <View style={styles.today_circle} />}
         <Text style={text_style}>{date}</Text>
-        <Design_chip
-          title='국어'
-          background_color={COLORS.primary_500}
-          container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
-          title_style={{ fontSize: 11, }} />
 
-        <Design_chip
-          title='국어'
-          background_color={COLORS.primary_500}
-          container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
-          title_style={{ fontSize: 11, }} />
-
-        <Design_chip
-          title='국어'
-          background_color={COLORS.primary_500}
-          container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
-          title_style={{ fontSize: 11, }} />
-
-        <Design_chip
-          title='국어'
-          background_color={COLORS.primary_500}
-          container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
-          title_style={{ fontSize: 11, }} />
-
-        <Design_chip
-          title='국어'
-          background_color={COLORS.primary_500}
-          container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
-          title_style={{ fontSize: 11, }} />
-
-        <Design_chip
-          title='국어'
-          background_color={COLORS.primary_500}
-          container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
-          title_style={{ fontSize: 11, }} />
+        {
+          designed_chip_arr.map((val, idx) => {
+            return (
+              <Design_chip
+                key={idx}
+                title={val.title}
+                background_color={val.backgorund_color}
+                container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
+                title_style={{ fontSize: 11, }} />
+            )
+          })
+        }
 
       </Pressable>
     );
@@ -119,22 +113,69 @@ const render_calender = (year, month, set_assignment_list_modal) => {
 };
 
 const Calendar = () => {
+  const navigation = useNavigation();
   const {
     year,
     month,
   } = useSelector((state) => state.calendar);
 
+
+  const [checked, setChecked] = useState(true);
+  const [selected_date, set_selected_date] = useState('');
   const [assignment_list_modal, set_assignment_list_modal] = useState(false);
+
+  const toggle_checkbox = () => setChecked(!checked);
+
+  const open_assignment_list_modal = (date) => {
+    set_assignment_list_modal(true);
+    set_selected_date(date)
+  };
 
   const Modal_assignment_list = () => {
     return (
       <ScrollView style={{ width: '100%' }}>
-        <Assignment_list />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 15, alignItems: 'center' }}>
+          <Text >
+            <Feather
+              name="x"
+              size={24}
+              color="black"
+              onPress={() => set_assignment_list_modal(false)} />
+          </Text>
+          <Text style={{ fontSize: 16 }}>{month}월 {selected_date}일</Text>
+          <Text >
+            <Fontisto
+              name="plus-a"
+              size={24}
+              color={COLORS.primary_500}
+              onPress={() => {
+                navigation.navigate('시간표 목록')
+              }} />
+          </Text>
+        </View>
 
-        <Pressable onPress={() => set_assignment_list_modal(false)}>
-          <Text>앤냉</Text>
+        <View style={styles.assignment.container}>
+          <View style={styles.assignment.title_container}>
+            <CheckBox
+              checked={checked}
+              onPress={toggle_checkbox}
+              iconType="material-community"
+              checkedIcon="checkbox-outline"
+              uncheckedIcon={'checkbox-blank-outline'}
+              size={34}
+              title='경영학개론'
+              textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
+              checkedColor={COLORS.primary_500}
+            />
+          </View>
+          <View style={styles.assignment.chip_container}>
+            <Chip
+              label="완료"
+              background_color={COLORS.gray_470_bg} />
+          </View>
+        </View>
+        <View style={styles.divider} />
 
-        </Pressable>
       </ScrollView>
     );
   };
@@ -151,7 +192,7 @@ const Calendar = () => {
         <Text style={[styles.day, { color: 'blue' }]}>토</Text>
       </View>
       <View style={styles.dates_container}>
-        {render_calender(year, month, set_assignment_list_modal)}
+        {render_calender(year, month, open_assignment_list_modal)}
       </View>
 
       <Custom_modal
@@ -207,5 +248,29 @@ const styles = StyleSheet.create({
     left: (date_width - 19) / 2,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  Modal_assignment_list: {
+
+  },
+  assignment: {
+    container: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 2
+    },
+    title_container: {
+      flexDirection: 'row'
+    },
+    checkbox: {
+      fontSize: 16,
+    },
+    chip_container: {
+      marginRight: 15
+    }
+  },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.gray_490_inactive
   },
 });

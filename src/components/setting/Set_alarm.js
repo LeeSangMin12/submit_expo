@@ -102,8 +102,13 @@ const Set_alarm = (props) => {
 
             <View style={styles.time.content_container}>
               <View style={{ flexDirection: 'row', padding: 10 }}>
-                <Text>과제 제출일</Text>
+                <Text>알림 시작일</Text>
               </View>
+
+              <View style={{ flexDirection: 'row', padding: 10 }}>
+                <Text>과제 등록일</Text>
+              </View>
+
 
 
               <Calendar_mini />

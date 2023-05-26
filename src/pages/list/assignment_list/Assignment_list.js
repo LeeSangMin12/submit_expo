@@ -22,7 +22,7 @@ const Assignment_list = () => {
             iconType="material-community"
             checkedIcon="checkbox-outline"
             uncheckedIcon={'checkbox-blank-outline'}
-            size={36}
+            size={34}
             title='경영학개론'
             textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
             checkedColor={COLORS.primary_500}
@@ -44,7 +44,7 @@ const Assignment_list = () => {
             iconType="material-community"
             checkedIcon="checkbox-outline"
             uncheckedIcon={'checkbox-blank-outline'}
-            size={36}
+            size={34}
             title='네크워크'
             textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
             checkedColor={COLORS.primary_500}
@@ -67,7 +67,7 @@ const Assignment_list = () => {
             iconType="material-community"
             checkedIcon="checkbox-outline"
             uncheckedIcon={'checkbox-blank-outline'}
-            size={36}
+            size={34}
             title='간호 심리학'
             textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
             checkedColor={COLORS.primary_500}
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row'
     },
     checkbox: {
-      fontSize: 17,
+      fontSize: 16,
     },
     chip_container: {
       marginRight: 15

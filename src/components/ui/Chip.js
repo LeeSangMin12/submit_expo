@@ -24,6 +24,7 @@ const Chip = ({
   selected = false,
   background_color = COLORS.white,
   selected_background_color = COLORS.primary_500,
+  container_style = {},
   on_press }) => {
 
   const chip_style = [
@@ -42,7 +43,7 @@ const Chip = ({
   return (
     <TouchableOpacity
       onPress={on_press}
-      style={chip_style}
+      style={[chip_style, container_style]}
     >
       <Text style={label_style}>{label}</Text>
     </TouchableOpacity>
