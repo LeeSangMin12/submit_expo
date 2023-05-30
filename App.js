@@ -1,3 +1,6 @@
+//155502759784-dd6blvf1to4thrtnol1qhd5q567b0n1o.apps.googleusercontent.com - ios
+//155502759784-3cmortjrsecugber03afvnana9arlgl2.apps.googleusercontent.com - android
+
 import { useState } from 'react';
 import { Text, View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -6,6 +9,8 @@ import { Provider } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { Fontisto } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { initializeApp } from "firebase/app";
+
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
 import COLORS from '@/shared/js/colors';
@@ -34,6 +39,18 @@ import community_active from '@/assets/img/bottom_tab/community_active.png'
 import my_active from '@/assets/img/bottom_tab/my_active.png'
 
 import success_check from '@/assets/img/icon/success_check.png'
+
+const firebaseConfig = {
+  apiKey: "AIzaSyALdHHjwbdCeG3f991AKTmDK9RFoW92bAM",
+  authDomain: "submit-75715.firebaseapp.com",
+  projectId: "submit-75715",
+  storageBucket: "submit-75715.appspot.com",
+  messagingSenderId: "838876333900",
+  appId: "1:838876333900:web:b172ecdb032ee81e35b1e9",
+  measurementId: "G-M9KKYZ1YV7"
+};
+
+const app = initializeApp(firebaseConfig);
 
 const Stack = createNativeStackNavigator();
 const Bottom_tab = createBottomTabNavigator();
@@ -120,8 +137,8 @@ const App = () => {
           },
         }}>
         <Stack.Navigator>
-          {/* <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} /> */}
-          {/* <Stack.Screen
+          <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
+          <Stack.Screen
             name="회원가입"
             options={({ navigation }) => ({
               headerTitleAlign: 'center',
@@ -144,7 +161,7 @@ const App = () => {
                 page_count={page_count}
                 set_page_count={set_page_count}
               />)}
-          </Stack.Screen> */}
+          </Stack.Screen>
           <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
           <Stack.Screen
             name="과제 등록"
