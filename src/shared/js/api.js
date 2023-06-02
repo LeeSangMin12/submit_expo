@@ -1,14 +1,19 @@
 import axios from "axios";
+import Constants from 'expo-constants'
 import { SERVER_URL } from "@/config/config.js"
+
+const { manifest } = Constants;
 
 const api = axios.create({
   baseURL: SERVER_URL,
+  responseType: 'json',
+  withCredentials: true,
 });
 
 /**
  * 로그인 
  */
-const exec_login = async (req_obj) => {
+export const exec_login = async (req_obj) => {
   const { url, ...data } = req_obj;
 
   const body = {
@@ -16,26 +21,27 @@ const exec_login = async (req_obj) => {
   };
 
   try {
-    const response = await api.post(SERVER_URL + `/${url}`, JSON.stringify(body), {
+    const response = await api.post(`${SERVER_URL}/${url}`, JSON.stringify(body), {
       headers: {
         "Content-Type": "application/json"
       },
     });
+    console.log('response', response.data);
 
-    const result = response.data;
+    // const result = response.data;
 
-    sessionStorage.setItem("token", result.token);
+    // sessionStorage.setItem("token", result.token);
 
-    if (result.registered === "false") {
-      navigate("/setting")
-    } else {
-      navigate("/home");
-    }
+    // if (result.registered === "false") {
+    //   navigate("/setting")
+    // } else {
+    //   navigate("/home");
+    // }
 
-    return result;
+    // return result;
   } catch (xhr) {
-    console.error("request 에러:", xhr);
-    console.error(req_obj.p_nm + " 에러");
+    console.error('request 에러:', xhr);
+    console.error(req_obj.url + ' 에러');
     return null;
   }
 }
@@ -70,7 +76,3 @@ const exec_login = async (req_obj) => {
 //     return null;
 //   };
 // }
-
-export {
-  exec_login
-}
