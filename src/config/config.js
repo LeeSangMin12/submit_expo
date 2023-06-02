@@ -19,4 +19,9 @@ export const GOOGLE_AUTH_URL = {
   androidClientId: '155502759784-3cmortjrsecugber03afvnana9arlgl2.apps.googleusercontent.com',
   iosClientId: '155502759784-dd6blvf1to4thrtnol1qhd5q567b0n1o.apps.googleusercontent.com',
   scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'https://mail.google.com/'],
+  responseType: "code",
+  shouldAutoExchangeCode: false,
+  extraParams: {
+    access_type: "offline"
+  },
 };
