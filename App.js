@@ -1,6 +1,3 @@
-//155502759784-dd6blvf1to4thrtnol1qhd5q567b0n1o.apps.googleusercontent.com - ios
-//155502759784-3cmortjrsecugber03afvnana9arlgl2.apps.googleusercontent.com - android
-
 import { useState } from 'react';
 import { Text, View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
