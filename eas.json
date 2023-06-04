@@ -5,13 +5,11 @@
   "build": {
     "development": {
       "distribution": "internal",
-      "developmentClient": true,
       "android": {
         "gradleCommand": ":app:assembleDebug"
       },
       "ios": {
-        "simulator": true
-        // "buildConfiguration": "Debug"
+        "buildConfiguration": "Debug"
       }
     },
     "preview": {
@@ -23,27 +21,3 @@
     "production": {}
   }
 }
-
-// {
-//   "cli": {
-//     "version": ">= 3.13.2"
-//   },
-//   "build": {
-//     "development": {
-//       "developmentClient": true,
-//       "distribution": "internal",
-//       "android": {
-//         "gradleCommand": ":app:assembleDebug"
-//       },
-//       "ios": {
-//         "simulator": true
-//       }
-//     },
-//     "preview": {
-//       "distribution": "internal"
-//     }
-//   },
-//   "submit": {
-//     "production": {}
-//   }
-// }
