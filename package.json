@@ -32,7 +32,6 @@
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "expo-web-browser": "~12.0.0",
-    "firebase": "^9.22.1",
     "react": "18.1.0",
     "react-native": "0.70.8",
     "react-native-autocomplete-dropdown": "^2.1.0",
