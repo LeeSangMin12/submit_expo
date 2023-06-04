@@ -21,6 +21,7 @@ export const GOOGLE_AUTH_URL = {
   scopes: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile', 'https://mail.google.com/'],
   responseType: "code",
   shouldAutoExchangeCode: false,
+  prompt: 'consent',
   extraParams: {
     access_type: "offline"
   },

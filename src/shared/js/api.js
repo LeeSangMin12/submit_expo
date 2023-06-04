@@ -26,6 +26,7 @@ export const exec_login = async (req_obj) => {
         "Content-Type": "application/json"
       },
     });
+
     console.log('response', response.data);
 
     // const result = response.data;

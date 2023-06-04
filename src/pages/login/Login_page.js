@@ -9,28 +9,23 @@ import { GOOGLE_AUTH_URL } from '@/config/config.js';
 import On_boarding from "@/pages/login/onboarding/Onboarding";
 import btn_google_login from "@/assets/img/login/btn_google_login.png"
 
-// WebBrowser.maybeCompleteAuthSession();
-
-const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth'; // 외부 서비스의 인증 URL
-const clientId = '155502759784-acllog24skbdl2ml05vldv38844muegm.apps.googleusercontent.com'; // 외부 서비스에서 발급한 클라이언트 ID
-
-const redirectUri = AuthSession.makeRedirectUri();
+WebBrowser.maybeCompleteAuthSession();
 
 const Login_page = () => {
   const [request, response, prompt_async] = Google.useAuthRequest(GOOGLE_AUTH_URL);
 
   useEffect(() => {
     if (response?.type === 'success') {
-      console.log('response', response)
-      // const access_token = response.authentication.accessToken;
-      // api_login_google(access_token);
+      const authorization_code = response.params.code;
+      console.log('response', response);
+      api_login_google(authorization_code);
     }
   }, [response]);
 
-  const api_login_google = async (access_token) => {
+  const api_login_google = async (authorization_code) => {
     const params = {
       url: 'login/google',
-      access_token: access_token,
+      authorization_code: authorization_code,
     };
 
     await exec_login(params);
