@@ -1,40 +1,33 @@
 import { useEffect } from "react";
 import { View, Image, StyleSheet, SafeAreaView, Pressable, Button, Text } from "react-native";
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import * as AuthSession from 'expo-auth-session';
+// import * as WebBrowser from 'expo-web-browser';
+// import * as Google from 'expo-auth-session/providers/google';
 
-import { exec_login } from "@/shared/js/api";
-import { GOOGLE_AUTH_URL } from '@/config/config.js';
+// import { exec_login } from "@/shared/js/api";
+// import { GOOGLE_AUTH_URL } from '@/config/config.js';
 import On_boarding from "@/pages/login/onboarding/Onboarding";
 import btn_google_login from "@/assets/img/login/btn_google_login.png"
 
-WebBrowser.maybeCompleteAuthSession();
+// WebBrowser.maybeCompleteAuthSession();
 
 const Login_page = () => {
-  const [request, response, prompt_async] = Google.useAuthRequest(GOOGLE_AUTH_URL);
+  // const [request, response, prompt_async] = Google.useAuthRequest(GOOGLE_AUTH_URL);
 
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const authorization_code = response.params.code;
-      console.log('response', response);
-      api_login_google(authorization_code);
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.type === 'success') {
+  //     const authorization_code = response.params.code;
+  //     api_login_google(authorization_code);
+  //   }
+  // }, [response]);
 
-  const api_login_google = async (authorization_code) => {
-    const params = {
-      url: 'login/google',
-      authorization_code: authorization_code,
-    };
+  // const api_login_google = async (authorization_code) => {
+  //   const params = {
+  //     url: 'login/google',
+  //     authorization_code: authorization_code,
+  //   };
 
-    await exec_login(params);
-  }
-
-  const handleGoogleLogin = async () => {
-    const result = await prompt_async(); // Prompt for an auth code
-    console.log('result', result);
-  }
+  //   await exec_login(params);
+  // };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -42,11 +35,16 @@ const Login_page = () => {
         <View style={{ flex: 1 }}>
           <On_boarding />
         </View>
-        <Pressable style={{ flex: 0.2 }} onPress={handleGoogleLogin}>
+
+        <Pressable
+          style={{ flex: 0.2 }}>
+          {/* onPress={() => prompt_async()}
+           disabled={!request}> */}
           <Image
             source={btn_google_login}
           />
         </Pressable>
+
       </View>
     </SafeAreaView >
   );
