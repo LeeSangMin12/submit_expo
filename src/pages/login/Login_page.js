@@ -8,6 +8,7 @@ const Login_page = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
+
           <On_boarding />
         </View>
         <View style={{ flex: 0.2 }}>
