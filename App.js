@@ -3,8 +3,7 @@ import { Text, View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'r
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
-import { Ionicons } from '@expo/vector-icons'
-import { Fontisto } from '@expo/vector-icons';
+import { Ionicons, Fontisto } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
@@ -120,7 +119,7 @@ const App = () => {
           },
         }}>
         <Stack.Navigator>
-          {/* <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} /> */}
+          <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
           {/* <Stack.Screen
             name="회원가입"
             options={({ navigation }) => ({
