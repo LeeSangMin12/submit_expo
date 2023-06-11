@@ -20,7 +20,14 @@ const Auto_complete = memo(({ place_holder, get_data_suggesstions, set_value }) 
     set_loading(true);
 
     const suggestions = await get_data_suggesstions(filter_token);
-    set_remote_date_set(suggestions);
+    const autocomplete_list = suggestions.map((val, idx) => {
+      return {
+        key: idx,
+        title: val.title,
+      }
+    })
+
+    set_remote_date_set(autocomplete_list);
 
     set_loading(false);
   }, []);
