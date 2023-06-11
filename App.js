@@ -120,7 +120,7 @@ const App = () => {
         }}>
         <Stack.Navigator>
           <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="회원가입"
             options={({ navigation }) => ({
               headerTitleAlign: 'center',
@@ -143,7 +143,7 @@ const App = () => {
                 page_count={page_count}
                 set_page_count={set_page_count}
               />)}
-          </Stack.Screen> */}
+          </Stack.Screen>
           <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
           <Stack.Screen
             name="과제 등록"

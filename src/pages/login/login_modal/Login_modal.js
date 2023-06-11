@@ -41,9 +41,9 @@ const Login_modal = ({ uri, modal_visible, modal_close, login_method, on_message
           /* ********************************************** */
           // 해당 props를 아래의 방식으로 주면,
           // 소셜 로그인 시 자동 로그인이 되지 않음.
-          cacheMode={'LOAD_NO_CACHE'}
-          cacheEnabled={false}
-          incognito={true}
+          // cacheMode={'LOAD_NO_CACHE'}
+          // cacheEnabled={false}
+          // incognito={true}
           /* ********************************************** */
           // 웹 뷰가 열릴 때 실행 될 script
           // postMessage로 데이터를 보냅니다.
