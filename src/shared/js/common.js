@@ -44,7 +44,6 @@ export const async_storage_store_data = async (key, val) => {
   }
 };
 
-
 /**
  * AsyncStorage 데이터 가져오기
  */
@@ -52,10 +51,9 @@ export const async_storage_get_data = async (key) => {
   try {
     const val = await AsyncStorage.getItem(key)
     if (val !== null) {
-      console.log('val', val)
-      // value previously stored
+      return val;
     }
-  } catch (e) {
-    // error reading value
+  } catch (err) {
+    console.log('Error rendering data: ', err);
   }
 }

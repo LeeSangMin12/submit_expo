@@ -14,7 +14,6 @@ const api = axios.create({
  * 로그인 
  */
 export const exec_login = async (req_obj) => {
-
   const { url, ...data } = req_obj;
 
   const body = {

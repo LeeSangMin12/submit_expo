@@ -28,7 +28,7 @@ const Set_university = (props) => {
       const data = response.data.dataSearch.content;
       const suggestions = data
         .filter(item => item.schoolName.toLowerCase().includes(filter_token))
-        .map(item => ({
+        .map((item, idx) => ({
           title: item.schoolName,
         }));
 

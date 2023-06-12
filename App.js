@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,6 +7,7 @@ import { Ionicons, Fontisto } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
+
 import COLORS from '@/shared/js/colors';
 import { Design_chip, Chip } from '@/components/components';
 
@@ -97,7 +98,6 @@ const toast_config = {
 const App = () => {
   const [page_count, set_page_count] = useState(1);
 
-
   const create_two_button_alert = ({ navigation }) =>
     Alert.alert('회원가입 취소', '홈 화면으로 이동합니다.', [
       {
@@ -119,7 +119,7 @@ const App = () => {
           },
         }}>
         <Stack.Navigator>
-          <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} /> */}
           <Stack.Screen
             name="회원가입"
             options={({ navigation }) => ({
