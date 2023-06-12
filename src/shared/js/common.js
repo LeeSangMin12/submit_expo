@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { set_user } from '@/store/modules/user_slice';
 import { set_calendar } from '@/store/modules/calendar_slice';
 import { set_assignment_add } from '@/store/modules/assignment_add_slice';
@@ -26,3 +28,34 @@ export const set_store_info = (store_name, key, value) => {
     })
   );
 };
+
+/**
+ * AsyncStorage
+ */
+
+/**
+ * AsyncStorage 데이터 저장
+ */
+export const async_storage_store_data = async (key, val) => {
+  try {
+    await AsyncStorage.setItem(key, val)
+  } catch (err) {
+    console.log('Error storing data: ', err);
+  }
+};
+
+
+/**
+ * AsyncStorage 데이터 가져오기
+ */
+export const async_storage_get_data = async (key) => {
+  try {
+    const val = await AsyncStorage.getItem(key)
+    if (val !== null) {
+      console.log('val', val)
+      // value previously stored
+    }
+  } catch (e) {
+    // error reading value
+  }
+}

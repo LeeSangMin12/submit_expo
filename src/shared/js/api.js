@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { SERVER_URL } from "@/config/config.js"
+import { async_storage_store_data, async_storage_get_data } from "@/shared/js/common.js";
 
 const api = axios.create({
   baseURL: SERVER_URL,
@@ -8,12 +9,11 @@ const api = axios.create({
   withCredentials: true,
 });
 
+
 /**
  * 로그인 
  */
 export const exec_login = async (req_obj) => {
-
-  //여기서 token 검증 하고 요청 보내자
 
   const { url, ...data } = req_obj;
 
@@ -29,8 +29,7 @@ export const exec_login = async (req_obj) => {
     });
 
     const result = response.data;
-
-    console.log('result', result);
+    async_storage_store_data('token', result.access_token);
 
     return result;
   } catch (xhr) {
