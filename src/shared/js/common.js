@@ -56,4 +56,15 @@ export const async_storage_get_data = async (key) => {
   } catch (err) {
     console.log('Error rendering data: ', err);
   }
-}
+};
+
+/**
+ * AsyncStorage 데이터 삭제
+ */
+export const async_storage_remove_data = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (err) {
+    console.log('Error rendering data: ', err);
+  }
+};

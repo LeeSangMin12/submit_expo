@@ -119,7 +119,7 @@ const App = () => {
           },
         }}>
         <Stack.Navigator>
-          {/* <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} /> */}
+          <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
           <Stack.Screen
             name="회원가입"
             options={({ navigation }) => ({
