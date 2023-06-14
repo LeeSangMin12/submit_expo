@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { View, Image, StyleSheet, SafeAreaView, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
-import { exec_login } from "@/shared/js/api";
+import { exec_login, check_exp_token } from "@/shared/js/api";
 import { async_storage_get_data } from '@/shared/js/common';
 import Login_modal from "@/pages/login/login_modal/Login_modal";
 import { REDIRECT_URI, GOOGLE_AUTH_URL } from "@/config/config";
@@ -17,10 +17,6 @@ const Login_page = () => {
   const [uri, set_uri] = useState('');
 
   useEffect(() => {
-    // async_storage_get_data('token')
-    //   .then((val) => {
-    //     navigation.navigate('Bottom_navigation', { screen: '홈' });
-    //   })
   }, []);
 
   const handle_login = (login_method) => {

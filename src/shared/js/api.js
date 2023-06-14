@@ -43,8 +43,7 @@ export const exec_login = async (req_obj) => {
  * data 요청
  */
 export const exec_request = async (req_obj) => {
-  await check_exp_token();
-  // const token = await check_exp_token();
+  const token = await check_exp_token();
 
   // const { url, ...data } = req_obj;
 
@@ -79,38 +78,41 @@ export const check_exp_token = async () => {
 
   const token_info = jwt_decode(token);
 
-  // const get_current_time_stamp = () => {
-  //   return Math.floor(Date.now() / 1000)  //밀리초를 초로 변환
-  // };
-  // const current_time_stamp = get_current_time_stamp();
-  // const five_minutes_ago_time_stamp = current_time_stamp - (5 * 60);
+  const get_current_time_stamp = () => {
+    return Math.floor(Date.now() / 1000)  //밀리초를 초로 변환
+  };
+  const current_time_stamp = get_current_time_stamp();
+  const five_minutes_ago_time_stamp = current_time_stamp - (5 * 60);
 
-  // if (token_info.exp <= five_minutes_ago_time_stamp) {  //access token이 만료 됐을때
+  if (token_info.exp >= five_minutes_ago_time_stamp) {  //access token이 만료 됐을때
 
-  //   const data = {
-  //     user_id: token_info.user_id
-  //   }
-  //   const body = {
-  //     "data": data,
-  //   };
+    const data = {
+      user_id: token_info.user_id
+    }
+    const body = {
+      "data": data,
+    };
 
-  //   const response = await api.post(SERVER_URL + `/check/token`, JSON.stringify(body), {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       "Content-Type": "application/json"
-  //     },
-  //   });
+    const response = await api.post(SERVER_URL + `/check/token`, JSON.stringify(body), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+    });
 
-  //   const result = response.data;
+    const status = response.data.status;
+    const result = response.data.data;
 
-  //   if (result.status === 'expired') {
-  //     async_storage_remove_data('token');
-  //     //홈으로 이동하는 로직 추가
-  //   } else {
-  //     async_storage_store_data('token', result.access_token);
-  //     return result.access_token;
-  //   }
-  // } else {  //access token이 만료되지 않았을때
-  //   return token;
-  // }
+    if (status === 'token_expired') {
+      async_storage_remove_data('token');
+      //홈으로 이동하는 로직 추가
+      return false;
+    } else {
+      async_storage_store_data('token', result.access_token);
+      return result.access_token;
+    }
+
+  } else {  //access token이 만료되지 않았을때
+    return token;
+  }
 };
