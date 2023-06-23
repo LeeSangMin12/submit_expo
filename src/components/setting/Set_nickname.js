@@ -1,26 +1,9 @@
-import { useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, Pressable, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, } from 'react-native';
 
-import { exec_request } from '@/shared/js/api';
 import COLORS from '@/shared/js/colors';
 import { set_store_info } from '@/shared/js/common';
 
 const Set_nickname = (props) => {
-
-  const api_user_check_nickname = async () => {
-    const params = {
-      url: "check/duplicate_check_nickname",
-      nickname: props.nickname
-    };
-
-    const result = await exec_request(params);
-
-    // if (result.out2 === "1") {
-    //   return result.out1.goal_li st_arr;
-    // } else {
-    //   alert("목표 리스트를 불러울 수 없습니다.");
-    // }
-  }
 
   return (
     <View>
@@ -34,13 +17,9 @@ const Set_nickname = (props) => {
           onChangeText={(label) => set_store_info('user', 'nickname', label)}
         />
 
-        {/* <Pressable onPress={api_user_check_nickname}>
-          <Image source={require('@/assets/img/icon/duplicate_check.png')} />
-        </Pressable> */}
       </View>
 
       <Text style={[styles.message, styles.error]}>{props.err_nickname}</Text>
-      {/* <Text style={[styles.message, styles.success]}>사용 가능한 닉네임입니다.</Text> */}
     </View>
   );
 };
@@ -73,8 +52,5 @@ const styles = StyleSheet.create({
   },
   error: {
     color: COLORS.system_red,
-  },
-  success: {
-    color: COLORS.system_green,
   },
 });
