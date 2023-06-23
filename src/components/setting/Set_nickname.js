@@ -7,20 +7,16 @@ import { set_store_info } from '@/shared/js/common';
 
 const Set_nickname = (props) => {
 
-  useEffect(() => {
-    api_user_check_nickname();
-  }, []);
-
   const api_user_check_nickname = async () => {
     const params = {
-      url: "user/check_nickname",
+      url: "check/duplicate_check_nickname",
       nickname: props.nickname
     };
 
     const result = await exec_request(params);
 
     // if (result.out2 === "1") {
-    //   return result.out1.goal_list_arr;
+    //   return result.out1.goal_li st_arr;
     // } else {
     //   alert("목표 리스트를 불러울 수 없습니다.");
     // }
@@ -33,18 +29,18 @@ const Set_nickname = (props) => {
       <View style={styles.img_input_container}>
         <TextInput
           style={styles.input}
-          placeholder="닉네임을 입력해주세요"
+          placeholder="닉네임을 입력해주세요(2글자 이상)"
           value={props.nickname}
           onChangeText={(label) => set_store_info('user', 'nickname', label)}
         />
 
-        <Pressable onPress={api_user_check_nickname}>
+        {/* <Pressable onPress={api_user_check_nickname}>
           <Image source={require('@/assets/img/icon/duplicate_check.png')} />
-        </Pressable>
+        </Pressable> */}
       </View>
 
-      <Text style={[styles.message, styles.error]}>사용중인 닉네임입니다.</Text>
-      <Text style={[styles.message, styles.success]}>사용 가능한 닉네임입니다.</Text>
+      <Text style={[styles.message, styles.error]}>{props.err_nickname}</Text>
+      {/* <Text style={[styles.message, styles.success]}>사용 가능한 닉네임입니다.</Text> */}
     </View>
   );
 };

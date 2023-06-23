@@ -61,7 +61,8 @@ const Login_page = () => {
       navigation.navigate('회원가입');
     } else {
       set_login_modal(false);
-      navigation.navigate('Bottom_navigation', { screen: '홈' });
+      navigation.navigate('회원가입');
+      // navigation.navigate('Bottom_navrigation', { screen: '홈' });
     }
   };
 

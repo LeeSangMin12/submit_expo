@@ -3,13 +3,14 @@ import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native
 import { useSelector } from 'react-redux';
 import { LinearProgress } from '@rneui/themed';
 
+import { exec_request } from '@/shared/js/api';
 import Set_basic from '@/components/setting/Set_basic';
 import Set_university from '@/components/setting/Set_university';
 import Set_nickname from '@/components/setting/Set_nickname';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
 
-const Setting_page = ({ page_count, set_page_count }) => {
+const Setting_page = ({ page_count, set_page_count, }) => {
   const {
     name,
     age,
@@ -21,6 +22,7 @@ const Setting_page = ({ page_count, set_page_count }) => {
   } = useSelector((state) => state.user);
   const [progress, set_progress] = useState(0);
   const [btn_next_disabled, set_btn_next_disabled] = useState(true);
+  const [err_nickname, set_err_nickname] = useState('');
 
   /**
    * progress bar 업데이트
@@ -54,6 +56,53 @@ const Setting_page = ({ page_count, set_page_count }) => {
     return true;
   };
 
+  /**
+   * 값이 비어있지 않을시 세팅페이지 넘어감
+   * : 마지막 페이지에선 정보 검사후 유저 정보 서버로 보냄
+   */
+  const handle_page_count = async () => {
+    // if (page_count === 3) {
+    //   const is_valid_nickname = check_nickname();
+    //   // api_user_check_nickname();
+    //   // send_user_data();
+    // }
+
+    if (page_count === 3 && !check_nickname()) {
+      return false;
+    }
+
+    // set_page_count(page_count + 1);
+  }
+
+  /**
+   * nickname 값이 올바른지 검사
+   */
+  const check_nickname = () => {
+    if (nickname.length < 2) {
+      set_err_nickname('2글자 이상 입력해주세요.');
+      return false;
+    } else if (!api_user_check_nickname()) {
+      set_err_nickname('중복된 닉네임입니다.');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const api_user_check_nickname = async () => {
+    const params = {
+      url: "check/duplicate_check_nickname",
+      nickname: nickname
+    };
+
+    const result = await exec_request(params);
+    // if (result.status === "ok") {
+    //   return false;
+    // } else {
+    //   return false;
+    // }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.progress_container}>
@@ -78,7 +127,7 @@ const Setting_page = ({ page_count, set_page_count }) => {
           {
             page_count === 1 ? <Set_basic name={name} age={age} gender={gender} /> :
               page_count === 2 ? <Set_university university={university} department={department} admission_year={admission_year} /> :
-                page_count === 3 ? <Set_nickname nickname={nickname} /> : null
+                page_count === 3 ? <Set_nickname nickname={nickname} err_nickname={err_nickname} /> : null
           }
 
         </ScrollView>
@@ -88,7 +137,7 @@ const Setting_page = ({ page_count, set_page_count }) => {
         <Button
           title="다음으로"
           style={styles.btn_next}
-          on_press={() => set_page_count(page_count + 1)}
+          on_press={handle_page_count}
           disabled={btn_next_disabled} />
       </View>
     </View >

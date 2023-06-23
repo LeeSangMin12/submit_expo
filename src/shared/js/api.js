@@ -1,4 +1,3 @@
-import { Alert } from "react-native";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
@@ -44,29 +43,33 @@ export const exec_login = async (req_obj) => {
  */
 export const exec_request = async (req_obj) => {
   const token = await check_exp_token();
+  if (token === 'token_expired') {
+    //홈으로 이동
+    return false;
+  };
 
-  // const { url, ...data } = req_obj;
+  const { url, ...data } = req_obj;
 
-  // const body = {
-  //   "data": data,
-  //   "token": token,
-  // };
+  const body = {
+    "data": data,
+    "token": token,
+  };
 
-  // try {
-  //   const response = await api.post(SERVER_URL + `/${url}`, JSON.stringify(body), {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       "Content-Type": "application/json"
-  //     },
-  //   });
+  try {
+    const response = await api.post(SERVER_URL + `/${url}`, JSON.stringify(body), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+    });
 
-  //   const result = response.data;
-  //   return result;
-  // } catch (xhr) {
-  //   console.error("request 에러:", xhr);
-  //   console.error(req_obj.url + " 에러");
-  //   return null;
-  // };
+    const result = response.data;
+    return result;
+  } catch (xhr) {
+    console.error("request 에러:", xhr);
+    console.error(req_obj.url + " 에러");
+    return null;
+  };
 }
 
 /**
@@ -84,7 +87,7 @@ export const check_exp_token = async () => {
   const current_time_stamp = get_current_time_stamp();
   const five_minutes_ago_time_stamp = current_time_stamp - (5 * 60);
 
-  if (token_info.exp >= five_minutes_ago_time_stamp) {  //access token이 만료 됐을때
+  if (token_info.exp <= five_minutes_ago_time_stamp) {  //access token이 만료 되기 5분전 일때
 
     const data = {
       user_id: token_info.user_id
@@ -100,16 +103,14 @@ export const check_exp_token = async () => {
       },
     });
 
-    const status = response.data.status;
-    const result = response.data.data;
+    const result = response.data;
 
-    if (status === 'token_expired') {
+    if (result.status === 'token_expired') {
       async_storage_remove_data('token');
-      //홈으로 이동하는 로직 추가
-      return false;
+      return 'token_expired';
     } else {
-      async_storage_store_data('token', result.access_token);
-      return result.access_token;
+      async_storage_store_data('token', result.data.access_token);
+      return result.data.access_token;
     }
 
   } else {  //access token이 만료되지 않았을때
