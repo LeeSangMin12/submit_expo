@@ -58,30 +58,28 @@ const Setting_page = ({ page_count, set_page_count, }) => {
 
   /**
    * 값이 비어있지 않을시 세팅페이지 넘어감
-   * : 마지막 페이지에선 정보 검사후 유저 정보 서버로 보냄
+   * : 마지막 페이지에선 
+   * : 1. 닉네임 검사
+   * : 2. 유저 정보 서버로 보냄
+   * : 후 홈화면으로 이동
    */
   const handle_page_count = async () => {
-    // if (page_count === 3) {
-    //   const is_valid_nickname = check_nickname();
-    //   // api_user_check_nickname();
-    //   // send_user_data();
-    // }
-
-    if (page_count === 3 && !check_nickname()) {
-      return false;
+    if (page_count === 3 && !check_nickname()) {  //닉네임 페이지에서 중복된 닉네임이 없는경우
+      //데이터 저장하고 + 홈화면으로 넘겨주기
+      return
     }
 
-    // set_page_count(page_count + 1);
+    set_page_count(page_count + 1);
   }
 
   /**
    * nickname 값이 올바른지 검사
    */
-  const check_nickname = () => {
+  const check_nickname = async () => {
     if (nickname.length < 2) {
       set_err_nickname('2글자 이상 입력해주세요.');
       return false;
-    } else if (!api_user_check_nickname()) {
+    } else if (!await api_user_check_nickname()) {
       set_err_nickname('중복된 닉네임입니다.');
       return false;
     } else {
@@ -96,11 +94,12 @@ const Setting_page = ({ page_count, set_page_count, }) => {
     };
 
     const result = await exec_request(params);
-    // if (result.status === "ok") {
-    //   return false;
-    // } else {
-    //   return false;
-    // }
+
+    if (result.status === "ok") {  //중복닉네임 없음
+      return true;
+    } else {  //중복닉네임 존재
+      return false;
+    }
   }
 
   return (
