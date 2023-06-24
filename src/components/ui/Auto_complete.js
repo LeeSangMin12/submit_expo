@@ -38,7 +38,7 @@ const Auto_complete = memo(({ place_holder, get_data_suggesstions, set_value }) 
  */
   const handle_set_value = (value) => {
     const now_value = value;
-    set_value(now_value);
+    set_value(now_value?.title);
   };
 
   return (

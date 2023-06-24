@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { useSelector } from 'react-redux';
 import { LinearProgress } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
 import Set_basic from '@/components/setting/Set_basic';
@@ -11,6 +12,7 @@ import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
 
 const Setting_page = ({ page_count, set_page_count, }) => {
+  const navigation = useNavigation();
   const {
     name,
     age,
@@ -60,13 +62,15 @@ const Setting_page = ({ page_count, set_page_count, }) => {
    * 값이 비어있지 않을시 세팅페이지 넘어감
    * : 마지막 페이지에선 
    * : 1. 닉네임 검사
-   * : 2. 유저 정보 서버로 보냄
+   * : 2. 유저 초기 정보 서버 전송
    * : 후 홈화면으로 이동
    */
   const handle_page_count = async () => {
-    if (page_count === 3 && !check_nickname()) {  //닉네임 페이지에서 중복된 닉네임이 없는경우
-      //데이터 저장하고 + 홈화면으로 넘겨주기
-      return
+    if (page_count === 3 && await check_nickname()) {
+      if (await api_user_initial_setting()) {  //유저정보 저장 성공
+        navigation.navigate('Bottom_navigation', { screen: '홈' });
+      }
+      return false;
     }
 
     set_page_count(page_count + 1);
@@ -79,7 +83,7 @@ const Setting_page = ({ page_count, set_page_count, }) => {
     if (nickname.length < 2) {
       set_err_nickname('2글자 이상 입력해주세요.');
       return false;
-    } else if (!await api_user_check_nickname()) {
+    } else if (!await api_check_duplicate_check_nickname()) {
       set_err_nickname('중복된 닉네임입니다.');
       return false;
     } else {
@@ -87,7 +91,10 @@ const Setting_page = ({ page_count, set_page_count, }) => {
     }
   }
 
-  const api_user_check_nickname = async () => {
+  /**
+   * 유저 닉네임 검사
+   */
+  const api_check_duplicate_check_nickname = async () => {
     const params = {
       url: "check/duplicate_check_nickname",
       nickname: nickname
@@ -101,6 +108,31 @@ const Setting_page = ({ page_count, set_page_count, }) => {
       return false;
     }
   }
+
+  /**
+   * 유저 초기 정보 저장
+   */
+  const api_user_initial_setting = async () => {
+    const params = {
+      url: "user/initial_setting",
+      name,
+      age,
+      gender,
+      university,
+      department,
+      admission_year,
+      nickname,
+    };
+
+    const result = await exec_request(params);
+
+    if (result.status === "ok") {
+      return true;
+    } else {  //중복닉네임 존재
+      console.log('err');
+    }
+  }
+
 
   return (
     <View style={styles.container}>
