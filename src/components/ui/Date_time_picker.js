@@ -74,14 +74,23 @@ const Date_time_picker = ({ picker_mode, date_title, time_title }) => {
                   disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
               </Pressable>
             </>
-            :
-            <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
-              <Input
-                label={time_title}
-                value={get_time(date.getHours(), date.getMinutes())}
-                disabled={true}
-                disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
-            </Pressable>
+            : picker_mode === 'date' ?
+              <Pressable style={{ flex: 1 }} onPress={showDatepicker}>
+                <Input
+                  label={date_title}
+                  value={get_date(date.getFullYear(), date.getMonth() + 1, date.getDate())}
+                  disabled={true}
+                  disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
+              </Pressable>
+              : picker_mode === 'time' ?
+                <Pressable style={{ flex: 1 }} onPress={showTimepicker}>
+                  <Input
+                    label={time_title}
+                    value={get_time(date.getHours(), date.getMinutes())}
+                    disabled={true}
+                    disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
+                </Pressable>
+                : null
         }
       </View>
 
