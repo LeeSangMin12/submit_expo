@@ -1,10 +1,14 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useState } from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
+import { async_storage_remove_data } from "@/shared/js/common.js";
 import { Button, Custom_modal } from "@/components/components";
 import COLORS from '@/shared/js/colors';
 
 const User_setting = () => {
+  const navigation = useNavigation();
+
   const [log_out_modal, set_log_out_modal] = useState(false);
 
   const Modal_log_out = () => {
@@ -18,7 +22,10 @@ const User_setting = () => {
             style={styles.Modal_log_out.btn_cancel} />
           <Button
             title='로그아웃'
-            on_press={() => console.log('logout')}
+            on_press={async () => {
+              await async_storage_remove_data('token');
+              navigation.navigate('Login_page');
+            }}
             style={styles.Modal_log_out.btn_logout} />
         </View>
       </>
