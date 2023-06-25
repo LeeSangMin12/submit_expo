@@ -100,7 +100,7 @@ const Setting_page = ({ page_count, set_page_count, }) => {
       nickname: nickname
     };
 
-    const result = await exec_request(params);
+    const result = await exec_request(params, navigation);
 
     if (result.status === "ok") {  //중복닉네임 없음
       return true;
@@ -124,7 +124,7 @@ const Setting_page = ({ page_count, set_page_count, }) => {
       nickname,
     };
 
-    const result = await exec_request(params);
+    const result = await exec_request(params, navigation);
 
     if (result.status === "ok") {
       return true;

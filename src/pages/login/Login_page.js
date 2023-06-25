@@ -3,7 +3,6 @@ import { View, Image, StyleSheet, SafeAreaView, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_login, check_exp_token } from "@/shared/js/api";
-import { async_storage_get_data } from '@/shared/js/common';
 import Login_modal from "@/pages/login/login_modal/Login_modal";
 import { REDIRECT_URI, GOOGLE_AUTH_URL } from "@/config/config";
 import On_boarding from "@/pages/login/onboarding/Onboarding";
@@ -17,7 +16,22 @@ const Login_page = () => {
   const [uri, set_uri] = useState('');
 
   useEffect(() => {
+    auto_login();
   }, []);
+
+  /**
+   * 자동로그인
+   * : 엑세스 토큰이 있을 경우만, 토큰 검증 후 홈화면으로 이동
+   */
+  const auto_login = async () => {
+    const token = await check_exp_token();
+
+    if (token !== 'token_expired') {  //토큰이 존재할 경우
+      navigation.navigate('Bottom_navigation', { screen: '홈' });
+    }
+  }
+
+
 
   const handle_login = (login_method) => {
     if (login_method === 'google') {

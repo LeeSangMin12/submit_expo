@@ -41,10 +41,10 @@ export const exec_login = async (req_obj) => {
 /**
  * data 요청
  */
-export const exec_request = async (req_obj) => {
+export const exec_request = async (req_obj, navigation) => {
   const token = await check_exp_token();
   if (token === 'token_expired') {
-    //홈으로 이동
+    navigation.navigate('회원가입');
     return false;
   };
 
@@ -74,10 +74,15 @@ export const exec_request = async (req_obj) => {
 
 /**
  * 토큰 만료 검사
+ * : 1. 토큰이 존재하지 않음
+ * : 2. 토큰이 만료되거나, 만료되기 5분전
+ * 
  * : access token이 만료되거나, 만료되기 5분전에 새로운 토큰 발급
  */
 export const check_exp_token = async () => {
-  const token = await async_storage_get_data('token') ? await async_storage_get_data('token') : "";
+  const token = await async_storage_get_data('token') ? await async_storage_get_data('token') : '';
+
+  if (token === '') return 'token_expired';
 
   const token_info = jwt_decode(token);
 
