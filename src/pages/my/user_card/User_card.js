@@ -1,18 +1,12 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useEffect } from "react";
 
-import { exec_request } from "@/shared/js/api";
 import COLORS from '@/shared/js/colors';
 import { Design_chip } from '@/components/components';
 import user_profile_sm from '@/assets/img/my/user_card/user_profile_sm.png';
 
 const User_card = () => {
   const navigation = useNavigation();
-
-  useEffect(() => {
-    exec_request(navigation);
-  }, []);
 
   return (
     <View style={styles.container}>
