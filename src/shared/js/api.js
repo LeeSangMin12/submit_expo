@@ -41,10 +41,10 @@ export const exec_login = async (req_obj) => {
 /**
  * data 요청
  */
-export const exec_request = async (req_obj, navigation) => {
+export const exec_request = async (navigation) => {
   const token = await check_exp_token();
   if (token === 'token_expired') {
-    navigation.navigate('회원가입');
+    navigation.navigate('Login_page');
     return false;
   };
 
@@ -74,10 +74,9 @@ export const exec_request = async (req_obj, navigation) => {
 
 /**
  * 토큰 만료 검사
- * : 1. 토큰이 존재하지 않음
- * : 2. 토큰이 만료되거나, 만료되기 5분전
- * 
- * : access token이 만료되거나, 만료되기 5분전에 새로운 토큰 발급
+ * : 1. 토큰이 만료되거나, 만료되기 5분전 ->  refresh token 검증후 새로운 토큰 발급
+ * : 2. 토큰이 존재하지 않음 -> 로그인 페이지 이동
+ * : 3. acccess, refresh 토큰 만료 -> 로그인 페이지 이동
  */
 export const check_exp_token = async () => {
   const token = await async_storage_get_data('token') ? await async_storage_get_data('token') : '';
@@ -111,10 +110,10 @@ export const check_exp_token = async () => {
     const result = response.data;
 
     if (result.status === 'token_expired') {
-      async_storage_remove_data('token');
+      await async_storage_remove_data('token');
       return 'token_expired';
     } else {
-      async_storage_store_data('token', result.data.access_token);
+      await async_storage_store_data('token', result.data.access_token);
       return result.data.access_token;
     }
 
