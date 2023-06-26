@@ -31,8 +31,6 @@ const Login_page = () => {
     }
   }
 
-
-
   const handle_login = (login_method) => {
     if (login_method === 'google') {
       set_login_method('google');

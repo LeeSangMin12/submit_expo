@@ -10,7 +10,7 @@ import edit_feather_btn from '@/assets/img/my/user_card/edit_feather_btn.png';
 import user_profile from '@/assets/img/my/user_card/user_profile.png';
 
 const Set_image = () => {
-  const { profile_img } = useSelector((state) => state.user);
+  const { img_url } = useSelector((state) => state.user);
   const [user_img_modal, set_user_img_modal] = useState(false);
 
   /**
@@ -23,7 +23,7 @@ const Set_image = () => {
     });
 
     if (!result.canceled) {
-      set_store_info('user', 'profile_img', { uri: result.assets[0].uri });
+      set_store_info('user', 'img_url', { uri: result.assets[0].uri });
       set_user_img_modal(false);
     }
   };
@@ -32,7 +32,7 @@ const Set_image = () => {
    * 프로필 이미지 초기값으로 변경
    */
   const pick_image_initial = () => {
-    set_store_info('user', 'profile_img', user_profile);
+    set_store_info('user', 'img_url', user_profile);
     set_user_img_modal(false);
   }
 
@@ -62,9 +62,9 @@ const Set_image = () => {
 
   return (
     <View>
-      <View style={styles.profile_img_container}>
+      <View style={styles.img_url_container}>
         <Pressable onPress={() => set_user_img_modal(true)}>
-          <Image source={profile_img} style={styles.img_profile} />
+          <Image source={img_url} style={styles.img_profile} />
           <Image source={edit_feather_btn} style={styles.img_edit} />
         </Pressable>
 
@@ -100,7 +100,7 @@ const Set_image = () => {
 export default Set_image;
 
 const styles = StyleSheet.create({
-  profile_img_container: {
+  img_url_container: {
     marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center'

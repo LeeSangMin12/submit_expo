@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, } from "react-native";
 import Toast from 'react-native-toast-message';
 
 import { Button } from '@/components/components';
@@ -12,7 +12,6 @@ const Community_page = () => {
       type: 'primary_success_toast',
       position: 'bottom',
       text1: '커뮤니티가 신청 되었습니다!',
-      // bottomOffset: '90'
     });
   }
 

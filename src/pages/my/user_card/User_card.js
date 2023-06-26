@@ -5,27 +5,37 @@ import COLORS from '@/shared/js/colors';
 import { Design_chip } from '@/components/components';
 import user_profile_sm from '@/assets/img/my/user_card/user_profile_sm.png';
 
-const User_card = () => {
+const User_card = ({
+  img_url,
+  nickname,
+  university,
+  department,
+  admission_year,
+}) => {
   const navigation = useNavigation();
 
+  const modified_addmission_year = String(admission_year).substring(2);  //뒤에 학번만 가져옴
   return (
     <View style={styles.container}>
 
       <View style={styles.card_container}>
-        <Image source={user_profile_sm} />
+        {img_url === '' ?
+          <Image source={user_profile_sm} /> :
+          <Image source={user_profile_sm} />
+        }
 
         <View style={styles.card_text_container}>
           <View style={[styles.text_container, { alignItems: 'center' }]}>
-            <Text style={styles.text_name}>김대리</Text>
-            <Text style={styles.text_university}>대동대학교</Text>
+            <Text style={styles.text_name}>{nickname}</Text>
+            <Text style={styles.text_university}>{university}</Text>
           </View>
           <View style={styles.text_container}>
             <Design_chip
-              title='경영학과'
+              title={department}
               container_style={{ marginRight: 5 }} />
 
             <Design_chip
-              title='19학번'
+              title={`${modified_addmission_year}학번`}
               background_color={COLORS.gray_470_bg} />
           </View>
         </View>

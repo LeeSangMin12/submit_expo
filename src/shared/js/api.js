@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
@@ -41,12 +42,16 @@ export const exec_login = async (req_obj) => {
 /**
  * data 요청
  */
-export const exec_request = async (navigation) => {
+export const exec_request = async (req_obj, navigation) => {
   const token = await check_exp_token();
+
   if (token === 'token_expired') {
     navigation.navigate('Login_page');
+    Alert.alert('토큰이 만료되었습니다. 재 로그인 해주세요.');
     return false;
   };
+
+
 
   const { url, ...data } = req_obj;
 

@@ -9,7 +9,7 @@ const initial_state = {
   department: '',
   admission_year: '',
   nickname: '',
-  profile_img: user_profile,
+  img_url: user_profile,
 };
 
 const user_slice = createSlice({

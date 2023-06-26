@@ -122,6 +122,7 @@ const Setting_page = ({ page_count, set_page_count, }) => {
       department,
       admission_year,
       nickname,
+      img_url: ''  //처음에 설정하지 않기에 빈값으로 보냄.
     };
 
     const result = await exec_request(params, navigation);
