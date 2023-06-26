@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useEffect } from "react";
 
-import { exec_request } from "../../shared/js/api";
+import { exec_request } from "@/shared/js/api";
 import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import User_card from "@/pages/my/user_card/User_card";

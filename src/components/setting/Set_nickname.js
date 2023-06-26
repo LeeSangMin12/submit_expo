@@ -1,9 +1,12 @@
 import { View, Text, TextInput, StyleSheet, } from 'react-native';
 
 import COLORS from '@/shared/js/colors';
-import { set_store_info } from '@/shared/js/common';
 
-const Set_nickname = (props) => {
+const Set_nickname = ({
+  nickname,
+  err_nickname,
+  set_value
+}) => {
 
   return (
     <View>
@@ -13,13 +16,14 @@ const Set_nickname = (props) => {
         <TextInput
           style={styles.input}
           placeholder="닉네임을 입력해주세요(2글자 이상)"
-          value={props.nickname}
-          onChangeText={(label) => set_store_info('user', 'nickname', label)}
-        />
+          value={nickname}
+          onChangeText={(label) => set_value((prev_state) => {
+            return { ...prev_state, nickname: label }
+          })} />
 
       </View>
 
-      <Text style={[styles.message, styles.error]}>{props.err_nickname}</Text>
+      <Text style={[styles.message, styles.error]}>{err_nickname}</Text>
     </View>
   );
 };

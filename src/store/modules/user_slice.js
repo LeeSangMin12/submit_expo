@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import user_profile from '@/assets/img/my/user_card/user_profile.png';
 
 const initial_state = {
   name: '',
@@ -9,7 +8,7 @@ const initial_state = {
   department: '',
   admission_year: '',
   nickname: '',
-  img_url: user_profile,
+  img_url: '',
 };
 
 const user_slice = createSlice({

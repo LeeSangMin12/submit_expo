@@ -2,30 +2,38 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 import COLORS from '@/shared/js/colors';
 import { Chip } from '@/components/components';
-import { set_store_info } from '@/shared/js/common';
 
-const Set_basic = (props) => {
+const Set_basic = ({
+  name,
+  age,
+  gender,
+  set_value
+}) => {
   return (
     <>
       <View style={styles.input_container}>
         <Text style={styles.label}>이름</Text>
         <TextInput
-          value={props.name}
+          value={name}
           style={styles.input}
           placeholder='이름을 입력해주세요'
-          onChangeText={(label) => set_store_info('user', 'name', label)} />
+          onChangeText={(label) => set_value((prev_state) => {
+            return { ...prev_state, name: label }
+          })} />
       </View>
 
       <View style={styles.input_container}>
         <Text style={styles.label}>나이</Text>
         <TextInput
-          value={props.age}
+          value={age}
           keyboardType='number-pad'
           returnKeyType="done"
           style={styles.input}
           placeholder='나이를 선택해주세요'
           maxLength={2}
-          onChangeText={(label) => set_store_info('user', 'age', label)} />
+          onChangeText={(label) => set_value((prev_state) => {
+            return { ...prev_state, age: label }
+          })} />
       </View>
 
       <View style={styles.input_container}>
@@ -33,12 +41,16 @@ const Set_basic = (props) => {
         <View style={styles.chip_container}>
           <Chip
             label="남성"
-            selected={props.gender === 'male'}
-            on_press={() => set_store_info('user', 'gender', 'male')} />
+            selected={gender === 'male'}
+            on_press={() => set_value((prev_state) => {
+              return { ...prev_state, gender: 'male' }
+            })} />
           <Chip
             label="여성"
-            selected={props.gender === 'female'}
-            on_press={() => set_store_info('user', 'gender', 'female')} />
+            selected={gender === 'female'}
+            on_press={() => set_value((prev_state) => {
+              return { ...prev_state, gender: 'female' }
+            })} />
         </View>
       </View>
     </>

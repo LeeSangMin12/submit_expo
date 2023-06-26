@@ -9,8 +9,10 @@ import { Custom_modal, Button } from "@/components/components";
 import edit_feather_btn from '@/assets/img/my/user_card/edit_feather_btn.png';
 import user_profile from '@/assets/img/my/user_card/user_profile.png';
 
-const Set_image = () => {
-  const { img_url } = useSelector((state) => state.user);
+const Set_image = ({
+  set_value,
+  img_url
+}) => {
   const [user_img_modal, set_user_img_modal] = useState(false);
 
   /**
@@ -23,7 +25,10 @@ const Set_image = () => {
     });
 
     if (!result.canceled) {
-      set_store_info('user', 'img_url', { uri: result.assets[0].uri });
+      set_value((prev_state) => {
+        return { ...prev_state, img_url: { uri: result.assets[0].uri } }
+      })
+
       set_user_img_modal(false);
     }
   };
@@ -32,7 +37,9 @@ const Set_image = () => {
    * 프로필 이미지 초기값으로 변경
    */
   const pick_image_initial = () => {
-    set_store_info('user', 'img_url', user_profile);
+    set_value((prev_state) => {
+      return { ...prev_state, img_url: user_profile }
+    })
     set_user_img_modal(false);
   }
 

@@ -2,11 +2,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import axios from 'axios';
 
-import { set_store_info } from '@/shared/js/common';
 import { Drop_down } from '@/components/components';
 import { Auto_complete } from '@/components/components';
 
-const Set_university = (props) => {
+const Set_university = ({
+  admission_year,
+  set_value
+}) => {
   const [admission_year_arr, set_admission_year_arr] = useState([]);
 
   /**
@@ -92,21 +94,27 @@ const Set_university = (props) => {
   * 대학교 autocomplete 값 설정
   */
   const university_set_value = (now_value) => {
-    set_store_info('user', 'university', now_value);
+    set_value((prev_state) => {
+      return { ...prev_state, university: now_value }
+    })
   };
 
   /**
   * 학과 autocomplete 값 설정
   */
   const department_set_value = (now_value) => {
-    set_store_info('user', 'department', now_value);
+    set_value((prev_state) => {
+      return { ...prev_state, department: now_value }
+    })
   };
 
   /**
    * 입학년도 dropdown의 값 설정
    */
   const admission_year_set_value = (now_value) => {
-    set_store_info('user', 'admission_year', now_value);
+    set_value((prev_state) => {
+      return { ...prev_state, admission_year: now_value }
+    })
   }
 
   return (
@@ -133,7 +141,7 @@ const Set_university = (props) => {
         <Text style={styles.label}>입학년도</Text>
         <Drop_down
           items={admission_year_arr}
-          value={props.admission_year}
+          value={admission_year}
           set_items={set_admission_year_arr}
           set_value={admission_year_set_value}
         />
