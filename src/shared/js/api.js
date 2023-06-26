@@ -51,8 +51,6 @@ export const exec_request = async (req_obj, navigation) => {
     return false;
   };
 
-
-
   const { url, ...data } = req_obj;
 
   const body = {

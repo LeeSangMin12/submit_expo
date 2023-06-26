@@ -3,8 +3,8 @@ import { View, StyleSheet, Image, Pressable, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector } from 'react-redux';
 
-import COLORS from '@/shared/js/colors';
 import { set_store_info } from '@/shared/js/common';
+import COLORS from '@/shared/js/colors';
 import { Custom_modal, Button } from "@/components/components";
 import edit_feather_btn from '@/assets/img/my/user_card/edit_feather_btn.png';
 import user_profile from '@/assets/img/my/user_card/user_profile.png';
@@ -64,7 +64,10 @@ const Set_image = () => {
     <View>
       <View style={styles.img_url_container}>
         <Pressable onPress={() => set_user_img_modal(true)}>
-          <Image source={img_url} style={styles.img_profile} />
+          {img_url === '' ?
+            <Image source={user_profile} style={styles.img_profile} /> :
+            <Image source={img_url} style={styles.img_profile} />
+          }
           <Image source={edit_feather_btn} style={styles.img_edit} />
         </Pressable>
 
