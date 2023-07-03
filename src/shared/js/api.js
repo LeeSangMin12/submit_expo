@@ -76,6 +76,39 @@ export const exec_request = async (req_obj, navigation) => {
 }
 
 /**
+ * data 요청 (multipart-form-data)
+ */
+export const exec_request_multipart = async (req_obj, navigation) => {
+  const token = await check_exp_token();
+
+  if (token === 'token_expired') {
+    navigation.navigate('Login_page');
+    Alert.alert('토큰이 만료되었습니다. 재 로그인 해주세요.');
+    return false;
+  };
+
+  const { url, ...data } = req_obj;
+
+  try {
+    const response = await api.post(SERVER_URL + `/${url}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
+      },
+      formData
+    });
+
+    console.log('j');
+    const result = response.data;
+    return result;
+  } catch (xhr) {
+    console.error("request 에러:", xhr);
+    console.error(req_obj.url + " 에러");
+    return null;
+  };
+}
+
+/**
  * 토큰 만료 검사
  * : 1. 토큰이 만료되거나, 만료되기 5분전 ->  refresh token 검증후 새로운 토큰 발급
  * : 2. 토큰이 존재하지 않음 -> 로그인 페이지 이동

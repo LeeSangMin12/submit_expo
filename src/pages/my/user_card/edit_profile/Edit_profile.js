@@ -3,7 +3,7 @@ import { useState } from "react";
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { exec_request } from "@/shared/js/api";
+import { exec_request, exec_request_multipart } from "@/shared/js/api";
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
 import Set_nickname from '@/components/setting/Set_nickname';
@@ -27,7 +27,8 @@ const Edit_profile = () => {
    */
   const edit_user_info = async () => {
     if (await check_nickname()) {
-      console.log('이 닉네임은 정상이네요.');
+      console.log('한번볼까');
+      api_user_edit_info();
     }
   }
 
@@ -74,7 +75,7 @@ const Edit_profile = () => {
       nickname: user_input.nickname
     };
 
-    const result = await exec_request(params, navigation);
+    const result = await exec_request_multipart(params, navigation);
   }
 
   return (

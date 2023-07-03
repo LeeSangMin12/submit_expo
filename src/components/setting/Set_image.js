@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, StyleSheet, Image, Pressable, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
@@ -13,25 +14,84 @@ const Set_image = ({
   set_value,
   img_url
 }) => {
+  //권한 요청을 위한 hooks
+  const [status, request_permission] = ImagePicker.useMediaLibraryPermissions();
   const [user_img_modal, set_user_img_modal] = useState(false);
 
   /**
    * 동기적으로 프로필 이미지 설정
    */
   const pick_image_async = async () => {
+    if (!status?.granted) {
+      const permission = await request_permission();
+      if (!permission.granted) {
+        return null;
+      }
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      aspect: [1, 1],
       quality: 1,
     });
 
-    if (!result.canceled) {
-      set_value((prev_state) => {
-        return { ...prev_state, img_url: { uri: result.assets[0].uri } }
-      })
-
-      set_user_img_modal(false);
+    if (result.canceled) {
+      return null;
     }
+
+    const local_uri = result.assets[0].uri;
+    const file_name = local_uri.split('/').pop();
+    const match = /\.(\w+)$/.exec(file_name ?? '');
+    const type = match ? `image/${match[1]}` : `image`;
+
+    ''
+
+    // set_value((prev_state) => {
+    //   return {
+    //     ...prev_state,
+    //     img_url: {
+    //       url: local_uri,
+    //       name: file_name, type
+    //     }
+    //   }
+    // })
+
+    // set_value((prev_state) => {
+    //   return {
+    //     ...prev_state,
+    //     img_url: result.assets[0].uri
+    //   }
+    // })
+
+    sendImageToServer(result.assets[0].uri);
+
+    set_user_img_modal(false);
   };
+
+  const sendImageToServer = async (imageUri) => {
+    const apiUrl = 'http://192.168.0.117:3000/user/edit_info'; // 이미지를 전송할 서버 URL
+
+    const formData = new FormData();
+    formData.append('image', {
+      uri: imageUri,
+      name: 'file.jpg',
+      type: 'image/jpg',
+    });
+
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+
+    try {
+      const response = await axios.post(apiUrl, formData, config);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   /**
    * 프로필 이미지 초기값으로 변경

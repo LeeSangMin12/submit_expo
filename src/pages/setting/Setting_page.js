@@ -10,7 +10,10 @@ import Set_basic from '@/components/setting/Set_basic';
 import Set_university from '@/components/setting/Set_university';
 import Set_nickname from '@/components/setting/Set_nickname';
 
-const Setting_page = ({ page_count, set_page_count, }) => {
+const Setting_page = ({
+  page_count,
+  set_page_count
+}) => {
   const navigation = useNavigation();
 
   const [user_input, set_user_input] = useState({
