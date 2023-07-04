@@ -91,6 +91,8 @@ const Edit_profile = () => {
       form_data: form_data,
     };
 
+    console.log('img_url', user_input.img_url);
+
     const result = await exec_request_multipart(params, navigation);
 
     if (result.status === "ok") {

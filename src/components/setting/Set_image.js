@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet, Image, Pressable, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
 
-import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Custom_modal, Button } from "@/components/components";
 import edit_feather_btn from '@/assets/img/my/user_card/edit_feather_btn.png';
@@ -14,8 +11,7 @@ const Set_image = ({
   set_value,
   img_url
 }) => {
-  //권한 요청을 위한 hooks
-  const [status, request_permission] = ImagePicker.useMediaLibraryPermissions();
+  const [status, request_permission] = ImagePicker.useMediaLibraryPermissions();   //권한 요청을 위한 hooks
   const [user_img_modal, set_user_img_modal] = useState(false);
 
   /**
@@ -97,11 +93,9 @@ const Set_image = ({
     <View>
       <View style={styles.img_url_container}>
         <Pressable onPress={() => set_user_img_modal(true)}>
-          {img_url === '' ?
-            <Image source={user_profile} style={styles.img_profile} /> :
-            <Image
-              source={{ uri: img_url }}
-              style={styles.img_profile} />
+          {img_url === '' ? <Image source={user_profile} style={styles.img_profile} /> :
+            typeof img_url === "string" ? <Image source={{ uri: img_url }} style={styles.img_profile} /> :
+              <Image source={{ uri: img_url.uri }} style={styles.img_profile} />
           }
           <Image source={edit_feather_btn} style={styles.img_edit} />
         </Pressable>
