@@ -45,53 +45,19 @@ const Set_image = ({
     const match = /\.(\w+)$/.exec(file_name ?? '');
     const type = match ? `image/${match[1]}` : `image`;
 
-    ''
-
-    // set_value((prev_state) => {
-    //   return {
-    //     ...prev_state,
-    //     img_url: {
-    //       url: local_uri,
-    //       name: file_name, type
-    //     }
-    //   }
-    // })
-
-    // set_value((prev_state) => {
-    //   return {
-    //     ...prev_state,
-    //     img_url: result.assets[0].uri
-    //   }
-    // })
-
-    sendImageToServer(result.assets[0].uri);
+    set_value((prev_state) => {
+      return {
+        ...prev_state,
+        img_url: {
+          uri: local_uri,
+          name: file_name,
+          type: type
+        }
+      }
+    })
 
     set_user_img_modal(false);
   };
-
-  const sendImageToServer = async (imageUri) => {
-    const apiUrl = 'http://192.168.0.117:3000/user/edit_info'; // 이미지를 전송할 서버 URL
-
-    const formData = new FormData();
-    formData.append('image', {
-      uri: imageUri,
-      name: 'file.jpg',
-      type: 'image/jpg',
-    });
-
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-
-    try {
-      const response = await axios.post(apiUrl, formData, config);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   /**
    * 프로필 이미지 초기값으로 변경
@@ -133,7 +99,9 @@ const Set_image = ({
         <Pressable onPress={() => set_user_img_modal(true)}>
           {img_url === '' ?
             <Image source={user_profile} style={styles.img_profile} /> :
-            <Image source={img_url} style={styles.img_profile} />
+            <Image
+              source={{ uri: img_url }}
+              style={styles.img_profile} />
           }
           <Image source={edit_feather_btn} style={styles.img_edit} />
         </Pressable>

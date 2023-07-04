@@ -1,4 +1,4 @@
-import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { View, SafeAreaView, ScrollView, StyleSheet, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { useEffect } from "react";
@@ -40,7 +40,7 @@ const My_page = () => {
   }
 
   /**
-   * 유저 정보를 가져와준다. 
+   * 유저 정보 가져옴
    */
   const api_user_get_info = async () => {
     const params = {

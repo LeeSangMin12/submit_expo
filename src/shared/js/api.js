@@ -77,6 +77,7 @@ export const exec_request = async (req_obj, navigation) => {
 
 /**
  * data 요청 (multipart-form-data)
+ * : 사진이나 동영상을 보냄.
  */
 export const exec_request_multipart = async (req_obj, navigation) => {
   const token = await check_exp_token();
@@ -90,15 +91,13 @@ export const exec_request_multipart = async (req_obj, navigation) => {
   const { url, ...data } = req_obj;
 
   try {
-    const response = await api.post(SERVER_URL + `/${url}`, {
+    const response = await api.post(SERVER_URL + `/${url}`, data.form_data, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data"
       },
-      formData
     });
 
-    console.log('j');
     const result = response.data;
     return result;
   } catch (xhr) {

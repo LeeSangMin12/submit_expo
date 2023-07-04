@@ -4,6 +4,7 @@ import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_request, exec_request_multipart } from "@/shared/js/api";
+import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
 import Set_nickname from '@/components/setting/Set_nickname';
@@ -27,8 +28,12 @@ const Edit_profile = () => {
    */
   const edit_user_info = async () => {
     if (await check_nickname()) {
-      console.log('한번볼까');
-      api_user_edit_info();
+      const edit_info = await api_user_edit_info();
+      if (edit_info === true) {
+        const user_data = await api_user_get_info();
+        set_user_info(user_data);
+        navigation.navigate('Bottom_navigation', { screen: '마이' });
+      }
     }
   }
 
@@ -45,6 +50,14 @@ const Edit_profile = () => {
     } else {
       return true;
     }
+  }
+
+  /**
+  * redux안에 유저 정보를 넣어준다.
+  */
+  const set_user_info = (user_data) => {
+    set_store_info('user', 'nickname', user_data.nickname);
+    set_store_info('user', 'img_url', user_data.img_url);
   }
 
   /**
@@ -69,14 +82,38 @@ const Edit_profile = () => {
    * 유저 정보 수정
    */
   const api_user_edit_info = async () => {
+    const form_data = new FormData();
+    form_data.append('img_url', user_input.img_url);
+    form_data.append('nickname', user_input.nickname);
+
     const params = {
       url: "user/edit_info",
-      img_url: user_input.img_url,
-      nickname: user_input.nickname
+      form_data: form_data,
     };
 
     const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === "ok") {
+      return true;
+    } else {
+      return false;
+    }
   }
+
+  /**
+   * 유저 정보 가져옴
+   */
+  const api_user_get_info = async () => {
+    const params = {
+      url: 'user/get_info',
+    };
+
+    const result = await exec_request(params);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
 
   return (
     <View style={styles.container}>

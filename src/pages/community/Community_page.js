@@ -33,6 +33,7 @@ const Community_page = () => {
           <Image
             source={owl_left_nav}
             style={{ width: 160, height: 230, }} />
+
         </View>
       </View>
 

@@ -21,7 +21,9 @@ const User_card = ({
       <View style={styles.card_container}>
         {img_url === '' ?
           <Image source={user_profile_sm} /> :
-          <Image source={user_profile_sm} />
+          <Image
+            source={{ uri: img_url }}
+            style={{ width: 56, height: 56, borderRadius: '50' }} />
         }
 
         <View style={styles.card_text_container}>
@@ -38,6 +40,7 @@ const User_card = ({
               title={`${modified_addmission_year}학번`}
               background_color={COLORS.gray_470_bg} />
           </View>
+
         </View>
       </View>
 
