@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, Image, } from "react-native";
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -16,24 +16,37 @@ const Community_page = () => {
     department,
   } = useSelector((state) => state.user);
 
+  const [application_num, set_application_num] = useState(0);
 
   useEffect(() => {
     const fetch_data = async () => {
       const user_data = await api_user_get_info();
+      const community_info = await api_community_get_community(user_data.department);
 
       set_user_info(user_data);
+      set_application_num(community_info.application_num);
     };
     fetch_data();
   }, []);
 
   /**
+   * 커뮤니티 신청
+   */
+  const community_apply = async () => {
+    await api_community_apply_community();
+    const community_info = await api_community_get_community(department);
+
+    set_application_num(community_info.application_num);
+  }
+
+  /**
    * toast를 보여준다.
    */
-  const show_toast = () => {
+  const show_toast = (message) => {
     Toast.show({
       type: 'primary_success_toast',
       position: 'bottom',
-      text1: '커뮤니티가 신청 되었습니다!',
+      text1: message,
     });
   }
 
@@ -60,6 +73,22 @@ const Community_page = () => {
   };
 
   /**
+   * 커뮤니티 신청 현황을 가져와준다. 
+   */
+  const api_community_get_community = async (department) => {
+    const params = {
+      url: 'community/get_community',
+      department: department
+    }
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  }
+
+  /**
    * 현재 학과의 커뮤니티를 신청해준다.
    */
   const api_community_apply_community = async () => {
@@ -69,7 +98,15 @@ const Community_page = () => {
     }
 
     const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      show_toast('커뮤니티가 신청 되었습니다!')
+    } else if (result.status === 'already_applied') {
+      show_toast('이미 신청하셨습니다.')
+    }
   }
+
+
 
   return (
     <View style={{ justifyContent: 'space-between', flex: 1 }}>
@@ -80,7 +117,7 @@ const Community_page = () => {
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
-          <Text style={{ fontSize: 45, color: COLORS.primary_500 }}>0</Text>
+          <Text style={{ fontSize: 45, color: COLORS.primary_500 }}>{application_num}</Text>
           <Text style={{ fontSize: 45, }}> / </Text>
           <Text style={{ fontSize: 30 }}>300</Text>
         </View>
@@ -95,7 +132,7 @@ const Community_page = () => {
 
       <View style={{ alignItems: 'center', flex: 0.6 }}>
         <Button title='신청하기' style={{ width: '90%', height: 60 }}
-          on_press={api_community_apply_community} />
+          on_press={community_apply} />
       </View>
 
     </View>
