@@ -55,7 +55,6 @@ export const exec_request = async (req_obj, navigation) => {
 
   const body = {
     "data": data,
-    "token": token,
   };
 
   try {
@@ -109,7 +108,7 @@ export const exec_request_multipart = async (req_obj, navigation) => {
 
 /**
  * 토큰 만료 검사
- * : 1. 토큰이 만료되거나, 만료되기 5분전 ->  refresh token 검증후 새로운 토큰 발급
+ * : 1. 토큰이 만료 되거나 만료되기 5분전 일때 ->  refresh token 검증후 새로운 토큰 발급
  * : 2. 토큰이 존재하지 않음 -> 로그인 페이지 이동
  * : 3. acccess, refresh 토큰 만료 -> 로그인 페이지 이동
  */
@@ -120,14 +119,10 @@ export const check_exp_token = async () => {
 
   const token_info = jwt_decode(token);
 
-  const get_current_time_stamp = () => {
-    return Math.floor(Date.now() / 1000)  //밀리초를 초로 변환
-  };
-  const current_time_stamp = get_current_time_stamp();
-  const five_minutes_ago_time_stamp = current_time_stamp - (5 * 60);
+  const current_time_stamp = Math.floor(Date.now() / 1000)  //밀리초를 초로 변환
+  const five_minutes_ago_time_stamp = token_info.exp - (5 * 60);
 
-  if (token_info.exp <= five_minutes_ago_time_stamp) {  //access token이 만료 되기 5분전 일때
-
+  if (current_time_stamp >= five_minutes_ago_time_stamp) {  //access token이 만료 되기 5분전 일때
     const data = {
       user_id: token_info.user_id
     }

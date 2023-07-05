@@ -47,7 +47,7 @@ const My_page = () => {
       url: 'user/get_info',
     };
 
-    const result = await exec_request(params);
+    const result = await exec_request(params, navigation);
 
     if (result.status === 'ok') {
       return result.data;
