@@ -99,24 +99,6 @@ const Set_image = ({
           }
           <Image source={edit_feather_btn} style={styles.img_edit} />
         </Pressable>
-
-        {/* <View style={styles.file_container}>
-          <Fontisto
-            name="link"
-            size={24}
-            color={COLORS.gray_500}
-            style={{ marginRight: 10 }} />
-
-          <TextInput
-            style={styles.input}
-            placeholder="첨부파일 없음"
-            onChangeText={(label) => set_store_info('user', 'nickname', label)} />
-
-          <Ionicons
-            name="chevron-forward"
-            size={30}
-            color={COLORS.gray_500} />
-        </View> */}
       </View>
 
       <Custom_modal
@@ -146,21 +128,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: -25,
     left: 70,
-  },
-  file_container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.gray_480,
-    borderRadius: 6,
-    paddingHorizontal: 12,
-  },
-  input: {
-    flex: 1,
-    height: 50,
-    fontSize: 15,
-    paddingHorizontal: 3,
   },
   Modal_set_user_img: {
     container: {
