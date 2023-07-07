@@ -5,9 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import store from '@/store/store';
 import { go_prev_month, go_next_month, go_today } from '@/store/modules/calendar_slice';
-import { Button } from '@/components/components';
 import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png';
 
 const Assignment_month_info = () => {

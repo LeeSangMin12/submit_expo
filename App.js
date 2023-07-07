@@ -261,30 +261,12 @@ const App = () => {
           <Stack.Screen
             name="시간표 목록"
             component={Add_semester}
-            options={({ navigation }) => ({
+            options={() => ({
               headerTitleAlign: 'center',
               headerStyle: {
                 justifyContent: 'center',
                 alignItems: 'center'
               },
-              headerLeft: () => (
-                <Ionicons
-                  name="chevron-back"
-                  size={35}
-                  color="black"
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />),
-              headerRight: () => (
-                <Design_chip
-                  title='완료'
-                  container_style={{
-                    paddingHorizontal: 14,
-                    paddingVertical: 9,
-                    borderRadius: 50,
-                  }} />
-              )
             })}
           />
 

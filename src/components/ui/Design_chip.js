@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import COLORS from '@/shared/js/colors';
 
 const text_color_map = {
@@ -18,18 +18,21 @@ const Design_chip = ({
   title = '',
   background_color = COLORS.primary_490,
   container_style = {},
-  title_style = {}
+  title_style = {},
+  on_press
 }) => {
 
   const text_color = text_color_map[background_color] || 'black';
 
   return (
-    <View style={[
+    <Pressable style={[
       styles.chip,
       { backgroundColor: background_color },
-      container_style]}>
+      container_style]}
+      onPress={on_press}
+    >
       <Text numberOfLines={1} style={[styles.text_chip, { color: text_color }, title_style]}>{title}</Text>
-    </View>
+    </Pressable>
   );
 };
 

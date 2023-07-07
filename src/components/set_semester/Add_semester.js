@@ -1,13 +1,40 @@
-import { useEffect, useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { useEffect, useState, useLayoutEffect } from 'react';
+import { View, TextInput, StyleSheet, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { Ionicons } from '@expo/vector-icons'
 
+import { exec_request } from "@/shared/js/api";
 import COLORS from '@/shared/js/colors';
-import { set_store_info } from '@/shared/js/common';
+import { Design_chip } from '@/components/components';
 
-const Add_semester = () => {
+const Add_semester = ({ navigation }) => {
+  const [semester_name, set_semester_name] = useState('')
   const [semester_list, set_semester_list] = useState([]);
   const [selected_semester, set_selected_semester] = useState('');
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Ionicons
+          name="chevron-back"
+          size={35}
+          color="black"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />),
+      headerRight: () => (
+        <Design_chip
+          title='완료'
+          container_style={{
+            paddingHorizontal: 14,
+            paddingVertical: 9,
+            borderRadius: 50,
+          }}
+          on_press={submit_semester}
+        />)
+    });
+  }, [navigation, semester_name, selected_semester]);
 
   useEffect(() => {
     const semester_list = make_semester_list();
@@ -48,21 +75,54 @@ const Add_semester = () => {
     return make_semester_list;
   }
 
+  /**
+   * 학기 정보를 전송
+   */
+  const submit_semester = () => {
+    if (semester_name === '') {
+      Alert.alert('시간표 이름을 설정해주세요.');
+      return;
+    }
+
+    const add_semester = api_semester_add_semester();
+    if (add_semester) {
+      navigation.goBack();
+    }
+  }
+
+  /**
+   * 학기를 추가해준다.
+   */
+  const api_semester_add_semester = async () => {
+    const params = {
+      url: 'semester/add_semester',
+      semester_name: semester_name,
+      semester: selected_semester,
+      default_semester: 'false'  //기본 설정된 학기인지 여부
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.input_container}>
         <TextInput
           style={styles.input}
           placeholder='시간표 이름'
-          onChangeText={(label) => set_store_info('user', 'name', label)} />
+          value={semester_name}
+          onChangeText={(label) => set_semester_name(label)} />
       </View>
 
       <View>
         <Picker
           selectedValue={selected_semester}
-          onValueChange={(item_value, item_index) =>
-            set_selected_semester(item_value)
-          }>
+          onValueChange={(item_value) => set_selected_semester(item_value)}
+        >
           {semester_list.map((val, idx) =>
             <Picker.Item label={val.label} value={val.value} key={idx} />
           )}

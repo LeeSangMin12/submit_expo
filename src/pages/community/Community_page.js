@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 import { set_store_info } from '@/shared/js/common';
-import { exec_request, check_exp_token } from "@/shared/js/api";
+import { exec_request } from "@/shared/js/api";
 import { Button } from '@/components/components';
 import owl_left_nav from '@/assets/img/logo/owl_left_nav.png'
 import COLORS from "@/shared/js/colors";
@@ -105,8 +105,6 @@ const Community_page = () => {
       show_toast('이미 신청하셨습니다.')
     }
   }
-
-
 
   return (
     <View style={{ justifyContent: 'space-between', flex: 1 }}>
