@@ -24,7 +24,7 @@ const Set_semester = () => {
   }, []);
 
   /**
-   * 시간표 리스트를 조회해온다.
+   * 시간표 리스트를 조회
    */
   const api_semester_get_semester = async () => {
     const params = {
@@ -36,7 +36,23 @@ const Set_semester = () => {
     if (result.status === 'ok') {
       return result.data.selected_semesters;
     }
-  }
+  };
+
+  /**
+   * 기본 시간표 설정
+   */
+  const api_semester_set_default_semester = async (semester_id) => {
+    const params = {
+      url: 'semester/set_default_semester',
+      default_semester_id: semester_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true
+    }
+  };
 
   return (
     <ScrollView>
@@ -53,10 +69,15 @@ const Set_semester = () => {
               paddingHorizontal: 12
             }}
             key={idx}
-            onPress={() => {
-              set_store_info('semester', 'semester', val.semester);
-              set_store_info('semester', 'semester_id', val.semester_id)
-              navigation.navigate('홈')
+            onPress={async () => {
+              await api_semester_set_default_semester(val.semester_id);
+              const semesters = await api_semester_get_semester();
+              const default_semester = semesters.find(item => item.default_semester === 'true');
+
+              set_store_info('semester', 'semester_list', semesters);
+              set_store_info('semester', 'default_semester', default_semester.semester);
+              set_store_info('semester', 'default_semester_id', default_semester.semester_id);
+              navigation.navigate('홈');
             }}
           >
             <Text style={{ fontSize: 16, fontWeight: '600' }}>

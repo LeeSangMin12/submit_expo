@@ -16,8 +16,8 @@ const Home_page = () => {
       const semesters = await api_semester_get_semester();
       const default_semester = semesters.find(item => item.default_semester === 'true');
 
-      set_store_info('semester', 'semester', default_semester.semester);
-      set_store_info('semester', 'semester_id', default_semester.semester_id);
+      set_store_info('semester', 'default_semester', default_semester.semester);
+      set_store_info('semester', 'default_semester_id', default_semester.semester_id);
     };
     fetch_data();
   }, []);

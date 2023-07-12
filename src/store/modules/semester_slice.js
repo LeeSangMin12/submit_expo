@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initial_state = {
   semester_list: [],
-  semester: '',
-  semester_id: '',
+  default_semester: '',
+  default_semester_id: '',
 };
 
 const semester_slice = createSlice({

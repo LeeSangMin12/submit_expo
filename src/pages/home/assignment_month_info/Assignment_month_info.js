@@ -12,7 +12,7 @@ const Assignment_month_info = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const { semester } = useSelector((state) => state.semester);
+  const { default_semester } = useSelector((state) => state.semester);
   const { year, month } = useSelector((state) => state.calendar);
   const { nickname } = useSelector((state) => state.user);
 
@@ -28,7 +28,7 @@ const Assignment_month_info = () => {
 
         <Pressable onPress={() => navigation.navigate('시간표 목록')}>
           <View style={styles.header_left_container}>
-            <Text style={{ color: COLORS.primary_500 }}>{semester}</Text>
+            <Text style={{ color: COLORS.primary_500 }}>{default_semester}</Text>
             <Ionicons
               name="chevron-forward"
               size={20}
