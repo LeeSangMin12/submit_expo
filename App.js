@@ -234,7 +234,7 @@ const App = () => {
             })}
           />
           <Stack.Screen
-            name="캘린더 목록"
+            name="시간표 목록"
             component={Set_semester}
             options={({ navigation }) => ({
               headerTitleAlign: 'center',
@@ -253,13 +253,13 @@ const App = () => {
                   size={24}
                   color={COLORS.gray_520}
                   onPress={() => {
-                    navigation.navigate('시간표 목록')
+                    navigation.navigate('새 시간표 만들기')
                   }} />
               )
             })}
           />
           <Stack.Screen
-            name="시간표 목록"
+            name="새 시간표 만들기"
             component={Add_semester}
             options={() => ({
               headerTitleAlign: 'center',

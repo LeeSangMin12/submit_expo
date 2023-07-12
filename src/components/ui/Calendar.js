@@ -149,7 +149,8 @@ const Calendar = () => {
               size={24}
               color={COLORS.primary_500}
               onPress={() => {
-                navigation.navigate('시간표 목록')
+                set_assignment_list_modal(false);
+                navigation.navigate('과제 등록')
               }} />
           </Text>
         </View>

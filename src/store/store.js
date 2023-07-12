@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import assignment_add_slice from './modules/assignment_add_slice';
 import assignment_submit_slice from './modules/assignment_submit_slice';
 import calendar_slice from './modules/calendar_slice';
+import semester_slice from './modules/semester_slice';
 import user_reducer from './modules/user_slice';
 
 export default configureStore({
@@ -10,6 +11,7 @@ export default configureStore({
     assignment_add: assignment_add_slice.reducer,
     assignment_submit: assignment_submit_slice.reducer,
     calendar: calendar_slice.reducer,
+    semester: semester_slice.reducer,
     user: user_reducer.reducer,
   },
 });

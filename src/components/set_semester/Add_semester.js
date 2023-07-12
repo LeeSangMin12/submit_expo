@@ -4,6 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'
 
 import { exec_request } from "@/shared/js/api";
+import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Design_chip } from '@/components/components';
 
@@ -56,19 +57,19 @@ const Add_semester = ({ navigation }) => {
     const make_semester_list = year_arr.flatMap((year) => [
       {
         label: `${year}년 겨울학기`,
-        value: `${year}_winter_semester`
+        value: `${year}년 겨울학기`
       },
       {
         label: `${year}년 2학기`,
-        value: `${year}_second_semester`
+        value: `${year}년 2학기`
       },
       {
         label: `${year}년 여름학기`,
-        value: `${year}_summer_semester`
+        value: `${year}년 여름학기`
       },
       {
         label: `${year}년 1학기`,
-        value: `${year}_first_semester`
+        value: `${year}년 1학기`
       },
     ]);
 
@@ -78,7 +79,7 @@ const Add_semester = ({ navigation }) => {
   /**
    * 학기 정보를 전송
    */
-  const submit_semester = () => {
+  const submit_semester = async () => {
     if (semester_name === '') {
       Alert.alert('시간표 이름을 설정해주세요.');
       return;
@@ -86,12 +87,15 @@ const Add_semester = ({ navigation }) => {
 
     const add_semester = api_semester_add_semester();
     if (add_semester) {
+      const semesters = await api_semester_get_semester();
+
+      set_store_info('semester', 'semester_list', semesters);
       navigation.goBack();
     }
   }
 
   /**
-   * 학기를 추가해준다.
+   * 시간표를 추가해준다.
    */
   const api_semester_add_semester = async () => {
     const params = {
@@ -106,7 +110,22 @@ const Add_semester = ({ navigation }) => {
     if (result.status === 'ok') {
       return true;
     }
-  }
+  };
+
+  /**
+   * 시간표 리스트를 조회해온다.
+   */
+  const api_semester_get_semester = async () => {
+    const params = {
+      url: 'semester/get_semester'
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data.selected_semesters;
+    }
+  };
 
   return (
     <View style={styles.container}>

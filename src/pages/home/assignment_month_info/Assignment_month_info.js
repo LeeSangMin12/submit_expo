@@ -27,7 +27,7 @@ const Assignment_month_info = () => {
     <>
       <View style={styles.header_container}>
 
-        <Pressable onPress={() => navigation.navigate('캘린더 목록')}>
+        <Pressable onPress={() => navigation.navigate('시간표 목록')}>
           <View style={styles.header_left_container}>
             <Text style={{ color: COLORS.primary_500 }}>22학년도 1학기</Text>
             <Ionicons
