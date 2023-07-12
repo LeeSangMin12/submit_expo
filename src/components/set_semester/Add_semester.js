@@ -102,7 +102,7 @@ const Add_semester = ({ navigation }) => {
       url: 'semester/add_semester',
       semester_name: semester_name,
       semester: selected_semester,
-      default_semester: 'false'  //기본 설정된 학기인지 여부
+      default_semester: 'false'
     };
 
     const result = await exec_request(params, navigation);

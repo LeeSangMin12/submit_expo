@@ -1,10 +1,11 @@
-import { Text, ScrollView, Pressable } from 'react-native';
 import { useEffect } from 'react';
+import { Text, ScrollView, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
-import { exec_request } from "@/shared/js/api";
 import { set_store_info } from '@/shared/js/common';
+import { exec_request } from "@/shared/js/api";
 import COLORS from '@/shared/js/colors';
 
 const Set_semester = () => {
@@ -52,9 +53,16 @@ const Set_semester = () => {
               paddingHorizontal: 12
             }}
             key={idx}
-          // onPress={() => navigation.navigate('홈')}
+            onPress={() => {
+              set_store_info('semester', 'semester', val.semester);
+              set_store_info('semester', 'semester_id', val.semester_id)
+              navigation.navigate('홈')
+            }}
           >
-            <Text style={{ fontSize: 16, fontWeight: '600' }}>{val.semester}</Text>
+            <Text style={{ fontSize: 16, fontWeight: '600' }}>
+              {val.semester}
+              {val.default_semester === 'true' ? <Ionicons name="checkmark-circle" size={22} color={COLORS.primary_500} /> : ''}
+            </Text>
             <Text style={{ fontSize: 14, color: COLORS.primary_500 }}>{val.semester_name}</Text>
           </Pressable>
         ))

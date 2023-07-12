@@ -12,10 +12,9 @@ const Assignment_month_info = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const {
-    year,
-    month
-  } = useSelector((state) => state.calendar);
+  const { semester } = useSelector((state) => state.semester);
+  const { year, month } = useSelector((state) => state.calendar);
+  const { nickname } = useSelector((state) => state.user);
 
   const get_year_month = (year, month) => {
     const formatted_month = String(month).padStart(2, '0')
@@ -29,7 +28,7 @@ const Assignment_month_info = () => {
 
         <Pressable onPress={() => navigation.navigate('시간표 목록')}>
           <View style={styles.header_left_container}>
-            <Text style={{ color: COLORS.primary_500 }}>22학년도 1학기</Text>
+            <Text style={{ color: COLORS.primary_500 }}>{semester}</Text>
             <Ionicons
               name="chevron-forward"
               size={20}
@@ -47,7 +46,7 @@ const Assignment_month_info = () => {
       <View style={styles.content_container}>
         <View>
           <View style={styles.remaining_assignment_container}>
-            <Text style={styles.text_remaining_assignment}>김써밋님</Text>
+            <Text style={styles.text_remaining_assignment}>{nickname}님</Text>
             <Text style={styles.text_remaining_assignment}>3월 과제중
               <Text style={styles.text_remaining_assignment_num}> 2개</Text>
               가 남았어요!
