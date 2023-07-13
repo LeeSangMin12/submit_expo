@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Text, ScrollView, Pressable } from 'react-native';
+import { Text, ScrollView, Pressable, View, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import { set_store_info } from '@/shared/js/common';
 import { exec_request } from "@/shared/js/api";
@@ -22,6 +22,34 @@ const Set_semester = () => {
     };
     fetch_data();
   }, []);
+
+
+  /**
+   * 시간표 지우기
+   * : 기본 시간표인 경우 못지움
+   */
+  const delete_semester = (default_semester, semester_id) => {
+    if (default_semester === 'true') {
+      Alert.alert('기본 시간표는 지울 수 없습니다.')
+      return;
+    } else {
+      Alert.alert('삭제하시겠습니까?', '삭제시 등록한 모든 과제가 사라집니다.', [
+        {
+          text: '취소', style: 'cancel',
+        },
+        {
+          text: '삭제', onPress: async () => {
+            const delete_semester = api_semester_delete_semester(semester_id)
+            if (delete_semester) {
+              const semesters = await api_semester_get_semester();
+
+              set_store_info('semester', 'semester_list', semesters);
+            }
+          }
+        },
+      ]);
+    }
+  }
 
   /**
    * 시간표 리스트를 조회
@@ -54,6 +82,22 @@ const Set_semester = () => {
     }
   };
 
+  /**
+   * 시간표 삭제
+   */
+  const api_semester_delete_semester = async (semester_id) => {
+    const params = {
+      url: 'semester/delete_semester',
+      semester_id: semester_id,
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  }
+
   return (
     <ScrollView>
       {
@@ -80,10 +124,17 @@ const Set_semester = () => {
               navigation.navigate('홈');
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: '600' }}>
-              {val.semester}
-              {val.default_semester === 'true' ? <Ionicons name="checkmark-circle" size={22} color={COLORS.primary_500} /> : ''}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text style={{ fontSize: 16, fontWeight: '600' }}>
+                {val.semester} {val.default_semester === 'true' ? <Ionicons name="checkmark-circle" size={22} color={COLORS.primary_500} /> : ''}
+              </Text>
+              <Text>
+                <MaterialIcons
+                  name="cancel"
+                  size={30}
+                  onPress={() => delete_semester(val.default_semester, val.semester_id)} />
+              </Text>
+            </View>
             <Text style={{ fontSize: 14, color: COLORS.primary_500 }}>{val.semester_name}</Text>
           </Pressable>
         ))
