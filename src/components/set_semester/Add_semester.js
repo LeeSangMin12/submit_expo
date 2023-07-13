@@ -81,7 +81,7 @@ const Add_semester = ({ navigation }) => {
    */
   const submit_semester = async () => {
     if (semester_name === '') {
-      Alert.alert('시간표 이름을 설정해주세요.');
+      Alert.alert('캘린더 이름을 설정해주세요.');
       return;
     }
 
@@ -95,7 +95,7 @@ const Add_semester = ({ navigation }) => {
   }
 
   /**
-   * 시간표를 추가해준다.
+   * 캘린더를 추가해준다.
    */
   const api_semester_add_semester = async () => {
     const params = {
@@ -113,7 +113,7 @@ const Add_semester = ({ navigation }) => {
   };
 
   /**
-   * 시간표 리스트를 조회해온다.
+   * 캘린더 리스트를 조회해온다.
    */
   const api_semester_get_semester = async () => {
     const params = {
@@ -132,7 +132,7 @@ const Add_semester = ({ navigation }) => {
       <View style={styles.input_container}>
         <TextInput
           style={styles.input}
-          placeholder='시간표 이름'
+          placeholder='캘린더 이름'
           value={semester_name}
           onChangeText={(label) => set_semester_name(label)} />
       </View>

@@ -25,12 +25,12 @@ const Set_semester = () => {
 
 
   /**
-   * 시간표 지우기
-   * : 기본 시간표인 경우 못지움
+   * 캘린더 지우기
+   * : 기본 캘린더인 경우 못지움
    */
   const delete_semester = (default_semester, semester_id) => {
     if (default_semester === 'true') {
-      Alert.alert('기본 시간표는 지울 수 없습니다.')
+      Alert.alert('기본 캘린더는 지울 수 없습니다.')
       return;
     } else {
       Alert.alert('삭제하시겠습니까?', '삭제시 등록한 모든 과제가 사라집니다.', [
@@ -52,7 +52,7 @@ const Set_semester = () => {
   }
 
   /**
-   * 시간표 리스트를 조회
+   * 캘린더 리스트를 조회
    */
   const api_semester_get_semester = async () => {
     const params = {
@@ -67,7 +67,7 @@ const Set_semester = () => {
   };
 
   /**
-   * 기본 시간표 설정
+   * 기본 캘린더 설정
    */
   const api_semester_set_default_semester = async (semester_id) => {
     const params = {
@@ -83,7 +83,7 @@ const Set_semester = () => {
   };
 
   /**
-   * 시간표 삭제
+   * 캘린더 삭제
    */
   const api_semester_delete_semester = async (semester_id) => {
     const params = {

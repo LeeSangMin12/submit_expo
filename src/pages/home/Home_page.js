@@ -23,7 +23,7 @@ const Home_page = () => {
   }, []);
 
   /**
-   * 시간표 리스트를 조회해온다.
+   * 캘린더 리스트를 조회해온다.
    */
   const api_semester_get_semester = async () => {
     const params = {
