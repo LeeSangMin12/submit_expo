@@ -6,14 +6,12 @@ import COLORS from '@/shared/js/colors';
 
 /**
  * file을 첨부할수 있는 ui 생성
- * @param {str} file_name - 다룰 파일 이름
  * @param {arr} file_list - 선택된 file list
  * @param {function} select - file 선택 이벤트
  * @param {function} de_select - file 선택 해제 이벤트
  * @param {obj} container_style - file container style
  */
 const File_select = ({
-  file_name,
   file_list,
   select,
   de_select,
@@ -24,7 +22,7 @@ const File_select = ({
     try {
       const file = await DocumentPicker.getDocumentAsync();
       if (file.type === 'success') {
-        select(file_name, file);
+        select(file);
       }
     } catch (error) {
       console.log('Error selecting file:', error);
@@ -32,7 +30,7 @@ const File_select = ({
   };
 
   const de_select_file = (file_num) => {
-    de_select(file_name, file_num);
+    de_select(file_num);
   }
 
   return (

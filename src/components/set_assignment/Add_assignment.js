@@ -1,35 +1,38 @@
 import { useState } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
-import { add_attached_file, remove_attached_file } from '@/store/modules/assignment_submit_slice';
-import { Chip, Date_time_picker, File_select, Alarm_select } from '@/components/components';
+import { Date_time_picker, File_select, Alarm_select } from '@/components/components';
 
 const Add_assignment = () => {
-  const dispatch = useDispatch();
-  const {
-    email_attached_files,
-    lms_attached_files
-  } = useSelector((state) => state.assignment_submit);
 
-  const [submit_method, set_submit_method] = useState('email');
+  const [assignment_input, set_assignment_input] = useState({
+    title: '',
+    registration_date: '',
+    class_name: '',
+    professor_name: '',
+    assignment_description: '',
+    alarm_list: [],
+    file_list: [],
+  })
 
-  const select_file = async (file_name, file) => {
-    dispatch(add_attached_file({
-      method: file_name,
-      new_file: {
-        name: file.name,
-        size: file.size,
-        uri: file.uri
-      }
+  const select_file = async (file) => {
+    const new_file = {
+      name: file.name,
+      size: file.size,
+      uri: file.uri
+    };
+
+    set_assignment_input((prev_state) => ({
+      ...prev_state,
+      file_list: [...prev_state.file_list, new_file]
     }));
   };
 
-  const de_select_File = (file_name, file_num) => {
-    dispatch(remove_attached_file({
-      method: file_name,
-      file_num
+  const de_select_File = (file_num) => {
+    set_assignment_input((prev_state) => ({
+      ...prev_state,
+      file_list: prev_state.file_list.filter((file, idx) => idx !== file_num)
     }));
   };
 
@@ -45,7 +48,12 @@ const Add_assignment = () => {
           <TextInput
             style={[styles.input, { fontSize: 20 }]}
             placeholder='과제 제목'
-            placeholderTextColor={COLORS.gray_500} />
+            placeholderTextColor={COLORS.gray_500}
+            value={assignment_input.title}
+            onChangeText={(label) => set_assignment_input((prev_state) => {
+              return { ...prev_state, title: label }
+            })}
+          />
         </View>
 
         <View style={styles.input_container}>
@@ -58,14 +66,24 @@ const Add_assignment = () => {
           <TextInput
             style={styles.input}
             placeholder='수업명'
-            placeholderTextColor={COLORS.gray_500} />
+            placeholderTextColor={COLORS.gray_500}
+            value={assignment_input.class_name}
+            onChangeText={(label) => set_assignment_input((prev_state) => {
+              return { ...prev_state, class_name: label }
+            })}
+          />
         </View>
 
         <View style={styles.input_container}>
           <TextInput
             style={styles.input}
             placeholder='교수명'
-            placeholderTextColor={COLORS.gray_500} />
+            placeholderTextColor={COLORS.gray_500}
+            value={assignment_input.professor_name}
+            onChangeText={(label) => set_assignment_input((prev_state) => {
+              return { ...prev_state, professor_name: label }
+            })}
+          />
         </View>
 
         <View style={styles.input_container} >
@@ -83,7 +101,12 @@ const Add_assignment = () => {
             numberOfLines={4}
             maxLength={100}
             placeholder='과제 설명'
-            placeholderTextColor={COLORS.gray_500} />
+            placeholderTextColor={COLORS.gray_500}
+            value={assignment_input.assignment_description}
+            onChangeText={(label) => set_assignment_input((prev_state) => {
+              return { ...prev_state, assignment_description: label }
+            })}
+          />
         </View>
 
         <View style={styles.divider} />
@@ -91,8 +114,7 @@ const Add_assignment = () => {
         <Alarm_select />
 
         <File_select
-          file_name='email_attached_files'
-          file_list={email_attached_files}
+          file_list={assignment_input.file_list}
           select={select_file}
           de_select={de_select_File}
           container_style={{ marginTop: 15, marginBottom: 10 }}

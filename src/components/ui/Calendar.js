@@ -68,10 +68,7 @@ const render_calender = (year, month, open_assignment_list_modal) => {
       title: '과제2',
       backgorund_color: COLORS.primary_500
     },
-    {
-      title: '과제3',
-      backgorund_color: COLORS.primary_500
-    }]
+    ]
 
     const is_today =
       view_year === today.getFullYear() &&
