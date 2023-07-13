@@ -46,17 +46,6 @@ const calendar_slice = createSlice({
         month
       };
     },
-    go_today: (state) => {
-      const date = new Date();
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-
-      return {
-        ...state,
-        year,
-        month
-      }
-    }
   }
 })
 

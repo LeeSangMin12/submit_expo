@@ -68,13 +68,6 @@ const Assignment_month_info = () => {
                 size={19} />
             </Pressable>
 
-            <Pressable onPress={() => dispatch(go_today())}>
-              <Ionicons
-                name="today-outline"
-                style={{ marginLeft: 35 }}
-                size={22}
-                color={COLORS.primary_500} />
-            </Pressable>
           </View>
         </View>
 
