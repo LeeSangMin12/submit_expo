@@ -119,6 +119,8 @@ const Calendar = () => {
     month,
   } = useSelector((state) => state.calendar);
 
+  console.log('year', year);
+
 
   const [checked, setChecked] = useState(true);
   const [selected_date, set_selected_date] = useState('');

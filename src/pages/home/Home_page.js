@@ -13,11 +13,19 @@ const Home_page = () => {
 
   useEffect(() => {
     const fetch_data = async () => {
-      const semesters = await api_semester_get_semester();
+      const semesters = await api_semester_get_semester_list();
       const default_semester = semesters.find(item => item.default_semester === 'true');
+
+      const month =
+        default_semester.semester.split(' ')[1] === '1학기' ? 3 :
+          default_semester.semester.split(' ')[1] === '여름학기' ? 6 :
+            default_semester.semester.split(' ')[1] === '2학기' ? 9 :
+              default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : ''
 
       set_store_info('semester', 'default_semester', default_semester.semester);
       set_store_info('semester', 'default_semester_id', default_semester.semester_id);
+      set_store_info('calendar', 'year', parseInt(default_semester.semester.split(' ')[0].replace('년', '')));
+      set_store_info('calendar', 'month', parseInt(month));
     };
     fetch_data();
   }, []);
@@ -25,9 +33,9 @@ const Home_page = () => {
   /**
    * 캘린더 리스트를 조회해온다.
    */
-  const api_semester_get_semester = async () => {
+  const api_semester_get_semester_list = async () => {
     const params = {
-      url: 'semester/get_semester'
+      url: 'semester/get_semester_list'
     };
 
     const result = await exec_request(params, navigation);

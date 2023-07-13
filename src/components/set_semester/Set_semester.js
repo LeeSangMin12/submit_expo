@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Text, ScrollView, Pressable, View, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 
 import { set_store_info } from '@/shared/js/common';
 import { exec_request } from "@/shared/js/api";
@@ -16,7 +16,7 @@ const Set_semester = () => {
 
   useEffect(() => {
     const fetch_data = async () => {
-      const semesters = await api_semester_get_semester();
+      const semesters = await api_semester_get_semester_list();
 
       set_store_info('semester', 'semester_list', semesters);
     };
@@ -41,7 +41,7 @@ const Set_semester = () => {
           text: '삭제', onPress: async () => {
             const delete_semester = api_semester_delete_semester(semester_id)
             if (delete_semester) {
-              const semesters = await api_semester_get_semester();
+              const semesters = await api_semester_get_semester_list();
 
               set_store_info('semester', 'semester_list', semesters);
             }
@@ -54,9 +54,9 @@ const Set_semester = () => {
   /**
    * 캘린더 리스트를 조회
    */
-  const api_semester_get_semester = async () => {
+  const api_semester_get_semester_list = async () => {
     const params = {
-      url: 'semester/get_semester'
+      url: 'semester/get_semester_list'
     };
 
     const result = await exec_request(params, navigation);
@@ -115,12 +115,20 @@ const Set_semester = () => {
             key={idx}
             onPress={async () => {
               await api_semester_set_default_semester(val.semester_id);
-              const semesters = await api_semester_get_semester();
+              const semesters = await api_semester_get_semester_list();
               const default_semester = semesters.find(item => item.default_semester === 'true');
+
+              const month =
+                default_semester.semester.split(' ')[1] === '1학기' ? 3 :
+                  default_semester.semester.split(' ')[1] === '여름학기' ? 6 :
+                    default_semester.semester.split(' ')[1] === '2학기' ? 9 :
+                      default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : ''
 
               set_store_info('semester', 'semester_list', semesters);
               set_store_info('semester', 'default_semester', default_semester.semester);
               set_store_info('semester', 'default_semester_id', default_semester.semester_id);
+              set_store_info('calendar', 'year', parseInt(default_semester.semester.split(' ')[0].replace('년', '')));
+              set_store_info('calendar', 'month', parseInt(month));
               navigation.navigate('홈');
             }}
           >
@@ -129,8 +137,8 @@ const Set_semester = () => {
                 {val.semester} {val.default_semester === 'true' ? <Ionicons name="checkmark-circle" size={22} color={COLORS.primary_500} /> : ''}
               </Text>
               <Text>
-                <MaterialIcons
-                  name="cancel"
+                <Feather
+                  name="x"
                   size={30}
                   onPress={() => delete_semester(val.default_semester, val.semester_id)} />
               </Text>

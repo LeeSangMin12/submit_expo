@@ -87,7 +87,7 @@ const Add_semester = ({ navigation }) => {
 
     const add_semester = api_semester_add_semester();
     if (add_semester) {
-      const semesters = await api_semester_get_semester();
+      const semesters = await api_semester_get_semester_list();
 
       set_store_info('semester', 'semester_list', semesters);
       navigation.goBack();
@@ -115,9 +115,9 @@ const Add_semester = ({ navigation }) => {
   /**
    * 캘린더 리스트를 조회해온다.
    */
-  const api_semester_get_semester = async () => {
+  const api_semester_get_semester_list = async () => {
     const params = {
-      url: 'semester/get_semester'
+      url: 'semester/get_semester_list'
     };
 
     const result = await exec_request(params, navigation);

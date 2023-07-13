@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initial_state = {
+export const initial_state = {
   semester_list: [],
   default_semester: '',
   default_semester_id: '',
