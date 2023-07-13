@@ -8,7 +8,7 @@ const Add_assignment = () => {
 
   const [assignment_input, set_assignment_input] = useState({
     title: '',
-    registration_date: '',
+    registration_date: new Date(),
     class_name: '',
     professor_name: '',
     assignment_description: '',
@@ -58,6 +58,8 @@ const Add_assignment = () => {
 
         <View style={styles.input_container}>
           <Date_time_picker
+            value={assignment_input.registration_date}
+            set_value={set_assignment_input}
             picker_mode='date'
             date_title='등록날짜' />
         </View>
