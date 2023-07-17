@@ -1,10 +1,16 @@
-import { useState } from 'react';
-import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, } from 'react-native';
+import { useLayoutEffect, useState } from 'react';
+import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons'
 
+import { exec_request_multipart } from '@/shared/js/api';
 import COLORS from '@/shared/js/colors';
-import { Date_time_picker, File_select, Alarm_select } from '@/components/components';
+import { Date_time_picker, Design_chip, File_select } from '@/components/components';
 
-const Add_assignment = () => {
+const Add_assignment = ({ navigation }) => {
+  const {
+    default_semester_id,
+  } = useSelector((state) => state.semester);
 
   const [assignment_input, set_assignment_input] = useState({
     title: '',
@@ -12,14 +18,39 @@ const Add_assignment = () => {
     class_name: '',
     professor_name: '',
     assignment_description: '',
-    alarm_list: [],
     file_list: [],
   })
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Ionicons
+          name="chevron-back"
+          size={35}
+          color="black"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />),
+      headerRight: () => (
+        <Design_chip
+          title='완료'
+          on_press={add_assignment}
+          container_style={{
+            paddingHorizontal: 14,
+            paddingVertical: 9,
+            borderRadius: 50,
+          }}
+        />)
+    });
+  }, [navigation, assignment_input]);
+
   const select_file = async (file) => {
+
     const new_file = {
       name: file.name,
       size: file.size,
+      type: file.type,
       uri: file.uri
     };
 
@@ -35,6 +66,40 @@ const Add_assignment = () => {
       file_list: prev_state.file_list.filter((file, idx) => idx !== file_num)
     }));
   };
+
+  const add_assignment = async () => {
+    const { file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
+    const any_empty = Object.values(rest).some((value) => value === '');
+    if (any_empty) {
+      Alert.alert('값이 비어있습니다.');
+      return;
+    }
+
+    const add_assignment = await api_assignment_add_assignment();
+    // if(add_assignment){
+    //   navigation.goBack();
+    // }
+  }
+
+  const api_assignment_add_assignment = async () => {
+    const form_data = new FormData();
+    form_data.append('semester_id', default_semester_id);
+    form_data.append('title', assignment_input.title);
+    form_data.append('registration_date', assignment_input.registration_date);
+    form_data.append('class_name', assignment_input.class_name);
+    form_data.append('professor_name', assignment_input.professor_name);
+    form_data.append('assignment_description', assignment_input.assignment_description);
+    Array.from(assignment_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: "assignment/add_assignment",
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+  }
 
   return (
     <KeyboardAvoidingView
@@ -112,8 +177,6 @@ const Add_assignment = () => {
         </View>
 
         <View style={styles.divider} />
-
-        <Alarm_select />
 
         <File_select
           file_list={assignment_input.file_list}

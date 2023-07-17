@@ -40,6 +40,52 @@ export const exec_login = async (req_obj) => {
 }
 
 /**
+ * 토큰 만료 검사
+ * : 1. 토큰이 만료 되거나 만료되기 5분전 일때 ->  refresh token 검증후 새로운 토큰 발급
+ * : 2. 토큰이 존재하지 않음 -> 로그인 페이지 이동
+ * : 3. acccess, refresh 토큰 만료 -> 로그인 페이지 이동
+ */
+export const check_exp_token = async () => {
+  const token = await async_storage_get_data('token') ? await async_storage_get_data('token') : '';
+
+  if (token === '') return 'token_expired';
+
+  const token_info = jwt_decode(token);
+
+  const current_time_stamp = Math.floor(Date.now() / 1000)  //밀리초를 초로 변환
+  const five_minutes_ago_time_stamp = token_info.exp - (5 * 60);
+
+  if (current_time_stamp >= five_minutes_ago_time_stamp) {  //access token이 만료 되기 5분전 일때
+    const data = {
+      user_id: token_info.user_id
+    }
+    const body = {
+      "data": data,
+    };
+
+    const response = await api.post(SERVER_URL + `/check/token`, JSON.stringify(body), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+    });
+
+    const result = response.data;
+
+    if (result.status === 'token_expired') {
+      await async_storage_remove_data('token');
+      return 'token_expired';
+    } else {
+      await async_storage_store_data('token', result.data.access_token);
+      return result.data.access_token;
+    }
+
+  } else {  //access token이 만료되지 않았을때
+    return token;
+  }
+};
+
+/**
  * data 요청
  */
 export const exec_request = async (req_obj, navigation) => {
@@ -93,7 +139,7 @@ export const exec_request_multipart = async (req_obj, navigation) => {
     const response = await api.post(SERVER_URL + `/${url}`, data.form_data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data; charset=utf-8"
       },
     });
 
@@ -106,48 +152,3 @@ export const exec_request_multipart = async (req_obj, navigation) => {
   };
 }
 
-/**
- * 토큰 만료 검사
- * : 1. 토큰이 만료 되거나 만료되기 5분전 일때 ->  refresh token 검증후 새로운 토큰 발급
- * : 2. 토큰이 존재하지 않음 -> 로그인 페이지 이동
- * : 3. acccess, refresh 토큰 만료 -> 로그인 페이지 이동
- */
-export const check_exp_token = async () => {
-  const token = await async_storage_get_data('token') ? await async_storage_get_data('token') : '';
-
-  if (token === '') return 'token_expired';
-
-  const token_info = jwt_decode(token);
-
-  const current_time_stamp = Math.floor(Date.now() / 1000)  //밀리초를 초로 변환
-  const five_minutes_ago_time_stamp = token_info.exp - (5 * 60);
-
-  if (current_time_stamp >= five_minutes_ago_time_stamp) {  //access token이 만료 되기 5분전 일때
-    const data = {
-      user_id: token_info.user_id
-    }
-    const body = {
-      "data": data,
-    };
-
-    const response = await api.post(SERVER_URL + `/check/token`, JSON.stringify(body), {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-    });
-
-    const result = response.data;
-
-    if (result.status === 'token_expired') {
-      await async_storage_remove_data('token');
-      return 'token_expired';
-    } else {
-      await async_storage_store_data('token', result.data.access_token);
-      return result.data.access_token;
-    }
-
-  } else {  //access token이 만료되지 않았을때
-    return token;
-  }
-};

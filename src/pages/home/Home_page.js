@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import { set_store_info } from '@/shared/js/common';
 import { exec_request } from "@/shared/js/api";
+import { Calendar } from '@/components/components.js'
 import COLORS from '@/shared/js/colors';
 import Assignment_month_info from "@/pages/home/assignment_month_info/Assignment_month_info.js";
-import { Calendar } from '@/components/components.js'
 
 const Home_page = () => {
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ const Home_page = () => {
         default_semester.semester.split(' ')[1] === '1학기' ? 3 :
           default_semester.semester.split(' ')[1] === '여름학기' ? 6 :
             default_semester.semester.split(' ')[1] === '2학기' ? 9 :
-              default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : ''
+              default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : '';
 
       set_store_info('semester', 'default_semester', default_semester.semester);
       set_store_info('semester', 'default_semester_id', default_semester.semester_id);

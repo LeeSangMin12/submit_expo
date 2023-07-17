@@ -148,26 +148,6 @@ const App = () => {
           <Stack.Screen
             name="과제 등록"
             component={Add_assignment}
-            options={({ navigation }) => ({
-              headerTitleAlign: 'center',
-              headerLeft: () => (
-                <Ionicons
-                  name="chevron-back"
-                  size={35}
-                  color="black"
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />),
-              headerRight: () => (
-                <Design_chip
-                  title='완료'
-                  container_style={{
-                    paddingHorizontal: 14,
-                    paddingVertical: 9,
-                    borderRadius: 50,
-                  }} />)
-            })}
           />
           <Stack.Screen
             name="과제 알림 설정"

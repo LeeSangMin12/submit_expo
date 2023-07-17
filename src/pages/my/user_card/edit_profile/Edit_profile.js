@@ -1,6 +1,6 @@
-import { useSelector } from 'react-redux';
 import { useState } from "react";
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_request, exec_request_multipart } from "@/shared/js/api";
@@ -90,8 +90,6 @@ const Edit_profile = () => {
       url: "user/edit_info",
       form_data: form_data,
     };
-
-    console.log('img_url', user_input.img_url);
 
     const result = await exec_request_multipart(params, navigation);
 
