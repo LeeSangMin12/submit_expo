@@ -1,13 +1,43 @@
+import { useEffect, useState } from 'react';
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
-import { Ionicons } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
+import { Ionicons, Fontisto } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
 import { Design_chip } from '@/components/components';
 import owl_logo from '@/assets/img/logo/owl_nav.png'
 
 const Semester_info = () => {
+  const { assignment_list } = useSelector((state) => state.assignment);
+  const [assignment_info, set_assignment_info] = useState({
+    remaining_num: '',
+    completion_num: '',
+  });
+
+  useEffect(() => {
+    calculate_assignments();
+  }, [assignment_list,]);
+
+  const calculate_assignments = () => {
+    const remaining_assignments_num = assignment_list.filter((val) => {
+      if (val.completion_status === 'false') {
+        return true;
+      }
+    });
+
+    set_assignment_info((prev_state) => ({
+      ...prev_state,
+      remaining_num: remaining_assignments_num.length
+    }));
+
+    set_assignment_info((prev_state) => ({
+      ...prev_state,
+      completion_num: assignment_list.length - remaining_assignments_num.length
+    }));
+
+  }
+
   return (
     <>
       <View style={styles.header_container}>
@@ -33,16 +63,16 @@ const Semester_info = () => {
           <View style={styles.remaining_assignment_container}>
             <Text style={styles.text_remaining_assignment}>이번 학기는 과제</Text>
             <Text style={styles.text_remaining_assignment}>
-              <Text style={styles.text_remaining_assignment_num}>5개</Text>
+              <Text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Text>
               가 남았어요!
             </Text>
           </View>
 
           <View style={styles.assignment_achivement_container}>
             <Design_chip
-              title='70% 완료' />
-            <Text style={styles.text_total_assignment}>  총 15개 중</Text>
-            <Text style={styles.text_achivement_assignment}> 10개 완료</Text>
+              title={`${assignment_info.completion_num / assignment_list.length * 100}% 완료`} />
+            <Text style={styles.text_total_assignment}>  총 {assignment_list.length}개 중</Text>
+            <Text style={styles.text_achivement_assignment}> {assignment_info.completion_num}개 완료</Text>
           </View>
         </View>
 
@@ -52,7 +82,7 @@ const Semester_info = () => {
       </View>
 
       <LinearProgress
-        value={0.5}
+        value={assignment_info.completion_num / assignment_list.length}
         color={COLORS.primary_500}
         variant='determine'
         style={styles.assignment_progress} />
