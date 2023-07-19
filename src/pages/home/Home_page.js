@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
 
 import { set_store_info } from '@/shared/js/common';
 import { exec_request } from "@/shared/js/api";
@@ -11,9 +10,6 @@ import Assignment_month_info from "@/pages/home/assignment_month_info/Assignment
 
 const Home_page = () => {
   const navigation = useNavigation();
-  const {
-    default_semester_id,
-  } = useSelector((state) => state.semester);
 
   useEffect(() => {
     const fetch_data = async () => {
@@ -48,8 +44,6 @@ const Home_page = () => {
       return result.data.selected_semesters;
     }
   };
-
-
 
   return (
     < >
