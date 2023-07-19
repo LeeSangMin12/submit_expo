@@ -9,8 +9,8 @@ const Submit_assignment = ({ navigation, route }) => {
 
   const [submit_method, set_submit_method] = useState('email');
   const [assignment_email_input, set_assignment_email_input] = useState({
-    email_address: '',
     submit_date_time: new Date(),
+    email_address: '',
     title: '',
     description: '',
     file_list: [],
@@ -58,6 +58,10 @@ const Submit_assignment = ({ navigation, route }) => {
 
             <View style={{ alignItems: 'center' }}>
               <TextInput
+                value={assignment_email_input.email_address}
+                onChangeText={(label) => set_assignment_email_input((prev_state) => {
+                  return { ...prev_state, email_address: label }
+                })}
                 style={styles.input}
                 placeholder='제출할 메일주소'
                 placeholderTextColor={COLORS.gray_500} />
@@ -65,6 +69,10 @@ const Submit_assignment = ({ navigation, route }) => {
 
             <View style={styles.input_container}>
               <TextInput
+                value={assignment_email_input.title}
+                onChangeText={(label) => set_assignment_email_input((prev_state) => {
+                  return { ...prev_state, title: label }
+                })}
                 style={styles.input}
                 placeholder='메일 제목'
                 placeholderTextColor={COLORS.gray_500} />
@@ -72,6 +80,10 @@ const Submit_assignment = ({ navigation, route }) => {
 
             <View style={styles.input_container} >
               <TextInput
+                value={assignment_email_input.description}
+                onChangeText={(label) => set_assignment_email_input((prev_state) => {
+                  return { ...prev_state, description: label }
+                })}
                 style={{
                   padding: 10,
                   height: 120,
@@ -98,6 +110,10 @@ const Submit_assignment = ({ navigation, route }) => {
           <>
             <View style={styles.input_container}>
               <TextInput
+                value={set_assignment_lms_input.url}
+                onChangeText={(label) => set_assignment_lms_input((prev_state) => {
+                  return { ...prev_state, url: label }
+                })}
                 style={styles.input}
                 placeholder='링크를 입력해주세요'
                 placeholderTextColor={COLORS.gray_500} />
