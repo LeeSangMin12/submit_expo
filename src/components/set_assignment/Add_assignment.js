@@ -46,7 +46,7 @@ const Add_assignment = ({ navigation }) => {
     });
   }, [navigation, assignment_input]);
 
-  const select_file = async (file) => {
+  const select_file = (file) => {
 
     const new_file = {
       name: file.name,

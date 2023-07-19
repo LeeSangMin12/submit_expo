@@ -1,37 +1,24 @@
 import { useState } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
-import { add_attached_file, remove_attached_file } from '@/store/modules/assignment_submit_slice';
 import { Chip, Date_time_picker, File_select } from '@/components/components';
 
-const Submit_assignment = () => {
-  const dispatch = useDispatch();
-  const {
-    email_attached_files,
-    lms_attached_files
-  } = useSelector((state) => state.assignment_submit);
+const Submit_assignment = ({ navigation, route }) => {
+  const { assignment_id } = route.params;
 
   const [submit_method, set_submit_method] = useState('email');
-
-  const select_file = async (file_name, file) => {
-    dispatch(add_attached_file({
-      method: file_name,
-      new_file: {
-        name: file.name,
-        size: file.size,
-        uri: file.uri
-      }
-    }));
-  };
-
-  const de_select_File = (file_name, file_num) => {
-    dispatch(remove_attached_file({
-      method: file_name,
-      file_num
-    }));
-  };
+  const [assignment_email_input, set_assignment_email_input] = useState({
+    email_address: '',
+    submit_date_time: new Date(),
+    title: '',
+    description: '',
+    file_list: [],
+  });
+  const [assignment_lms_input, set_assignment_lms_input] = useState({
+    url: '',
+    file_list: [],
+  });
 
   return (
     <KeyboardAvoidingView
@@ -60,10 +47,13 @@ const Submit_assignment = () => {
         {submit_method === 'email' ?
           < >
             <View style={styles.input_container}>
-              {/* <Date_time_picker
+              <Date_time_picker
+                value={assignment_email_input.submit_date_time}
+                set_value={set_assignment_email_input}
                 picker_mode='date_time'
                 date_title='제출날짜'
-                time_title='제출시간' /> */}
+                time_title='제출시간'
+              />
             </View>
 
             <View style={{ alignItems: 'center' }}>
@@ -99,10 +89,8 @@ const Submit_assignment = () => {
             </View>
 
             <File_select
-              file_name='email_attached_files'
-              file_list={email_attached_files}
-              select={select_file}
-              de_select={de_select_File}
+              value={assignment_email_input.file_list}
+              set_value={set_assignment_email_input}
               container_style={{ marginTop: 30, marginBottom: 10 }}
             />
           </>
@@ -116,10 +104,8 @@ const Submit_assignment = () => {
             </View>
 
             <File_select
-              file_name='lms_attached_files'
-              file_list={lms_attached_files}
-              select={select_file}
-              de_select={de_select_File}
+              value={assignment_lms_input.file_list}
+              set_value={set_assignment_lms_input}
               container_style={{ marginTop: 30, marginBottom: 10 }}
             />
           </>

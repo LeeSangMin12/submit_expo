@@ -12,9 +12,8 @@ import COLORS from '@/shared/js/colors';
  * @param {obj} container_style - file container style
  */
 const File_select = ({
-  file_list,
-  select,
-  de_select,
+  value,
+  set_value,
   container_style
 }) => {
 
@@ -22,7 +21,16 @@ const File_select = ({
     try {
       const file = await DocumentPicker.getDocumentAsync();
       if (file.type === 'success') {
-        select(file);
+        const new_file = {
+          name: file.name,
+          size: file.size,
+          uri: file.uri
+        };
+
+        set_value((prev_state) => ({
+          ...prev_state,
+          file_list: [...prev_state.file_list, new_file]
+        }));
       }
     } catch (error) {
       console.log('Error selecting file:', error);
@@ -30,7 +38,10 @@ const File_select = ({
   };
 
   const de_select_file = (file_num) => {
-    de_select(file_num);
+    set_value((prev_state) => ({
+      ...prev_state,
+      file_list: prev_state.file_list.filter((file, idx) => idx !== file_num)
+    }));
   }
 
   return (
@@ -50,7 +61,7 @@ const File_select = ({
           color={COLORS.gray_500} />
       </Pressable>
       {
-        file_list.map((file, idx) => {
+        value.map((file, idx) => {
           return (
             <View style={styles.file_list.container} key={idx}>
               <Pressable style={styles.file_list.pressable_container} >

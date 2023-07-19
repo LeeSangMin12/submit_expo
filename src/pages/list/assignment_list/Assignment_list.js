@@ -81,60 +81,15 @@ const Assignment_list = () => {
             <View style={styles.assignment.chip_container}>
               <Chip
                 label={assignment.status}
+                on_press={() => navigation.navigate('과제 제출', {
+                  assignment_id: assignment.assignment_id
+                })}
                 background_color={assignment_status_color_map[assignment.status]} />
             </View>
           </View>
           <View style={styles.divider} />
         </View>
       ))}
-
-
-
-      {/* <View style={styles.assignment.container}>
-        <View style={styles.assignment.title_container}>
-          <CheckBox
-            checked={checked}
-            onPress={toggle_checkbox}
-            iconType="material-community"
-            checkedIcon="checkbox-outline"
-            uncheckedIcon={'checkbox-blank-outline'}
-            size={34}
-            title='네크워크'
-            textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
-            checkedColor={COLORS.primary_500}
-          />
-        </View>
-        <View style={styles.assignment.chip_container}>
-          <Chip
-            label="설정"
-            on_press={() => navigation.navigate('과제 제출')}
-            background_color={COLORS.primary_500} />
-        </View>
-      </View>
-      <View style={styles.divider} />
-
-      <View style={styles.assignment.container}>
-        <View style={styles.assignment.title_container}>
-          <CheckBox
-            checked={checked}
-            onPress={toggle_checkbox}
-            iconType="material-community"
-            checkedIcon="checkbox-outline"
-            uncheckedIcon={'checkbox-blank-outline'}
-            size={34}
-            title='간호 심리학'
-            textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
-            checkedColor={COLORS.primary_500}
-          />
-        </View>
-        <View style={styles.assignment.chip_container}>
-          <Chip
-            label="예정"
-            background_color={COLORS.primary_490} />
-        </View>
-      </View>
-      <View style={styles.divider} /> */}
-
     </>
   );
 }
