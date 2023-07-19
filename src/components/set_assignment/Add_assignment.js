@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 import { exec_request_multipart } from '@/shared/js/api';
 import COLORS from '@/shared/js/colors';
+import { show_toast } from '@/shared/js/common';
 import { Date_time_picker, Design_chip, File_select } from '@/components/components';
 
 const Add_assignment = ({ navigation }) => {
@@ -50,7 +51,6 @@ const Add_assignment = ({ navigation }) => {
     const new_file = {
       name: file.name,
       size: file.size,
-      type: file.type,
       uri: file.uri
     };
 
@@ -76,16 +76,19 @@ const Add_assignment = ({ navigation }) => {
     }
 
     const add_assignment = await api_assignment_add_assignment();
-    // if(add_assignment){
-    //   navigation.goBack();
-    // }
+
+    if (add_assignment) {
+      navigation.navigate('Bottom_navigation', { screen: '홈' });
+      show_toast('과제가 등록되었습니다.');
+    }
   }
 
   const api_assignment_add_assignment = async () => {
     const form_data = new FormData();
+
     form_data.append('semester_id', default_semester_id);
     form_data.append('title', assignment_input.title);
-    form_data.append('registration_date', assignment_input.registration_date);
+    form_data.append('registration_date', assignment_input.registration_date.toLocaleDateString("ko-KR"));
     form_data.append('class_name', assignment_input.class_name);
     form_data.append('professor_name', assignment_input.professor_name);
     form_data.append('assignment_description', assignment_input.assignment_description);
@@ -99,6 +102,10 @@ const Add_assignment = ({ navigation }) => {
     };
 
     const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
   }
 
   return (

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 import { set_user } from '@/store/modules/user_slice';
 import { set_semester_list } from '@/store/modules/semester_slice';
@@ -32,8 +33,17 @@ export const set_store_info = (store_name, key, value) => {
 };
 
 /**
- * AsyncStorage
+ * toast show
+ * @param {*} message : toast messge 
  */
+export const show_toast = (message) => {
+  Toast.show({
+    type: 'primary_success_toast',
+    position: 'bottom',
+    text1: message,
+  });
+}
+
 
 /**
  * AsyncStorage 데이터 저장

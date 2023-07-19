@@ -60,10 +60,10 @@ const Submit_assignment = () => {
         {submit_method === 'email' ?
           < >
             <View style={styles.input_container}>
-              <Date_time_picker
+              {/* <Date_time_picker
                 picker_mode='date_time'
                 date_title='제출날짜'
-                time_title='제출시간' />
+                time_title='제출시간' /> */}
             </View>
 
             <View style={{ alignItems: 'center' }}>

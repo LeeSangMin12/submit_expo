@@ -139,7 +139,7 @@ export const exec_request_multipart = async (req_obj, navigation) => {
     const response = await api.post(SERVER_URL + `/${url}`, data.form_data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data; charset=utf-8"
+        "Content-Type": "multipart/form-data"
       },
     });
 
