@@ -17,7 +17,7 @@ const Semester_info = () => {
 
   useEffect(() => {
     calculate_assignments();
-  }, [assignment_list,]);
+  }, [assignment_list]);
 
   const calculate_assignments = () => {
     const remaining_assignments_num = assignment_list.filter((val) => {
@@ -35,7 +35,6 @@ const Semester_info = () => {
       ...prev_state,
       completion_num: assignment_list.length - remaining_assignments_num.length
     }));
-
   }
 
   return (
@@ -70,7 +69,7 @@ const Semester_info = () => {
 
           <View style={styles.assignment_achivement_container}>
             <Design_chip
-              title={`${assignment_info.completion_num / assignment_list.length * 100}% 완료`} />
+              title={`${Math.floor(assignment_info.completion_num / assignment_list.length * 100)}% 완료`} />
             <Text style={styles.text_total_assignment}>  총 {assignment_list.length}개 중</Text>
             <Text style={styles.text_achivement_assignment}> {assignment_info.completion_num}개 완료</Text>
           </View>

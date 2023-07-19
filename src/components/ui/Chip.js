@@ -7,6 +7,7 @@ const label_color_map = {
   [COLORS.primary_500]: COLORS.white,
   [COLORS.primary_490]: COLORS.primary_500,
   [COLORS.gray_470_bg]: COLORS.black_500,
+  ['#FF5454']: COLORS.white,
 };
 
 /**

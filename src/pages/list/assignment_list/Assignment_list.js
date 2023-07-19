@@ -9,6 +9,13 @@ import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Chip } from '@/components/components';
 
+const assignment_status_color_map = {
+  ['예정']: COLORS.primary_490,
+  ['설정']: COLORS.primary_500,
+  ['LMS']: '#FF5454',
+  ['완료']: '#FF5454'
+}
+
 const Assignment_list = () => {
   const navigation = useNavigation();
   const {
@@ -74,7 +81,7 @@ const Assignment_list = () => {
             <View style={styles.assignment.chip_container}>
               <Chip
                 label={assignment.status}
-                background_color={COLORS.gray_470_bg} />
+                background_color={assignment_status_color_map[assignment.status]} />
             </View>
           </View>
           <View style={styles.divider} />
