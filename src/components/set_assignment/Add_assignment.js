@@ -3,9 +3,9 @@ import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } 
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'
 
-import { exec_request_multipart } from '@/shared/js/api';
+import { exec_request, exec_request_multipart } from '@/shared/js/api';
+import { set_store_info, show_toast } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
-import { show_toast } from '@/shared/js/common';
 import { Date_time_picker, Design_chip, File_select } from '@/components/components';
 
 const Add_assignment = ({ navigation, route }) => {
@@ -34,15 +34,30 @@ const Add_assignment = ({ navigation, route }) => {
           }}
         />),
       headerRight: () => (
-        <Design_chip
-          title='완료'
-          on_press={add_assignment}
-          container_style={{
-            paddingHorizontal: 14,
-            paddingVertical: 9,
-            borderRadius: 50,
-          }}
-        />)
+        <>
+          {route.params !== undefined ?
+            <Design_chip
+              title='삭제'
+              on_press={delete_assignment}
+              background_color={'#FF5454'}
+              container_style={{
+                paddingHorizontal: 14,
+                paddingVertical: 9,
+                borderRadius: 50,
+                marginRight: 5
+              }}
+            /> : null}
+          <Design_chip
+            title='완료'
+            on_press={add_assignment}
+            container_style={{
+              paddingHorizontal: 14,
+              paddingVertical: 9,
+              borderRadius: 50,
+            }}
+          />
+        </>
+      )
     });
   }, [navigation, assignment_input]);
 
@@ -60,6 +75,24 @@ const Add_assignment = ({ navigation, route }) => {
       })) : null;
   }, []);
 
+  const delete_assignment = () => {
+    Alert.alert('삭제하시겠습니까?', '삭제후 되돌릴 수 없습니다', [
+      { text: '취소', style: 'cancel' },
+      {
+        text: '삭제', onPress: async () => {
+          const delete_assignment = await api_assignment_delete_assignment();
+          if (delete_assignment) {
+            const assignment_list = await api_assignment_get_assignment_list();
+
+            set_store_info('assignment', 'assignment_list', assignment_list);
+            navigation.navigate('Bottom_navigation', { screen: '예약전송' });
+          }
+        }
+
+      }
+    ]);
+  };
+
   const add_assignment = async () => {
     const { file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
     const any_empty = Object.values(rest).some((value) => value === '');
@@ -73,6 +106,19 @@ const Add_assignment = ({ navigation, route }) => {
     if (add_assignment) {
       navigation.navigate('Bottom_navigation', { screen: '홈' });
       show_toast('과제가 등록되었습니다.');
+    }
+  }
+
+  const api_assignment_delete_assignment = async () => {
+    const params = {
+      url: 'assignment/delete_assignment',
+      assignment_id: route.params.assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
     }
   }
 
@@ -99,6 +145,19 @@ const Add_assignment = ({ navigation, route }) => {
 
     if (result.status === 'ok') {
       return true;
+    }
+  }
+
+  const api_assignment_get_assignment_list = async () => {
+    const params = {
+      url: 'assignment/get_assignment_list',
+      semester_id: default_semester_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
     }
   }
 

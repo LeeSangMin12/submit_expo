@@ -69,9 +69,9 @@ const Semester_info = () => {
 
           <View style={styles.assignment_achivement_container}>
             <Design_chip
-              title={`${Math.floor(assignment_info.completion_num / assignment_list.length * 100)}% 완료`} />
+              title={`${assignment_list.length === 0 ? 0 : Math.floor(assignment_info.completion_num / assignment_list.length * 100)}% 완료`} />
             <Text style={styles.text_total_assignment}>  총 {assignment_list.length}개 중</Text>
-            <Text style={styles.text_achivement_assignment}> {assignment_info.completion_num}개 완료</Text>
+            <Text style={styles.text_achivement_assignment}> {assignment_info.completion_num}개 완료 </Text>
           </View>
         </View>
 
