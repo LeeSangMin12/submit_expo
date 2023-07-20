@@ -16,12 +16,11 @@ const Date_time_picker = ({
   value,
   set_value
 }) => {
-  const [date, set_date] = useState(new Date());
   const [mode, set_mode] = useState('date');
   const [show, set_show] = useState(false);
 
   const on_change = (event, selected_date) => {
-    const current_date = selected_date || value;
+    const current_date = new Date(selected_date) || value;
     if (Platform.OS === 'android') {
       set_show(false); // for iOS, add a button that closes the picker
     }

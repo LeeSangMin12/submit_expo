@@ -176,25 +176,8 @@ const App = () => {
           <Stack.Screen
             name="과제 제출"
             component={Submit_assignment}
-            options={({ navigation }) => ({
+            options={() => ({
               headerTitleAlign: 'center',
-              headerLeft: () => (
-                <Ionicons
-                  name="chevron-back"
-                  size={35}
-                  color="black"
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />),
-              headerRight: () => (
-                <Design_chip
-                  title='완료'
-                  container_style={{
-                    paddingHorizontal: 14,
-                    paddingVertical: 9,
-                    borderRadius: 50,
-                  }} />)
             })}
           />
           <Stack.Screen

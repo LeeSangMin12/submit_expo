@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, } from 'react-native';
+import { Ionicons } from '@expo/vector-icons'
 
+
+import { exec_request_multipart } from '@/shared/js/api';
 import COLORS from '@/shared/js/colors';
-import { Chip, Date_time_picker, File_select } from '@/components/components';
+import { Chip, Date_time_picker, File_select, Design_chip } from '@/components/components';
 
 const Submit_assignment = ({ navigation, route }) => {
   const { assignment_id } = route.params;
 
   const [submit_method, set_submit_method] = useState('email');
   const [assignment_email_input, set_assignment_email_input] = useState({
+    method: 'email',
     submit_date_time: new Date(),
     email_address: '',
     title: '',
@@ -16,9 +20,62 @@ const Submit_assignment = ({ navigation, route }) => {
     file_list: [],
   });
   const [assignment_lms_input, set_assignment_lms_input] = useState({
+    method: 'lms',
     url: '',
     file_list: [],
   });
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Ionicons
+          name="chevron-back"
+          size={35}
+          color="black"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />),
+      headerRight: () => (
+        <Design_chip
+          title='완료'
+          on_press={submit_assignment}
+          container_style={{
+            paddingHorizontal: 14,
+            paddingVertical: 9,
+            borderRadius: 50,
+          }}
+        />)
+    });
+  }, [navigation, submit_method, assignment_email_input, assignment_lms_input]);
+
+  const submit_assignment = async () => {
+    switch (submit_method) {
+      case 'email':
+        console.log('email');
+        break;
+      case 'lms':
+        await api_assignment_submit_lms();
+        break;
+    }
+  };
+
+  const api_assignment_submit_lms = async () => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_id);
+    form_data.append('method', assignment_lms_input.method);
+    form_data.append('url', assignment_lms_input.url);
+    Array.from(assignment_lms_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/submit_lms',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+  };
 
   return (
     <KeyboardAvoidingView

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useEffect, useState } from 'react';
 import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'
@@ -8,7 +8,7 @@ import COLORS from '@/shared/js/colors';
 import { show_toast } from '@/shared/js/common';
 import { Date_time_picker, Design_chip, File_select } from '@/components/components';
 
-const Add_assignment = ({ navigation }) => {
+const Add_assignment = ({ navigation, route }) => {
   const {
     default_semester_id,
   } = useSelector((state) => state.semester);
@@ -46,25 +46,19 @@ const Add_assignment = ({ navigation }) => {
     });
   }, [navigation, assignment_input]);
 
-  const select_file = (file) => {
-    const new_file = {
-      name: file.name,
-      size: file.size,
-      uri: file.uri
-    };
-
-    set_assignment_input((prev_state) => ({
-      ...prev_state,
-      file_list: [...prev_state.file_list, new_file]
-    }));
-  };
-
-  const de_select_File = (file_num) => {
-    set_assignment_input((prev_state) => ({
-      ...prev_state,
-      file_list: prev_state.file_list.filter((file, idx) => idx !== file_num)
-    }));
-  };
+  useEffect(() => {
+    route.params !== undefined ?
+      set_assignment_input((prev_state) => ({
+        ...prev_state,
+        title: route.params.assignment_info.title,
+        registration_date: new Date(route.params.assignment_info.registration_date),
+        class_name: route.params.assignment_info.class_name,
+        professor_name: route.params.assignment_info.professor_name,
+        class_name: route.params.assignment_info.class_name,
+        assignment_description: route.params.assignment_info.assignment_description,
+        file_list: route.params.assignment_info.file_list,
+      })) : null;
+  }, []);
 
   const add_assignment = async () => {
     const { file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
@@ -84,12 +78,11 @@ const Add_assignment = ({ navigation }) => {
 
   const api_assignment_add_assignment = async () => {
     const form_data = new FormData();
-
     form_data.append('semester_id', default_semester_id);
     form_data.append('status', '예정');
     form_data.append('completion_status', false);
     form_data.append('title', assignment_input.title);
-    form_data.append('registration_date', assignment_input.registration_date.toLocaleDateString("ko-KR"));
+    form_data.append('registration_date', String(assignment_input.registration_date));
     form_data.append('class_name', assignment_input.class_name);
     form_data.append('professor_name', assignment_input.professor_name);
     form_data.append('assignment_description', assignment_input.assignment_description);
@@ -187,9 +180,8 @@ const Add_assignment = ({ navigation }) => {
         <View style={styles.divider} />
 
         <File_select
-          file_list={assignment_input.file_list}
-          select={select_file}
-          de_select={de_select_File}
+          value={assignment_input.file_list}
+          set_value={set_assignment_input}
           container_style={{ marginTop: 15, marginBottom: 10 }}
         />
 
