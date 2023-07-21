@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Pressable, } from 'react-native';
+import { Text, View, StyleSheet, Pressable, Linking } from 'react-native';
 import { Fontisto, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 
@@ -64,7 +64,7 @@ const File_select = ({
         value.map((file, idx) => {
           return (
             <View style={styles.file_list.container} key={idx}>
-              <Pressable style={styles.file_list.pressable_container} >
+              <Pressable style={styles.file_list.pressable_container} onPress={() => Linking.openURL(file.uri)}>
                 <Fontisto name="link" size={20} color={COLORS.primary_500} />
                 <Text style={styles.file_list.file_name} numberOfLines='1' >{file.name}</Text>
               </Pressable>
