@@ -13,10 +13,19 @@ import COLORS from "@/shared/js/colors";
 const window_width = Dimensions.get('window').width;
 const date_width = window_width / 7;  //7일에 대한 백분율 (100 / 7)
 
+const assignment_status_color_map = {
+  ['예정']: COLORS.primary_490,
+  ['설정']: COLORS.primary_500,
+  ['LMS']: '#FF5454',
+  ['완료']: '#FF5454'
+};
+
 /**
  * 캘린더 그리기
  */
 const render_calender = (year, month, open_assignment_list_modal) => {
+  const { assignment_list } = useSelector((state) => state.assignment);
+
   const date = new Date(year, month - 1);
 
   const view_year = date.getFullYear();
@@ -47,27 +56,18 @@ const render_calender = (year, month, open_assignment_list_modal) => {
   const dates = [...prev_dates_arr, ...this_dates_arr, ...next_dates_arr];
 
   const first_date_index = dates.indexOf(1);
-  const last_date_index = dates.lastIndexOf(this_month_date);
+  const last_date_index = dates.lastIndexOf(this_month_date) + 1;
 
   const date_height =
     dates.length > 35 ? (100 / 6) :
       dates.length < 35 ? (100 / 4) : (100 / 5);  //date의 갯수에 따라 높이 지정
 
-  const rendered_dates = dates.map((date, i) => {
+  const formatted_month = String(month).padStart(2, '0');
+  const this_month_assignment = assignment_list.filter((assignment) => {
+    return assignment.registration_date.startsWith(`${year}-${formatted_month}`)
+  });
 
-    const designed_chip_arr = [{
-      title: '국어',
-      backgorund_color: COLORS.primary_500
-    },
-      // {
-      //   title: '과제1',
-      //   backgorund_color: COLORS.primary_500
-      // },
-      // {
-      //   title: '과제2',
-      //   backgorund_color: COLORS.primary_500
-      // },
-    ]
+  const rendered_dates = dates.map((date, i) => {
 
     const today = new Date();
     const is_today =
@@ -75,7 +75,7 @@ const render_calender = (year, month, open_assignment_list_modal) => {
       view_month === today.getMonth() + 1 &&
       date === today.getDate();
 
-    const condition = i >= first_date_index && i < last_date_index + 1 ? 'this' : 'other';
+    const condition = i >= first_date_index && i < last_date_index ? 'this' : 'other';
     const container_style = [styles.date, { height: `${date_height}%` }];
     const text_style = [styles[condition], { fontSize: 13 }, is_today && { color: 'white' }]
 
@@ -87,21 +87,23 @@ const render_calender = (year, month, open_assignment_list_modal) => {
 
     return (
       <Pressable style={container_style} key={i} onPress={() => open_assignment_list_modal(date)}>
-        {is_today && <View style={styles.today_circle} />}
+        {condition === 'this' && is_today && <View style={styles.today_circle} />}
         <Text style={text_style}>{date}</Text>
 
-        {
-          designed_chip_arr.map((val, idx) => {
+        {this_month_assignment.map((val, idx) => {
+          const formatted_date = new Date(val.registration_date)
+
+          if (condition === 'this' && formatted_date.getDate() == date) {
             return (
               <Design_chip
                 key={idx}
                 title={val.title}
-                background_color={val.backgorund_color}
+                background_color={assignment_status_color_map[val.status]}
                 container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
                 title_style={{ fontSize: 11, }} />
             )
-          })
-        }
+          }
+        })}
 
       </Pressable>
     );

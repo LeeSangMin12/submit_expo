@@ -46,7 +46,7 @@ const Assignment_month_info = () => {
   }
 
   const get_year_month = () => {
-    const formatted_month = String(month).padStart(2, '0')
+    const formatted_month = String(month).padStart(2, '0');
 
     return `${year}.${formatted_month}`;
   };
