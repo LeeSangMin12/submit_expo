@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 import { set_store_info } from '@/shared/js/common';
 import { exec_request } from "@/shared/js/api";
@@ -13,22 +14,41 @@ const Home_page = () => {
 
   useEffect(() => {
     const fetch_data = async () => {
+      const user_data = await api_user_get_info();
       const semesters = await api_semester_get_semester_list();
       const default_semester = semesters.find(item => item.default_semester === 'true');
+      const assignment_list = await api_assignment_get_assignment_list(default_semester.semester_id);
 
-      const month =
+      const conversion_month_to_num =
         default_semester.semester.split(' ')[1] === '1학기' ? 3 :
           default_semester.semester.split(' ')[1] === '여름학기' ? 6 :
             default_semester.semester.split(' ')[1] === '2학기' ? 9 :
               default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : '';
 
+      set_store_info('user', 'nickname', user_data.nickname);
       set_store_info('semester', 'default_semester', default_semester.semester);
       set_store_info('semester', 'default_semester_id', default_semester.semester_id);
       set_store_info('calendar', 'year', parseInt(default_semester.semester.split(' ')[0].replace('년', '')));
-      set_store_info('calendar', 'month', parseInt(month));
+      set_store_info('calendar', 'month', parseInt(conversion_month_to_num));
+      set_store_info('assignment', 'assignment_list', assignment_list);
     };
     fetch_data();
   }, []);
+
+  /**
+   * 유저 정보 가져옴
+   */
+  const api_user_get_info = async () => {
+    const params = {
+      url: 'user/get_info',
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
 
   /**
    * 캘린더 리스트를 조회해온다.
@@ -42,6 +62,19 @@ const Home_page = () => {
 
     if (result.status === 'ok') {
       return result.data.selected_semesters;
+    }
+  };
+
+  const api_assignment_get_assignment_list = async (default_semester_id) => {
+    const params = {
+      url: 'assignment/get_assignment_list',
+      semester_id: default_semester_id
+    }
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
     }
   };
 

@@ -37,7 +37,7 @@ const My_page = () => {
     set_store_info('user', 'nickname', user_data.nickname);
     set_store_info('user', 'university', user_data.university);
     set_store_info('user', 'img_url', user_data.img_url);
-  }
+  };
 
   /**
    * 유저 정보 가져옴

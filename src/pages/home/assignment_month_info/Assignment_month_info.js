@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
@@ -5,22 +6,50 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import { go_prev_month, go_next_month, go_today } from '@/store/modules/calendar_slice';
+import { go_prev_month, go_next_month } from '@/store/modules/calendar_slice';
 import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png';
 
 const Assignment_month_info = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const { assignment_list } = useSelector((state) => state.assignment);
   const { default_semester } = useSelector((state) => state.semester);
   const { year, month } = useSelector((state) => state.calendar);
   const { nickname } = useSelector((state) => state.user);
 
-  const get_year_month = (year, month) => {
+  const [assignment_info, set_assignment_info] = useState({
+    remaining_num: '',
+    completion_num: '',
+  });
+
+  useEffect(() => {
+    calculate_assignments();
+  }, [assignment_list]);
+
+  const calculate_assignments = () => {
+    const remaining_assignments_num = assignment_list.filter((val) => {
+      if (val.completion_status === 'false') {
+        return true;
+      }
+    });
+
+    set_assignment_info((prev_state) => ({
+      ...prev_state,
+      remaining_num: remaining_assignments_num.length
+    }));
+
+    set_assignment_info((prev_state) => ({
+      ...prev_state,
+      completion_num: assignment_list.length - remaining_assignments_num.length
+    }));
+  }
+
+  const get_year_month = () => {
     const formatted_month = String(month).padStart(2, '0')
 
     return `${year}.${formatted_month}`;
-  }
+  };
 
   return (
     <>
@@ -47,8 +76,9 @@ const Assignment_month_info = () => {
         <View>
           <View style={styles.remaining_assignment_container}>
             <Text style={styles.text_remaining_assignment}>{nickname}님</Text>
-            <Text style={styles.text_remaining_assignment}>3월 과제중
-              <Text style={styles.text_remaining_assignment_num}> 2개</Text>
+            <Text style={styles.text_remaining_assignment}>이번 학기는 과제</Text>
+            <Text style={styles.text_remaining_assignment}>
+              <Text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Text>
               가 남았어요!
             </Text>
           </View>
@@ -60,7 +90,7 @@ const Assignment_month_info = () => {
                 size={19} />
             </Pressable>
 
-            <Text style={styles.text_now_month}> {get_year_month(year, month)} </Text>
+            <Text style={styles.text_now_month}> {get_year_month()} </Text>
 
             <Pressable onPress={() => dispatch(go_next_month())}>
               <Ionicons
@@ -77,7 +107,7 @@ const Assignment_month_info = () => {
       </View >
 
       <LinearProgress
-        value={0.5}
+        value={assignment_info.completion_num / assignment_list.length}
         color={COLORS.primary_500}
         variant='determine'
         style={styles.assignment_progress} />

@@ -53,23 +53,23 @@ const render_calender = (year, month, open_assignment_list_modal) => {
     dates.length > 35 ? (100 / 6) :
       dates.length < 35 ? (100 / 4) : (100 / 5);  //date의 갯수에 따라 높이 지정
 
-  const today = new Date();
-
   const rendered_dates = dates.map((date, i) => {
+
     const designed_chip_arr = [{
       title: '국어',
       backgorund_color: COLORS.primary_500
     },
-    {
-      title: '과제1',
-      backgorund_color: COLORS.primary_500
-    },
-    {
-      title: '과제2',
-      backgorund_color: COLORS.primary_500
-    },
+      // {
+      //   title: '과제1',
+      //   backgorund_color: COLORS.primary_500
+      // },
+      // {
+      //   title: '과제2',
+      //   backgorund_color: COLORS.primary_500
+      // },
     ]
 
+    const today = new Date();
     const is_today =
       view_year === today.getFullYear() &&
       view_month === today.getMonth() + 1 &&
