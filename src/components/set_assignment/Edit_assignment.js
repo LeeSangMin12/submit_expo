@@ -3,24 +3,26 @@ import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } 
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'
 
-import { exec_request_multipart } from '@/shared/js/api';
-import { show_toast } from '@/shared/js/common';
+import { exec_request, exec_request_multipart } from '@/shared/js/api';
+import { set_store_info, show_toast } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Date_time_picker, Design_chip, File_select } from '@/components/components';
 
-const Add_assignment = ({ navigation }) => {
+const Edit_assignment = ({ navigation, route }) => {
   const {
     default_semester_id,
   } = useSelector((state) => state.semester);
 
   const [assignment_input, set_assignment_input] = useState({
-    title: '',
-    registration_date: new Date(),
-    class_name: '',
-    professor_name: '',
-    assignment_description: '',
-    file_list: [],
-  })
+    status: route.params.assignment_info.status,
+    completion_status: route.params.assignment_info.completion_status,
+    title: route.params.assignment_info.title,
+    registration_date: new Date(route.params.assignment_info.registration_date),
+    class_name: route.params.assignment_info.class_name,
+    professor_name: route.params.assignment_info.professor_name,
+    assignment_description: route.params.assignment_info.assignment_description,
+    file_list: route.params.assignment_info.file_list,
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,8 +38,19 @@ const Add_assignment = ({ navigation }) => {
       headerRight: () => (
         <>
           <Design_chip
-            title='완료'
-            on_press={add_assignment}
+            title='삭제'
+            on_press={delete_assignment}
+            background_color={'#FF5454'}
+            container_style={{
+              paddingHorizontal: 14,
+              paddingVertical: 9,
+              borderRadius: 50,
+              marginRight: 5
+            }}
+          />
+          <Design_chip
+            title='수정'
+            on_press={edit_assignment}
             container_style={{
               paddingHorizontal: 14,
               paddingVertical: 9,
@@ -49,7 +62,7 @@ const Add_assignment = ({ navigation }) => {
     });
   }, [navigation, assignment_input]);
 
-  const add_assignment = async () => {
+  const edit_assignment = async () => {
     const { file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
     const any_empty = Object.values(rest).some((value) => value === '');
     if (any_empty) {
@@ -57,19 +70,40 @@ const Add_assignment = ({ navigation }) => {
       return;
     }
 
-    const add_assignment = await api_assignment_add_assignment();
+    const edit_assignment = await api_assignment_edit_assignment();
 
-    if (add_assignment) {
+    if (edit_assignment) {
+      const assignment_list = await api_assignment_get_assignment_list();
+
+      set_store_info('assignment', 'assignment_list', assignment_list);
       navigation.navigate('Bottom_navigation', { screen: '홈' });
-      show_toast('과제가 등록되었습니다.');
+      show_toast('과제가 수정되었습니다.');
     }
-  }
+  };
 
-  const api_assignment_add_assignment = async () => {
+  const delete_assignment = () => {
+    Alert.alert('삭제하시겠습니까?', '삭제후 되돌릴 수 없습니다', [
+      { text: '취소', style: 'cancel' },
+      {
+        text: '삭제', onPress: async () => {
+          const delete_assignment = await api_assignment_delete_assignment();
+          if (delete_assignment) {
+            const assignment_list = await api_assignment_get_assignment_list();
+
+            set_store_info('assignment', 'assignment_list', assignment_list);
+            navigation.navigate('Bottom_navigation', { screen: '예약전송' });
+          }
+        }
+      }
+    ]);
+  };
+
+  const api_assignment_edit_assignment = async () => {
     const form_data = new FormData();
+    form_data.append('assignment_id', route.params.assignment_id);
     form_data.append('semester_id', default_semester_id);
-    form_data.append('status', '예정');
-    form_data.append('completion_status', false);
+    form_data.append('status', assignment_input.status);
+    form_data.append('completion_status', assignment_input.completion_status);
     form_data.append('title', assignment_input.title);
     form_data.append('registration_date', String(assignment_input.registration_date));
     form_data.append('class_name', assignment_input.class_name);
@@ -80,7 +114,7 @@ const Add_assignment = ({ navigation }) => {
     });
 
     const params = {
-      url: "assignment/add_assignment",
+      url: "assignment/edit_assignment",
       form_data: form_data
     };
 
@@ -88,6 +122,32 @@ const Add_assignment = ({ navigation }) => {
 
     if (result.status === 'ok') {
       return true;
+    }
+  }
+
+  const api_assignment_delete_assignment = async () => {
+    const params = {
+      url: 'assignment/delete_assignment',
+      assignment_id: route.params.assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  }
+
+  const api_assignment_get_assignment_list = async () => {
+    const params = {
+      url: 'assignment/get_assignment_list',
+      semester_id: default_semester_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
     }
   }
 
@@ -176,10 +236,10 @@ const Add_assignment = ({ navigation }) => {
 
       </ScrollView>
     </KeyboardAvoidingView>
-  );
+  )
 };
 
-export default Add_assignment;
+export default Edit_assignment;
 
 const styles = StyleSheet.create({
   content_container: {

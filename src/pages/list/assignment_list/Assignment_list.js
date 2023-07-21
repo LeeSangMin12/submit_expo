@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-// import { CheckBox } from '@rneui/themed';
 import Checkbox from 'expo-checkbox';
 
 import { exec_request } from '@/shared/js/api';
@@ -37,7 +35,7 @@ const Assignment_list = () => {
   const open_assignment = async (assignment_id) => {
     const assignment_info = await api_assignment_get_assignment(assignment_id);
 
-    navigation.navigate('과제 등록', {
+    navigation.navigate('과제 수정', {
       assignment_id: assignment_id,
       assignment_info: assignment_info
     });

@@ -19,6 +19,7 @@ import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
 import Edit_profile from '@/pages/my/user_card/edit_profile/Edit_profile.js'
 import Add_assignment from '@/components/set_assignment/Add_assignment.js'
+import Edit_assignment from '@/components/set_assignment/Edit_assignment.js'
 import Submit_assignment from '@/components/set_assignment/Submit_assignment.js'
 import Set_semester from '@/components/set_semester/Set_semester.js'
 import Add_semester from '@/components/set_semester/Add_semester.js'
@@ -148,6 +149,10 @@ const App = () => {
           <Stack.Screen
             name="과제 등록"
             component={Add_assignment}
+          />
+          <Stack.Screen
+            name="과제 수정"
+            component={Edit_assignment}
           />
           <Stack.Screen
             name="과제 알림 설정"

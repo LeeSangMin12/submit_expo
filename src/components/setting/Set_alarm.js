@@ -109,8 +109,6 @@ const Set_alarm = (props) => {
                 <Text>과제 등록일</Text>
               </View>
 
-
-
               <Calendar_mini />
             </View>
           </View>
