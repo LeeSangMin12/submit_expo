@@ -39,6 +39,19 @@ const Assignment_list = () => {
       assignment_id: assignment_id,
       assignment_info: assignment_info
     });
+  };
+
+  const open_submit_assignment = async (assignment_id, assignment_status) => {
+    if (assignment_status === '예정') {  //과제 예약 처음 등록할때
+      navigation.navigate('과제 제출', {
+        assignment_id: assignment_id
+      });
+    } else {
+      navigation.navigate('과제 제출 수정', {
+        assignment_id: assignment_id,
+        assignment_status: assignment_status
+      });
+    }
   }
 
   const api_assignment_set_completion_status = async (assignment_id, completion_status) => {
@@ -102,9 +115,7 @@ const Assignment_list = () => {
             <View style={styles.assignment.chip_container}>
               <Chip
                 label={assignment.status}
-                on_press={() => navigation.navigate('과제 제출', {
-                  assignment_id: assignment.assignment_id
-                })}
+                on_press={() => open_submit_assignment(assignment.assignment_id, assignment.status)}
                 background_color={assignment_status_color_map[assignment.status]} />
             </View>
           </View>

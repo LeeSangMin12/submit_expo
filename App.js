@@ -21,6 +21,7 @@ import Edit_profile from '@/pages/my/user_card/edit_profile/Edit_profile.js'
 import Add_assignment from '@/components/set_assignment/Add_assignment.js'
 import Edit_assignment from '@/components/set_assignment/Edit_assignment.js'
 import Submit_assignment from '@/components/set_assignment/Submit_assignment.js'
+import Edit_submit_assignment from '@/components/set_assignment/Edit_submit_assignment.js'
 import Set_semester from '@/components/set_semester/Set_semester.js'
 import Add_semester from '@/components/set_semester/Add_semester.js'
 import Set_alarm from '@/components/setting/Set_alarm';
@@ -154,7 +155,7 @@ const App = () => {
             name="과제 수정"
             component={Edit_assignment}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="과제 알림 설정"
             component={Set_alarm}
             options={({ navigation }) => ({
@@ -177,10 +178,17 @@ const App = () => {
                     borderRadius: 50,
                   }} />)
             })}
-          />
+          /> */}
           <Stack.Screen
             name="과제 제출"
             component={Submit_assignment}
+            options={() => ({
+              headerTitleAlign: 'center',
+            })}
+          />
+          <Stack.Screen
+            name="과제 제출 수정"
+            component={Edit_submit_assignment}
             options={() => ({
               headerTitleAlign: 'center',
             })}

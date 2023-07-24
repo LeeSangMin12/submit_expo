@@ -8,9 +8,10 @@ import { show_toast } from '@/shared/js/common';
 import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Chip, Date_time_picker, File_select, Design_chip } from '@/components/components';
+import { useEffect } from 'react';
 
-const Submit_assignment = ({ navigation, route }) => {
-  const { assignment_id } = route.params;
+const Edit_submit_assignment = ({ navigation, route }) => {
+  const { assignment_id, assignment_status } = route.params;
   const {
     default_semester_id,
   } = useSelector((state) => state.semester);
@@ -42,7 +43,7 @@ const Submit_assignment = ({ navigation, route }) => {
       headerRight: () => (
         <Design_chip
           title='완료'
-          on_press={submit_assignment}
+          // on_press={submit_assignment}
           container_style={{
             paddingHorizontal: 14,
             paddingVertical: 9,
@@ -52,56 +53,28 @@ const Submit_assignment = ({ navigation, route }) => {
     });
   }, [navigation, submit_method, assignment_email_input, assignment_lms_input]);
 
-  const submit_assignment = async () => {
-    switch (submit_method) {
-      case 'email':
-        console.log('email');
-        break;
-      case 'LMS':
-        const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
-        const any_empty = Object.values(rest).some((value) => value === '');
-        if (any_empty) {
-          Alert.alert('값이 비어있습니다.');
-          return;
-        }
+  useEffect(() => {
+    const fetch_data = async () => {
+      if (assignment_status === 'LMS') {
+        set_submit_method(assignment_status);
+        const lms_info = await api_assignment_get_submit_lms();
 
-        const set_lms = await api_assignment_submit_lms();
-        if (set_lms) {
-          const assignment_list = await api_assignment_get_assignment_list();
-
-          set_store_info('assignment', 'assignment_list', assignment_list);
-          navigation.goBack();
-          show_toast('과제가 예약되었습니다.');
-        }
-        break;
+        set_assignment_lms_input((prev_state) => {
+          return {
+            ...prev_state,
+            url: lms_info.url,
+            file_list: lms_info.file_list
+          };
+        });
+      }
     }
-  };
+    fetch_data();
+  }, []);
 
-  const api_assignment_submit_lms = async () => {
-    const form_data = new FormData();
-    form_data.append('assignment_id', assignment_id);
-    form_data.append('status', submit_method);
-    form_data.append('url', assignment_lms_input.url);
-    Array.from(assignment_lms_input.file_list).forEach((file) => {
-      form_data.append('file_list', file);
-    });
-
+  const api_assignment_get_submit_lms = async () => {
     const params = {
-      url: 'assignment/submit_lms',
-      form_data: form_data
-    };
-
-    const result = await exec_request_multipart(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_get_assignment_list = async () => {
-    const params = {
-      url: 'assignment/get_assignment_list',
-      semester_id: default_semester_id
+      url: 'assignment/get_submit_lms',
+      assignment_id: assignment_id
     };
 
     const result = await exec_request(params, navigation);
@@ -223,7 +196,7 @@ const Submit_assignment = ({ navigation, route }) => {
   );
 };
 
-export default Submit_assignment;
+export default Edit_submit_assignment;
 
 const styles = StyleSheet.create({
   content_container: {
