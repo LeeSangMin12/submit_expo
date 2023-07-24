@@ -41,15 +41,16 @@ const Assignment_list = () => {
     });
   };
 
-  const open_submit_assignment = async (assignment_id, assignment_status) => {
-    if (assignment_status === '예정') {  //과제 예약 처음 등록할때
+  const open_submit_assignment = async (assignment) => {
+    if (assignment.status === '예정') {  //과제 예약 처음 등록할때
       navigation.navigate('과제 제출', {
-        assignment_id: assignment_id
+        assignment_id: assignment.assignment_id
       });
     } else {
       navigation.navigate('과제 제출 수정', {
-        assignment_id: assignment_id,
-        assignment_status: assignment_status
+        assignment_id: assignment.assignment_id,
+        assignment_status: assignment.status,
+        submit_assignment_id: assignment.submit_assignment_id
       });
     }
   }
@@ -115,7 +116,7 @@ const Assignment_list = () => {
             <View style={styles.assignment.chip_container}>
               <Chip
                 label={assignment.status}
-                on_press={() => open_submit_assignment(assignment.assignment_id, assignment.status)}
+                on_press={() => open_submit_assignment(assignment)}
                 background_color={assignment_status_color_map[assignment.status]} />
             </View>
           </View>
