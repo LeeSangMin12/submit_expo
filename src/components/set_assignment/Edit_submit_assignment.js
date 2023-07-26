@@ -174,7 +174,7 @@ const Edit_submit_assignment = ({ navigation, route }) => {
     form_data.append('assignment_id', assignment_info.assignment_id);
     form_data.append('submit_assignment_id', assignment_info.submit_assignment_id);
     form_data.append('status', '설정');
-    form_data.append('submit_date_time', assignment_email_input.submit_date_time);
+    form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
     form_data.append('email_address', assignment_email_input.email_address);
     form_data.append('title', assignment_email_input.title);
     form_data.append('description', assignment_email_input.description);
