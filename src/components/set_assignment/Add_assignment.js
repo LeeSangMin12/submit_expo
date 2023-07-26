@@ -20,7 +20,7 @@ const Add_assignment = ({ navigation }) => {
     professor_name: '',
     assignment_description: '',
     file_list: [],
-  })
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -112,10 +112,13 @@ const Add_assignment = ({ navigation }) => {
         </View>
 
         <View style={styles.input_container}>
+
           <Date_time_picker
-            value={assignment_input.registration_date}
-            set_value={set_assignment_input}
             picker_mode='date'
+            value={assignment_input.registration_date}
+            set_value={(val) => set_assignment_input((prev_state) => {
+              return { ...prev_state, registration_date: val }
+            })}
             date_title='등록날짜' />
         </View>
 

@@ -15,7 +15,7 @@ const Submit_assignment = ({ navigation, route }) => {
     default_semester_id,
   } = useSelector((state) => state.semester);
 
-  const [submit_method, set_submit_method] = useState('email');
+  const [submit_method, set_submit_method] = useState('E-mail');
   const [assignment_email_input, set_assignment_email_input] = useState({
     submit_date_time: new Date(),
     email_address: '',
@@ -53,27 +53,63 @@ const Submit_assignment = ({ navigation, route }) => {
   }, [navigation, submit_method, assignment_email_input, assignment_lms_input]);
 
   const submit_assignment = async () => {
-    switch (submit_method) {
-      case 'email':
-        console.log('email');
-        break;
-      case 'LMS':
-        const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
-        const any_empty = Object.values(rest).some((value) => value === '');
-        if (any_empty) {
-          Alert.alert('값이 비어있습니다.');
-          return;
-        }
+    if (submit_method === 'E-mail') {
+      const { file_list, ...rest } = assignment_email_input;
+      const any_empty = Object.values(rest).some((value) => value === '');
+      if (any_empty) {
+        Alert.alert('값이 비어있습니다.');
+        return;
+      }
 
-        const set_lms = await api_assignment_submit_lms();
-        if (set_lms) {
-          const assignment_list = await api_assignment_get_assignment_list();
+      const set_email = await api_assignment_submit_email();
+      // if (set_lms) {
+      //   const assignment_list = await api_assignment_get_assignment_list();
 
-          set_store_info('assignment', 'assignment_list', assignment_list);
-          navigation.goBack();
-          show_toast('과제가 예약되었습니다.');
-        }
-        break;
+      //   set_store_info('assignment', 'assignment_list', assignment_list);
+      //   navigation.goBack();
+      //   show_toast('과제가 예약되었습니다.');
+      // }
+
+    } else if (submit_method === 'LMS') {
+      const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
+      const any_empty = Object.values(rest).some((value) => value === '');
+      if (any_empty) {
+        Alert.alert('값이 비어있습니다.');
+        return;
+      }
+
+      const set_lms = await api_assignment_submit_lms();
+      if (set_lms) {
+        const assignment_list = await api_assignment_get_assignment_list();
+
+        set_store_info('assignment', 'assignment_list', assignment_list);
+        navigation.goBack();
+        show_toast('과제가 예약되었습니다.');
+      }
+    }
+  };
+
+  const api_assignment_submit_email = async () => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_id);
+    form_data.append('status', submit_method);
+    form_data.append('submit_date_time', assignment_email_input.submit_date_time);
+    form_data.append('email_address', assignment_email_input.email_address);
+    form_data.append('title', assignment_email_input.title);
+    form_data.append('description', assignment_email_input.description);
+    Array.from(assignment_email_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/submit_lms',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
     }
   };
 
@@ -122,8 +158,8 @@ const Submit_assignment = ({ navigation, route }) => {
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 9, }}>
           <Chip
             label="E-mail"
-            selected={submit_method === 'email'}
-            on_press={() => set_submit_method('email')} />
+            selected={submit_method === 'E-mail'}
+            on_press={() => set_submit_method('E-mail')} />
 
           <Chip
             label="LMS"
@@ -135,13 +171,15 @@ const Submit_assignment = ({ navigation, route }) => {
           <View style={{ height: 5, backgroundColor: COLORS.gray_480, width: '95%' }} />
         </View>
 
-        {submit_method === 'email' ?
+        {submit_method === 'E-mail' ?
           < >
             <View style={styles.input_container}>
               <Date_time_picker
-                value={assignment_email_input.submit_date_time}
-                set_value={set_assignment_email_input}
                 picker_mode='date_time'
+                value={assignment_email_input.submit_date_time}
+                set_value={(val) => set_assignment_email_input((prev_state) => {
+                  return { ...prev_state, submit_date_time: val }
+                })}
                 date_title='제출날짜'
                 time_title='제출시간'
               />

@@ -16,7 +16,7 @@ const Edit_submit_assignment = ({ navigation, route }) => {
     default_semester_id,
   } = useSelector((state) => state.semester);
 
-  const [submit_method, set_submit_method] = useState('email');
+  const [submit_method, set_submit_method] = useState('E-mail');
   const [assignment_email_input, set_assignment_email_input] = useState({
     submit_date_time: new Date(),
     email_address: '',
@@ -73,8 +73,8 @@ const Edit_submit_assignment = ({ navigation, route }) => {
 
   const edit_submit_assignment = async () => {
     switch (submit_method) {
-      case 'email':
-        console.log('email');
+      case 'E-mail':
+        console.log('E-mail');
         break;
       case 'LMS':
         const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
@@ -156,8 +156,8 @@ const Edit_submit_assignment = ({ navigation, route }) => {
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 9, }}>
           <Chip
             label="E-mail"
-            selected={submit_method === 'email'}
-            on_press={() => set_submit_method('email')} />
+            selected={submit_method === 'E-mail'}
+            on_press={() => set_submit_method('E-mail')} />
 
           <Chip
             label="LMS"
@@ -169,13 +169,15 @@ const Edit_submit_assignment = ({ navigation, route }) => {
           <View style={{ height: 5, backgroundColor: COLORS.gray_480, width: '95%' }} />
         </View>
 
-        {submit_method === 'email' ?
+        {submit_method === 'E-mail' ?
           < >
             <View style={styles.input_container}>
               <Date_time_picker
-                value={assignment_email_input.submit_date_time}
-                set_value={set_assignment_email_input}
                 picker_mode='date_time'
+                value={assignment_email_input.submit_date_time}
+                set_value={(val) => set_assignment_email_input((prev_state) => {
+                  return { ...prev_state, submit_date_time: val }
+                })}
                 date_title='제출날짜'
                 time_title='제출시간'
               />

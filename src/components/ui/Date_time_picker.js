@@ -24,9 +24,7 @@ const Date_time_picker = ({
     if (Platform.OS === 'android') {
       set_show(false); // for iOS, add a button that closes the picker
     }
-    set_value((prev_state) => {
-      return { ...prev_state, registration_date: current_date }
-    })
+    set_value(current_date);
   };
 
   const show_mode = (currentMode) => {

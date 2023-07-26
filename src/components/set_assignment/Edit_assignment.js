@@ -174,7 +174,9 @@ const Edit_assignment = ({ navigation, route }) => {
         <View style={styles.input_container}>
           <Date_time_picker
             value={assignment_input.registration_date}
-            set_value={set_assignment_input}
+            set_value={(val) => set_assignment_input((prev_state) => {
+              return { ...prev_state, registration_date: val }
+            })}
             picker_mode='date'
             date_title='등록날짜' />
         </View>
