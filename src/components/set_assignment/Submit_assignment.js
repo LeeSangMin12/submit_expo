@@ -62,13 +62,13 @@ const Submit_assignment = ({ navigation, route }) => {
       }
 
       const set_email = await api_assignment_submit_email();
-      // if (set_lms) {
-      //   const assignment_list = await api_assignment_get_assignment_list();
+      if (set_email) {
+        const assignment_list = await api_assignment_get_assignment_list();
 
-      //   set_store_info('assignment', 'assignment_list', assignment_list);
-      //   navigation.goBack();
-      //   show_toast('과제가 예약되었습니다.');
-      // }
+        set_store_info('assignment', 'assignment_list', assignment_list);
+        navigation.goBack();
+        show_toast('과제가 예약되었습니다.');
+      }
 
     } else if (submit_method === 'LMS') {
       const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
@@ -92,8 +92,8 @@ const Submit_assignment = ({ navigation, route }) => {
   const api_assignment_submit_email = async () => {
     const form_data = new FormData();
     form_data.append('assignment_id', assignment_id);
-    form_data.append('status', submit_method);
-    form_data.append('submit_date_time', assignment_email_input.submit_date_time);
+    form_data.append('status', '설정');
+    form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
     form_data.append('email_address', assignment_email_input.email_address);
     form_data.append('title', assignment_email_input.title);
     form_data.append('description', assignment_email_input.description);
@@ -102,7 +102,7 @@ const Submit_assignment = ({ navigation, route }) => {
     });
 
     const params = {
-      url: 'assignment/submit_lms',
+      url: 'assignment/submit_email',
       form_data: form_data
     };
 

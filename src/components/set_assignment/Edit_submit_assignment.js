@@ -55,7 +55,20 @@ const Edit_submit_assignment = ({ navigation, route }) => {
 
   useEffect(() => {
     const fetch_data = async () => {
-      if (assignment_info.assignment_status === 'LMS') {
+      if (assignment_info.assignment_status === '설정') {
+        const email_info = await api_assignment_get_submit_email();
+
+        set_assignment_email_input((prev_state) => {
+          return {
+            ...prev_state,
+            submit_date_time: new Date(email_info.submit_date_time),
+            email_address: email_info.email_address,
+            title: email_info.title,
+            description: email_info.description,
+            file_list: email_info.file_list
+          };
+        });
+      } else if (assignment_info.assignment_status === 'LMS') {
         set_submit_method(assignment_info.assignment_status);
         const lms_info = await api_assignment_get_submit_lms();
 
@@ -72,29 +85,54 @@ const Edit_submit_assignment = ({ navigation, route }) => {
   }, []);
 
   const edit_submit_assignment = async () => {
-    switch (submit_method) {
-      case 'E-mail':
-        console.log('E-mail');
-        break;
-      case 'LMS':
-        const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
-        const any_empty = Object.values(rest).some((value) => value === '');
-        if (any_empty) {
-          Alert.alert('값이 비어있습니다.');
-          return;
-        }
+    if (submit_method === 'E-mail') {
+      const { file_list, ...rest } = assignment_email_input;  //파일빼고 나머지 값 비어있는지 확인
+      const any_empty = Object.values(rest).some((value) => value === '');
+      if (any_empty) {
+        Alert.alert('값이 비어있습니다.');
+        return;
+      }
 
-        const edit_lms = await api_assignment_edit_submit_lms();
-        if (edit_lms) {
-          const assignment_list = await api_assignment_get_assignment_list();
+      const edit_email = await api_assignment_edit_submit_email();
+      if (edit_email) {
+        const assignment_list = await api_assignment_get_assignment_list();
 
-          set_store_info('assignment', 'assignment_list', assignment_list);
-          navigation.goBack();
-          show_toast('과제가 예약되었습니다.');
-        }
-        break;
+        set_store_info('assignment', 'assignment_list', assignment_list);
+        navigation.goBack();
+        show_toast('과제가 예약되었습니다.');
+      }
+    } else if (submit_method === 'LMS') {
+      const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
+      const any_empty = Object.values(rest).some((value) => value === '');
+      if (any_empty) {
+        Alert.alert('값이 비어있습니다.');
+        return;
+      }
+
+      const edit_lms = await api_assignment_edit_submit_lms();
+      if (edit_lms) {
+        const assignment_list = await api_assignment_get_assignment_list();
+
+        set_store_info('assignment', 'assignment_list', assignment_list);
+        navigation.goBack();
+        show_toast('과제가 예약되었습니다.');
+      }
     }
-  }
+
+  };
+
+  const api_assignment_get_submit_email = async () => {
+    const params = {
+      url: 'assignment/get_submit_email',
+      assignment_id: assignment_info.assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
 
   const api_assignment_get_submit_lms = async () => {
     const params = {
@@ -107,7 +145,7 @@ const Edit_submit_assignment = ({ navigation, route }) => {
     if (result.status === 'ok') {
       return result.data;
     }
-  }
+  };
 
   const api_assignment_edit_submit_lms = async () => {
     const form_data = new FormData();
@@ -131,6 +169,31 @@ const Edit_submit_assignment = ({ navigation, route }) => {
     }
   };
 
+  const api_assignment_edit_submit_email = async () => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_info.assignment_id);
+    form_data.append('submit_assignment_id', assignment_info.submit_assignment_id);
+    form_data.append('status', '설정');
+    form_data.append('submit_date_time', assignment_email_input.submit_date_time);
+    form_data.append('email_address', assignment_email_input.email_address);
+    form_data.append('title', assignment_email_input.title);
+    form_data.append('description', assignment_email_input.description);
+    Array.from(assignment_email_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/edit_submit_email',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
   const api_assignment_get_assignment_list = async () => {
     const params = {
       url: 'assignment/get_assignment_list',
@@ -143,7 +206,6 @@ const Edit_submit_assignment = ({ navigation, route }) => {
       return result.data;
     }
   };
-
 
   return (
     <KeyboardAvoidingView
