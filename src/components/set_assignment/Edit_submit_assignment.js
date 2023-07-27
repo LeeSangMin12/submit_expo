@@ -1,5 +1,5 @@
 import { useState, useLayoutEffect } from 'react';
-import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 
@@ -55,7 +55,18 @@ const Edit_submit_assignment = ({ navigation, route }) => {
 
   useEffect(() => {
     const fetch_data = async () => {
-      if (assignment_info.assignment_status === '설정') {
+      if (assignment_info.assignment_status === 'LMS') {
+        set_submit_method(assignment_info.assignment_status);
+        const lms_info = await api_assignment_get_submit_lms();
+
+        set_assignment_lms_input((prev_state) => {
+          return {
+            ...prev_state,
+            url: lms_info.url,
+            file_list: lms_info.file_list
+          };
+        });
+      } else {
         const email_info = await api_assignment_get_submit_email();
 
         set_assignment_email_input((prev_state) => {
@@ -66,17 +77,6 @@ const Edit_submit_assignment = ({ navigation, route }) => {
             title: email_info.title,
             description: email_info.description,
             file_list: email_info.file_list
-          };
-        });
-      } else if (assignment_info.assignment_status === 'LMS') {
-        set_submit_method(assignment_info.assignment_status);
-        const lms_info = await api_assignment_get_submit_lms();
-
-        set_assignment_lms_input((prev_state) => {
-          return {
-            ...prev_state,
-            url: lms_info.url,
-            file_list: lms_info.file_list
           };
         });
       }
@@ -233,6 +233,14 @@ const Edit_submit_assignment = ({ navigation, route }) => {
 
         {submit_method === 'E-mail' ?
           < >
+            <Text
+              style={{
+                color: 'red',
+                paddingVertical: 5
+              }}>
+              ☆과제 제출 날짜, 시간에 자동으로 메일이 예약전송 됩니다.
+            </Text>
+
             <View style={styles.input_container}>
               <Date_time_picker
                 picker_mode='date_time'

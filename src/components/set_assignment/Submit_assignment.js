@@ -1,5 +1,5 @@
 import { useState, useLayoutEffect } from 'react';
-import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 
@@ -173,6 +173,14 @@ const Submit_assignment = ({ navigation, route }) => {
 
         {submit_method === 'E-mail' ?
           < >
+            <Text
+              style={{
+                color: 'red',
+                paddingVertical: 5
+              }}>
+              ☆과제 제출 날짜, 시간에 자동으로 메일이 예약전송 됩니다.
+            </Text>
+
             <View style={styles.input_container}>
               <Date_time_picker
                 picker_mode='date_time'

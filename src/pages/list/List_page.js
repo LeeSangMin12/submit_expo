@@ -17,7 +17,6 @@ const List_page = () => {
 
   useEffect(() => {
     const fetch_data = async () => {
-      console.log('hi');
       const assignment_list = await api_assignment_get_assignment_list();
 
       set_store_info('assignment', 'assignment_list', assignment_list);
