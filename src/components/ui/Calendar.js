@@ -91,7 +91,9 @@ const render_calender = (year, month, open_assignment_list_modal) => {
     }
 
     return (
-      <Pressable style={container_style} key={i} onPress={() => open_assignment_list_modal(date)}>
+      <Pressable onPress={condition === 'this' ? () => open_assignment_list_modal(date) : null}
+        style={container_style}
+        key={i} >
         {condition === 'this' && is_today && <View style={styles.today_circle} />}
         <Text style={text_style}>{date}</Text>
 
@@ -109,7 +111,6 @@ const render_calender = (year, month, open_assignment_list_modal) => {
             )
           }
         })}
-
       </Pressable>
     );
   })
