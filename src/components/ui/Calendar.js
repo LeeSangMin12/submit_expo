@@ -49,6 +49,7 @@ const render_calender = (year, month, open_assignment_list_modal) => {
       prev_dates_arr.unshift(prev_month_date - i);
     }
   }
+
   for (let i = 1; i < 7 - this_month_day; i++) {  //남는 다음달 날짜 추가
     next_dates_arr.push(i);
   };
@@ -68,7 +69,6 @@ const render_calender = (year, month, open_assignment_list_modal) => {
   });
 
   const rendered_dates = dates.map((date, i) => {
-
     const today = new Date();
     const is_today =
       view_year === today.getFullYear() &&
@@ -77,7 +77,10 @@ const render_calender = (year, month, open_assignment_list_modal) => {
 
     const condition = i >= first_date_index && i < last_date_index ? 'this' : 'other';
     const container_style = [styles.date, { height: `${date_height}%` }];
-    const text_style = [styles[condition], { fontSize: 13 }, is_today && { color: 'white' }]
+    const text_style =
+      [styles[condition],
+      { fontSize: 13 },
+      condition === 'this' && is_today && { color: 'white' }];
 
     if (i % 7 === 0) {
       text_style.push({ color: 'red' });  //일요일에 빨간색 적용
@@ -113,10 +116,8 @@ const render_calender = (year, month, open_assignment_list_modal) => {
 
 const Calendar = () => {
   const navigation = useNavigation();
-  const {
-    year,
-    month,
-  } = useSelector((state) => state.calendar);
+  const { year, month } = useSelector((state) => state.calendar);
+  const { default_semester_id } = useSelector((state) => state.semester);
 
   const [checked, setChecked] = useState(true);
   const [selected_date, set_selected_date] = useState('');
@@ -125,8 +126,24 @@ const Calendar = () => {
   const toggle_checkbox = () => setChecked(!checked);
 
   const open_assignment_list_modal = (date) => {
+    // const today_assignment_list = api_assignment_get_today_assignment_list(date);
+
     set_assignment_list_modal(true);
     set_selected_date(date)
+  };
+
+  const api_assignment_get_today_assignment_list = async (date) => {
+    const params = {
+      url: 'assignment/get_today_assignment_list',
+      semester_id: default_semester_id,
+      date: date
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
   };
 
   const Modal_assignment_list = () => {
@@ -153,7 +170,7 @@ const Calendar = () => {
           </Text>
         </View>
 
-        {/* <View style={styles.assignment.container}>
+        <View style={styles.assignment.container}>
           <View style={styles.assignment.title_container}>
             <CheckBox
               checked={checked}
@@ -173,7 +190,7 @@ const Calendar = () => {
               background_color={COLORS.gray_470_bg} />
           </View>
         </View>
-        <View style={styles.divider} /> */}
+        <View style={styles.divider} />
 
       </ScrollView>
     );

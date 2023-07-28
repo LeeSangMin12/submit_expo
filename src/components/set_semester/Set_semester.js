@@ -23,7 +23,6 @@ const Set_semester = () => {
     fetch_data();
   }, []);
 
-
   /**
    * 캘린더 지우기
    * : 기본 캘린더인 경우 못지움
