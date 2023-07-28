@@ -41,15 +41,28 @@ const Edit_submit_assignment = ({ navigation, route }) => {
           }}
         />),
       headerRight: () => (
-        <Design_chip
-          title='수정'
-          on_press={edit_submit_assignment}
-          container_style={{
-            paddingHorizontal: 14,
-            paddingVertical: 9,
-            borderRadius: 50,
-          }}
-        />)
+        <>
+          <Design_chip
+            title='삭제'
+            on_press={delete_submit_assignment}
+            background_color={'#FF5454'}
+            container_style={{
+              paddingHorizontal: 14,
+              paddingVertical: 9,
+              borderRadius: 50,
+              marginRight: 5
+            }}
+          />
+          <Design_chip
+            title='수정'
+            on_press={edit_submit_assignment}
+            container_style={{
+              paddingHorizontal: 14,
+              paddingVertical: 9,
+              borderRadius: 50,
+            }}
+          />
+        </>)
     });
   }, [navigation, submit_method, assignment_email_input, assignment_lms_input]);
 
@@ -121,6 +134,23 @@ const Edit_submit_assignment = ({ navigation, route }) => {
 
   };
 
+  const delete_submit_assignment = () => {
+    Alert.alert('삭제하시겠습니까?', '삭제후 되돌릴 수 없습니다 ', [
+      { text: '취소', style: 'cancel' },
+      {
+        text: '삭제', onPress: async () => {
+          const delete_assignment = await api_assignment_delete_submit_assignment();
+          if (delete_assignment) {
+            const assignment_list = await api_assignment_get_assignment_list();
+
+            set_store_info('assignment', 'assignment_list', assignment_list);
+            navigation.navigate('Bottom_navigation', { screen: '예약전송' });
+          }
+        }
+      }
+    ]);
+  };
+
   const api_assignment_get_submit_email = async () => {
     const params = {
       url: 'assignment/get_submit_email',
@@ -146,6 +176,21 @@ const Edit_submit_assignment = ({ navigation, route }) => {
       return result.data;
     }
   };
+
+  const api_assignment_delete_submit_assignment = async () => {
+    const params = {
+      url: 'assignment/delete_submit_assignment',
+      submit_method: submit_method,
+      assignment_id: assignment_info.assignment_id,
+      submit_assignment_id: assignment_info.submit_assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  }
 
   const api_assignment_edit_submit_lms = async () => {
     const form_data = new FormData();

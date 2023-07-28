@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
@@ -9,6 +10,9 @@ import { Design_chip } from '@/components/components';
 import owl_logo from '@/assets/img/logo/owl_nav.png'
 
 const Semester_info = () => {
+  const navigation = useNavigation();
+
+  const { default_semester } = useSelector((state) => state.semester);
   const { assignment_list } = useSelector((state) => state.assignment);
   const [assignment_info, set_assignment_info] = useState({
     remaining_num: '',
@@ -40,21 +44,23 @@ const Semester_info = () => {
   return (
     <>
       <View style={styles.header_container}>
-        <View style={styles.header_left_container}>
-          <Text style={{ color: COLORS.primary_500 }}>22학년도 1학기</Text>
-          <Ionicons
-            name="chevron-forward"
-            size={20}
-            color={COLORS.primary_500} />
-        </View>
 
-        <Pressable onPress={() => console.log('hi')}>
-          <Fontisto
-            name="plus-a"
-            size={24}
-            color={COLORS.gray_520}
-            style={styles.icon_plus} />
+        <Pressable onPress={() => navigation.navigate('캘린더 목록')}>
+          <View style={styles.header_left_container}>
+            <Text style={{ color: COLORS.primary_500 }}>{default_semester}</Text>
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={COLORS.primary_500} />
+          </View>
         </Pressable>
+
+        <Fontisto
+          onPress={() => navigation.navigate('과제 등록')}
+          name="plus-a"
+          size={24}
+          color={COLORS.gray_520}
+          style={styles.icon_plus} />
       </View>
 
       <View style={styles.content_container}>
