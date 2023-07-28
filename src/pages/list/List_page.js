@@ -16,10 +16,15 @@ const List_page = () => {
   } = useSelector((state) => state.semester);
 
   useEffect(() => {
+    // const fetch_data = async () => {
+
+    // }
+    // fetch_data();
     setInterval(async () => {
       const assignment_list = await api_assignment_get_assignment_list();
 
       set_store_info('assignment', 'assignment_list', assignment_list);
+
     }, 1000);
   }, []);
 

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
-import { show_toast } from '@/shared/js/common';
+import { show_toast, is_valid_email } from '@/shared/js/common';
 import { set_store_info } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Chip, Date_time_picker, File_select, Design_chip } from '@/components/components';
@@ -108,6 +108,11 @@ const Edit_submit_assignment = ({ navigation, route }) => {
 
       const edit_email = await api_assignment_edit_submit_email();
       if (edit_email) {
+        if (!is_valid_email(assignment_email_input.email_address)) {
+          Alert.alert('이메일 형식이 틀렸습니다.');
+          return;
+        }
+
         const assignment_list = await api_assignment_get_assignment_list();
 
         set_store_info('assignment', 'assignment_list', assignment_list);
@@ -305,6 +310,7 @@ const Edit_submit_assignment = ({ navigation, route }) => {
                   return { ...prev_state, email_address: label }
                 })}
                 style={styles.input}
+                keyboardType="email-address"
                 placeholder='제출할 메일주소'
                 placeholderTextColor={COLORS.gray_500} />
             </View>

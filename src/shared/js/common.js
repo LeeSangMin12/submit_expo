@@ -83,3 +83,11 @@ export const async_storage_remove_data = async (key) => {
     console.log('Error rendering data: ', err);
   }
 };
+
+/**
+ * 이메일 유효성 검사
+ */
+export const is_valid_email = (email) => {
+  const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return regex.test(email);
+};

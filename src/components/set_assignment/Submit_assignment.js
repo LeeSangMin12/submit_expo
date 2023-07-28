@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { show_toast } from '@/shared/js/common';
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info, is_valid_email } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Chip, Date_time_picker, File_select, Design_chip } from '@/components/components';
 
@@ -54,6 +54,12 @@ const Submit_assignment = ({ navigation, route }) => {
 
   const submit_assignment = async () => {
     if (submit_method === 'E-mail') {
+
+      if (!is_valid_email(assignment_email_input.email_address)) {
+        Alert.alert('이메일 형식이 틀렸습니다.');
+        return;
+      }
+
       const { file_list, ...rest } = assignment_email_input;
       const any_empty = Object.values(rest).some((value) => value === '');
       if (any_empty) {
@@ -200,6 +206,7 @@ const Submit_assignment = ({ navigation, route }) => {
                   return { ...prev_state, email_address: label }
                 })}
                 style={styles.input}
+                keyboardType="email-address"
                 placeholder='제출할 메일주소'
                 placeholderTextColor={COLORS.gray_500} />
             </View>
