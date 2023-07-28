@@ -92,7 +92,7 @@ const Add_semester = ({ navigation }) => {
       set_store_info('semester', 'semester_list', semesters);
       navigation.goBack();
     }
-  }
+  };
 
   /**
    * 캘린더를 추가해준다.
@@ -140,14 +140,14 @@ const Add_semester = ({ navigation }) => {
       <View>
         <Picker
           selectedValue={selected_semester}
-          onValueChange={(item_value) => set_selected_semester(item_value)}
+          onValueChange={(semester) => set_selected_semester(semester)}
         >
           {semester_list.map((val, idx) =>
             <Picker.Item label={val.label} value={val.value} key={idx} />
           )}
         </Picker>
       </View>
-    </View>
+    </View >
   );
 };
 

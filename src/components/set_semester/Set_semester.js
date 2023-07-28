@@ -96,7 +96,20 @@ const Set_semester = () => {
     if (result.status === 'ok') {
       return true;
     }
-  }
+  };
+
+  const api_assignment_get_assignment_list = async (default_semester_id) => {
+    const params = {
+      url: 'assignment/get_assignment_list',
+      semester_id: default_semester_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
 
   return (
     <ScrollView>
@@ -117,19 +130,21 @@ const Set_semester = () => {
               await api_semester_set_default_semester(val.semester_id);
               const semesters = await api_semester_get_semester_list();
               const default_semester = semesters.find(item => item.default_semester === 'true');
+              const assignment_list = await api_assignment_get_assignment_list(default_semester.semester_id);
 
               const month =
                 default_semester.semester.split(' ')[1] === '1학기' ? 3 :
                   default_semester.semester.split(' ')[1] === '여름학기' ? 6 :
                     default_semester.semester.split(' ')[1] === '2학기' ? 9 :
-                      default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : ''
+                      default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : '';
 
+              set_store_info('assignment', 'assignment_list', assignment_list);
               set_store_info('semester', 'semester_list', semesters);
               set_store_info('semester', 'default_semester', default_semester.semester);
               set_store_info('semester', 'default_semester_id', default_semester.semester_id);
               set_store_info('calendar', 'year', parseInt(default_semester.semester.split(' ')[0].replace('년', '')));
               set_store_info('calendar', 'month', parseInt(month));
-              navigation.navigate('홈');
+              navigation.goBack();
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

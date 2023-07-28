@@ -43,6 +43,7 @@ export const show_toast = (message) => {
     type: 'primary_success_toast',
     position: 'bottom',
     text1: message,
+    bottomOffset: 90
   });
 }
 

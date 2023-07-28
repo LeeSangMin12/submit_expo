@@ -153,7 +153,7 @@ const Calendar = () => {
           </Text>
         </View>
 
-        <View style={styles.assignment.container}>
+        {/* <View style={styles.assignment.container}>
           <View style={styles.assignment.title_container}>
             <CheckBox
               checked={checked}
@@ -173,7 +173,7 @@ const Calendar = () => {
               background_color={COLORS.gray_470_bg} />
           </View>
         </View>
-        <View style={styles.divider} />
+        <View style={styles.divider} /> */}
 
       </ScrollView>
     );

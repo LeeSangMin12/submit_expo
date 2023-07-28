@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { View, Text, Image, } from "react-native";
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
 
+import { show_toast } from '@/shared/js/common';
 import { set_store_info } from '@/shared/js/common';
 import { exec_request } from "@/shared/js/api";
 import { Button } from '@/components/components';
@@ -37,17 +37,6 @@ const Community_page = () => {
     const community_info = await api_community_get_community(department);
 
     set_application_num(community_info.application_num);
-  }
-
-  /**
-   * toast를 보여준다.
-   */
-  const show_toast = (message) => {
-    Toast.show({
-      type: 'primary_success_toast',
-      position: 'bottom',
-      text1: message,
-    });
   }
 
   /**
