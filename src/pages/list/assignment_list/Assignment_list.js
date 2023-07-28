@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Checkbox from 'expo-checkbox';
@@ -17,13 +17,11 @@ const assignment_status_color_map = {
 
 const Assignment_list = () => {
   const navigation = useNavigation();
-  const {
-    default_semester_id,
-  } = useSelector((state) => state.semester);
+  const { default_semester_id } = useSelector((state) => state.semester);
   const { assignment_list } = useSelector((state) => state.assignment);
 
   const toggle_checkbox = async (assignment_id, completion_status) => {
-    const change_completion_status = api_assignment_set_completion_status(assignment_id, completion_status);
+    const change_completion_status = await api_assignment_set_completion_status(assignment_id, completion_status);
 
     if (change_completion_status) {
       const assignment_list = await api_assignment_get_assignment_list();
@@ -96,7 +94,7 @@ const Assignment_list = () => {
   };
 
   return (
-    <>
+    <ScrollView>
       {assignment_list.map((assignment, idx) => (
         <View key={idx}>
           <View style={styles.assignment.container}>
@@ -123,7 +121,7 @@ const Assignment_list = () => {
           <View style={styles.divider} />
         </View>
       ))}
-    </>
+    </ScrollView>
   );
 }
 
@@ -135,7 +133,8 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingVertical: 2
+      paddingVertical: 3,
+      paddingLeft: 6
     },
     title_container: {
       flexDirection: 'row',
@@ -145,7 +144,7 @@ const styles = StyleSheet.create({
     },
     checkbox: {
       fontSize: 16,
-      paddingLeft: 10
+      paddingLeft: 12
     },
     chip_container: {
       marginRight: 15

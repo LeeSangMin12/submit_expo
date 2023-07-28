@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Text, View, StyleSheet, Dimensions, Pressable, ScrollView } from "react-native";
 import { useSelector } from 'react-redux';
 import { Feather, Fontisto } from '@expo/vector-icons';
-import { CheckBox } from '@rneui/themed';
+import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 
+import { exec_request } from '@/shared/js/api';
+import { set_store_info } from '@/shared/js/common';
 import Design_chip from "./Design_chip";
 import Custom_modal from "./Custom_modal";
 import Chip from "./Chip";
@@ -119,24 +121,83 @@ const Calendar = () => {
   const { year, month } = useSelector((state) => state.calendar);
   const { default_semester_id } = useSelector((state) => state.semester);
 
-  const [checked, setChecked] = useState(true);
   const [selected_date, set_selected_date] = useState('');
   const [assignment_list_modal, set_assignment_list_modal] = useState(false);
+  const [today_assignment_list, set_today_assignment_list] = useState([]);
 
-  const toggle_checkbox = () => setChecked(!checked);
+  const toggle_checkbox = async (assignment_id, completion_status, date) => {
+    const change_completion_status = await api_assignment_set_completion_status(assignment_id, completion_status);
 
-  const open_assignment_list_modal = (date) => {
-    // const today_assignment_list = api_assignment_get_today_assignment_list(date);
+    if (change_completion_status) {
+      const select_date = new Date(year, month - 1, date);
 
+      const assignment_list = await api_assignment_get_assignment_list();
+      const today_assignment_list = assignment_list.filter((assignment) => {
+        return new Date(assignment.registration_date).toLocaleString().slice(0, 11) === new Date(select_date).toLocaleString().slice(0, 11);
+      });
+
+      set_store_info('assignment', 'assignment_list', assignment_list);
+      set_today_assignment_list(today_assignment_list);
+    }
+  };
+
+  const open_assignment_list_modal = async (date) => {
+    const select_date = new Date(year, month - 1, date);
+
+    const assignment_list = await api_assignment_get_assignment_list();
+    const today_assignment_list = assignment_list.filter((assignment) => {
+      return new Date(assignment.registration_date).toLocaleString().slice(0, 11) === new Date(select_date).toLocaleString().slice(0, 11);
+    });
+
+    set_today_assignment_list(today_assignment_list);
     set_assignment_list_modal(true);
     set_selected_date(date)
   };
 
-  const api_assignment_get_today_assignment_list = async (date) => {
+  const open_assignment = async (assignment_id) => {
+    const assignment_info = await api_assignment_get_assignment(assignment_id);
+
+    set_assignment_list_modal(false);
+    navigation.navigate('과제 수정', {
+      assignment_id: assignment_id,
+      assignment_info: assignment_info
+    });
+  };
+
+  const open_submit_assignment = async (assignment) => {
+    set_assignment_list_modal(false);
+
+    if (assignment.status === '예정') {  //과제 예약 처음 등록할때
+      navigation.navigate('과제 제출', {
+        assignment_id: assignment.assignment_id
+      });
+    } else {
+      navigation.navigate('과제 제출 수정', {
+        assignment_id: assignment.assignment_id,
+        assignment_status: assignment.status,
+        submit_assignment_id: assignment.submit_assignment_id
+      });
+    }
+  };
+
+  const api_assignment_set_completion_status = async (assignment_id, completion_status) => {
     const params = {
-      url: 'assignment/get_today_assignment_list',
-      semester_id: default_semester_id,
-      date: date
+      url: 'assignment/set_completion_status',
+      assignment_id: assignment_id,
+      completion_status: completion_status === 'false' ? 'true' : 'false',
+    }
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_get_assignment_list = async () => {
+    const params = {
+      url: 'assignment/get_assignment_list',
+      semester_id: default_semester_id
     };
 
     const result = await exec_request(params, navigation);
@@ -146,9 +207,23 @@ const Calendar = () => {
     }
   };
 
+  const api_assignment_get_assignment = async (assignment_id) => {
+    const params = {
+      url: 'assignment/get_assignment',
+      assignment_id: assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
+
+
   const Modal_assignment_list = () => {
     return (
-      <ScrollView style={{ width: '100%' }}>
+      <View style={{ flex: 1, width: '100%' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 15, alignItems: 'center' }}>
           <Text >
             <Feather
@@ -170,29 +245,36 @@ const Calendar = () => {
           </Text>
         </View>
 
-        <View style={styles.assignment.container}>
-          <View style={styles.assignment.title_container}>
-            <CheckBox
-              checked={checked}
-              onPress={toggle_checkbox}
-              iconType="material-community"
-              checkedIcon="checkbox-outline"
-              uncheckedIcon={'checkbox-blank-outline'}
-              size={34}
-              title='경영학개론'
-              textStyle={[styles.assignment.checkbox, { textDecorationLine: checked ? 'line-through' : 'none' }]}
-              checkedColor={COLORS.primary_500}
-            />
-          </View>
-          <View style={styles.assignment.chip_container}>
-            <Chip
-              label="완료"
-              background_color={COLORS.gray_470_bg} />
-          </View>
-        </View>
-        <View style={styles.divider} />
+        <ScrollView>
+          {today_assignment_list.map((assignment, idx) => (
+            <View key={idx}>
+              <View style={styles.assignment.container}>
+                <View style={styles.assignment.title_container}>
+                  <Checkbox
+                    value={assignment.completion_status === 'false' ? false : true}
+                    onValueChange={() => toggle_checkbox(assignment.assignment_id, assignment.completion_status, selected_date)}
+                    style={{ width: 25, height: 25 }}
+                  />
+                  <Text
+                    style={[styles.assignment.checkbox, { textDecorationLine: assignment.completion_status === 'false' ? 'none' : 'line-through' }]}
+                    onPress={() => open_assignment(assignment.assignment_id)}
+                  >
+                    {assignment.title}
+                  </Text>
+                </View>
+                <View style={styles.assignment.chip_container}>
+                  <Chip
+                    label={assignment.status}
+                    on_press={() => open_submit_assignment(assignment)}
+                    background_color={assignment_status_color_map[assignment.status]} />
+                </View>
+              </View>
+              <View style={styles.divider} />
+            </View>
+          ))}
+        </ScrollView>
 
-      </ScrollView>
+      </View>
     );
   };
 
@@ -273,13 +355,18 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingVertical: 2
+      paddingVertical: 3,
+      paddingLeft: 6
     },
     title_container: {
-      flexDirection: 'row'
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: 10,
+      paddingVertical: 15
     },
     checkbox: {
       fontSize: 16,
+      paddingLeft: 12
     },
     chip_container: {
       marginRight: 15

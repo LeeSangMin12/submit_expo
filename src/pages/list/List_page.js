@@ -31,8 +31,6 @@ const List_page = () => {
       semester_id: default_semester_id
     };
 
-    console.log('default_semester_id', default_semester_id);
-
     const result = await exec_request(params, navigation);
 
     if (result.status === 'ok') {
