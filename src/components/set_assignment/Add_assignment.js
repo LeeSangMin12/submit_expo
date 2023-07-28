@@ -8,14 +8,14 @@ import { set_store_info, show_toast } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Date_time_picker, Design_chip, File_select } from '@/components/components';
 
-const Add_assignment = ({ navigation }) => {
+const Add_assignment = ({ navigation, route }) => {
   const {
     default_semester_id,
   } = useSelector((state) => state.semester);
 
   const [assignment_input, set_assignment_input] = useState({
     title: '',
-    registration_date: new Date(),
+    registration_date: route.params.selected_date || new Date(),
     class_name: '',
     professor_name: '',
     assignment_description: '',

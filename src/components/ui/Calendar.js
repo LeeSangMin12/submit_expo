@@ -240,8 +240,11 @@ const Calendar = () => {
               size={24}
               color={COLORS.primary_500}
               onPress={() => {
+                const select_date = new Date(year, month - 1, selected_date);
                 set_assignment_list_modal(false);
-                navigation.navigate('과제 등록')
+                navigation.navigate('과제 등록', {
+                  selected_date: select_date
+                })
               }} />
           </Text>
         </View>
