@@ -16,23 +16,22 @@ const List_page = () => {
   } = useSelector((state) => state.semester);
 
   useEffect(() => {
-    // const fetch_data = async () => {
+    const fetch_data = async () => {
+      const assignment_list = await api_assignment_get_assignment_list(default_semester_id);
 
-    // }
-    // fetch_data();
-    // setInterval(async () => {
-    //   const assignment_list = await api_assignment_get_assignment_list();
 
-    //   set_store_info('assignment', 'assignment_list', assignment_list);
-
-    // }, 1000);
+      set_store_info('assignment', 'assignment_list', assignment_list);
+    }
+    fetch_data();
   }, []);
 
-  const api_assignment_get_assignment_list = async () => {
+  const api_assignment_get_assignment_list = async (default_semester_id) => {
     const params = {
       url: 'assignment/get_assignment_list',
       semester_id: default_semester_id
     };
+
+    console.log('default_semester_id', default_semester_id);
 
     const result = await exec_request(params, navigation);
 

@@ -3,8 +3,8 @@ import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } 
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'
 
-import { exec_request_multipart } from '@/shared/js/api';
-import { show_toast } from '@/shared/js/common';
+import { exec_request, exec_request_multipart } from '@/shared/js/api';
+import { set_store_info, show_toast } from '@/shared/js/common';
 import COLORS from '@/shared/js/colors';
 import { Date_time_picker, Design_chip, File_select } from '@/components/components';
 
@@ -60,6 +60,9 @@ const Add_assignment = ({ navigation }) => {
     const add_assignment = await api_assignment_add_assignment();
 
     if (add_assignment) {
+      const assignment_list = await api_assignment_get_assignment_list();
+
+      set_store_info('assignment', 'assignment_list', assignment_list);
       navigation.navigate('Bottom_navigation', { screen: '홈' });
       show_toast('과제가 등록되었습니다.');
     }
@@ -90,6 +93,19 @@ const Add_assignment = ({ navigation }) => {
       return true;
     }
   }
+
+  const api_assignment_get_assignment_list = async () => {
+    const params = {
+      url: 'assignment/get_assignment_list',
+      semester_id: default_semester_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
 
   return (
     <KeyboardAvoidingView

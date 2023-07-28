@@ -151,7 +151,7 @@ const Submit_assignment = ({ navigation, route }) => {
     if (result.status === 'ok') {
       return result.data;
     }
-  }
+  };
 
   return (
     <KeyboardAvoidingView
