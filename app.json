@@ -2,6 +2,7 @@
   "expo": {
     "name": "submit_expo",
     "slug": "submit_expo",
+    "scheme": "com.submitexpo.rn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -13,16 +14,25 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.submitexpo.rn"
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.submitexpo.rn"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "db17479e-bf3f-42f9-a0aa-82c416e12768"
+      }
     }
   }
 }

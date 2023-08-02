@@ -60,7 +60,7 @@ const Set_image = ({
    */
   const pick_image_initial = () => {
     set_value((prev_state) => {
-      return { ...prev_state, img_url: user_profile }
+      return { ...prev_state, img_url: '' }
     })
     set_user_img_modal(false);
   }
