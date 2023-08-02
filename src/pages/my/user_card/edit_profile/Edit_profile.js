@@ -27,7 +27,11 @@ const Edit_profile = () => {
    * 닉네임 검사 후 유저 정보를 수정
    */
   const edit_user_info = async () => {
-    if (await check_nickname()) {
+
+    //닉네임을 변갱했을때만 중복 닉네임 검사
+    const verify_nickname = (nickname !== user_input.nickname) ? await check_nickname() : true;
+
+    if (verify_nickname) {
       const edit_info = await api_user_edit_info();
       if (edit_info === true) {
         const user_data = await api_user_get_info();
@@ -98,7 +102,7 @@ const Edit_profile = () => {
     } else {
       return false;
     }
-  }
+  };
 
   /**
    * 유저 정보 가져옴

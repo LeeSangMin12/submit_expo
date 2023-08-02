@@ -17,6 +17,7 @@ const Home_page = () => {
       const user_data = await api_user_get_info();
       const semesters = await api_semester_get_semester_list();
       const default_semester = semesters.find(item => item.default_semester === 'true');
+
       const assignment_list = await api_assignment_get_assignment_list(default_semester.semester_id);
 
       const conversion_month_to_num =
