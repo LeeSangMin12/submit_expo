@@ -22,7 +22,7 @@ const User_card = ({
         {img_url === '' ?
           <Image source={user_profile_sm} /> :
           <Image
-            source={{ uri: img_url }}
+            source={{ uri: img_url.uri }}
             style={{ width: 56, height: 56, borderRadius: '50' }} />
         }
 

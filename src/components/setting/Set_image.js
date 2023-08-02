@@ -94,8 +94,7 @@ const Set_image = ({
       <View style={styles.img_url_container}>
         <Pressable onPress={() => set_user_img_modal(true)}>
           {img_url === '' ? <Image source={user_profile} style={styles.img_profile} /> :
-            typeof img_url === "string" ? <Image source={{ uri: img_url }} style={styles.img_profile} /> :
-              <Image source={{ uri: img_url.uri }} style={styles.img_profile} />
+            <Image source={{ uri: img_url.uri }} style={styles.img_profile} />
           }
           <Image source={edit_feather_btn} style={styles.img_edit} />
         </Pressable>
