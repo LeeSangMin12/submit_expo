@@ -10,6 +10,7 @@ const assignment_slice = createSlice({
   reducers: {
     set_assignment: (state, actions) => {
       const { key, value } = actions.payload;
+
       return {
         ...state,
         [key]: value

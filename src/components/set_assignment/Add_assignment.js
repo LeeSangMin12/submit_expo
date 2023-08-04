@@ -15,7 +15,7 @@ const Add_assignment = ({ navigation, route }) => {
 
   const [assignment_input, set_assignment_input] = useState({
     title: '',
-    registration_date: route.params.selected_date || new Date(),
+    registration_date: route?.params?.selected_date || new Date(),  //캘린더 날짜 클릭 후 과제 등록시 selected_date값 들어옴
     class_name: '',
     professor_name: '',
     assignment_description: '',

@@ -123,7 +123,7 @@ const Add_semester = ({ navigation }) => {
     const result = await exec_request(params, navigation);
 
     if (result.status === 'ok') {
-      return result.data.selected_semesters;
+      return result.data.semester_list;
     }
   };
 

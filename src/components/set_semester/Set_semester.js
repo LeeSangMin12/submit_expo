@@ -61,7 +61,7 @@ const Set_semester = () => {
     const result = await exec_request(params, navigation);
 
     if (result.status === 'ok') {
-      return result.data.selected_semesters;
+      return result.data.semester_list;
     }
   };
 
@@ -127,8 +127,8 @@ const Set_semester = () => {
             key={idx}
             onPress={async () => {
               await api_semester_set_default_semester(val.semester_id);
-              const semesters = await api_semester_get_semester_list();
-              const default_semester = semesters.find(item => item.default_semester === 'true');
+              const semester_list = await api_semester_get_semester_list();
+              const default_semester = semester_list.find(item => item.default_semester === 'true');
               const assignment_list = await api_assignment_get_assignment_list(default_semester.semester_id);
 
               const month =
@@ -137,12 +137,12 @@ const Set_semester = () => {
                     default_semester.semester.split(' ')[1] === '2학기' ? 9 :
                       default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : '';
 
-              set_store_info('assignment', 'assignment_list', assignment_list);
-              set_store_info('semester', 'semester_list', semesters);
+              set_store_info('semester', 'semester_list', semester_list);
               set_store_info('semester', 'default_semester', default_semester.semester);
               set_store_info('semester', 'default_semester_id', default_semester.semester_id);
               set_store_info('calendar', 'year', parseInt(default_semester.semester.split(' ')[0].replace('년', '')));
               set_store_info('calendar', 'month', parseInt(month));
+              set_store_info('assignment', 'assignment_list', assignment_list);
               navigation.goBack();
             }}
           >
