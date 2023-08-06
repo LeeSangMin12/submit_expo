@@ -121,6 +121,7 @@ const Assignment_list = () => {
           <View style={styles.divider} />
         </View>
       ))}
+
     </ScrollView>
   );
 }

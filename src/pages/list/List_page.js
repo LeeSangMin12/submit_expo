@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
 import { set_store_info } from '@/shared/js/common';
@@ -15,14 +15,17 @@ const List_page = () => {
     default_semester_id,
   } = useSelector((state) => state.semester);
 
-  useEffect(() => {
-    const fetch_data = async () => {
-      const assignment_list = await api_assignment_get_assignment_list(default_semester_id);
+  useFocusEffect(
+    useCallback(() => {
+      const fetch_data = async () => {
+        const assignment_list = await api_assignment_get_assignment_list(default_semester_id);
 
-      set_store_info('assignment', 'assignment_list', assignment_list);
-    }
-    fetch_data();
-  });
+        set_store_info('assignment', 'assignment_list', assignment_list);
+      };
+
+      fetch_data();
+    }, [])
+  );
 
   const api_assignment_get_assignment_list = async (default_semester_id) => {
     const params = {

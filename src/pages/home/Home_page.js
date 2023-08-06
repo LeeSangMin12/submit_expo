@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
 
 import { set_store_info } from '@/shared/js/common';
 import { exec_request } from "@/shared/js/api";
@@ -35,6 +34,7 @@ const Home_page = () => {
     };
     fetch_data();
   }, []);
+
 
   /**
    * 유저 정보 가져옴

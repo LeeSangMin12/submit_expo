@@ -27,12 +27,12 @@ const Assignment_month_info = () => {
     useCallback(() => {
       calculate_assignments();
 
-      return () => (  //화면에 나갔다 들어올 때마다 progress bar update하기위해 빈값설정
+      return () => {  //화면에 나갔다 들어올 때마다 progress bar update하기위해 빈값설정
         set_assignment_info({
           remaining_num: '',
           completion_num: '',
         })
-      );
+      };
     }, [assignment_list])
   );
 
