@@ -98,7 +98,8 @@ const Submit_assignment = ({ navigation, route }) => {
   const api_assignment_submit_email = async () => {
     const form_data = new FormData();
     form_data.append('assignment_id', assignment_id);
-    form_data.append('status', '설정');
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', '예약');
     form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
     form_data.append('email_address', assignment_email_input.email_address);
     form_data.append('title', assignment_email_input.title);
@@ -122,7 +123,8 @@ const Submit_assignment = ({ navigation, route }) => {
   const api_assignment_submit_lms = async () => {
     const form_data = new FormData();
     form_data.append('assignment_id', assignment_id);
-    form_data.append('status', submit_method);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', 'LMS');
     form_data.append('url', assignment_lms_input.url);
     Array.from(assignment_lms_input.file_list).forEach((file) => {
       form_data.append('file_list', file);

@@ -185,7 +185,6 @@ const Edit_submit_assignment = ({ navigation, route }) => {
   const api_assignment_delete_submit_assignment = async () => {
     const params = {
       url: 'assignment/delete_submit_assignment',
-      submit_method: submit_method,
       assignment_id: assignment_info.assignment_id,
       submit_assignment_id: assignment_info.submit_assignment_id
     };
@@ -201,7 +200,8 @@ const Edit_submit_assignment = ({ navigation, route }) => {
     const form_data = new FormData();
     form_data.append('assignment_id', assignment_info.assignment_id);
     form_data.append('submit_assignment_id', assignment_info.submit_assignment_id);
-    form_data.append('status', submit_method);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', 'LMS');
     form_data.append('url', assignment_lms_input.url);
     Array.from(assignment_lms_input.file_list).forEach((file) => {
       form_data.append('file_list', file);
@@ -223,7 +223,8 @@ const Edit_submit_assignment = ({ navigation, route }) => {
     const form_data = new FormData();
     form_data.append('assignment_id', assignment_info.assignment_id);
     form_data.append('submit_assignment_id', assignment_info.submit_assignment_id);
-    form_data.append('status', '설정');
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', '예약');
     form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
     form_data.append('email_address', assignment_email_input.email_address);
     form_data.append('title', assignment_email_input.title);

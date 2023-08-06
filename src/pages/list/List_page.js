@@ -19,11 +19,10 @@ const List_page = () => {
     const fetch_data = async () => {
       const assignment_list = await api_assignment_get_assignment_list(default_semester_id);
 
-
       set_store_info('assignment', 'assignment_list', assignment_list);
     }
     fetch_data();
-  }, []);
+  });
 
   const api_assignment_get_assignment_list = async (default_semester_id) => {
     const params = {
@@ -36,7 +35,7 @@ const List_page = () => {
     if (result.status === 'ok') {
       return result.data;
     }
-  }
+  };
 
   return (
     <>
