@@ -128,7 +128,8 @@ const Edit_assignment = ({ navigation, route }) => {
   const api_assignment_delete_assignment = async () => {
     const params = {
       url: 'assignment/delete_assignment',
-      assignment_id: route.params.assignment_id
+      assignment_id: route.params.assignment_id,
+      submit_assignment_id: route.params.submit_assignment_id
     };
 
     const result = await exec_request(params, navigation);

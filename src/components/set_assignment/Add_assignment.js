@@ -78,6 +78,7 @@ const Add_assignment = ({ navigation, route }) => {
     form_data.append('class_name', assignment_input.class_name);
     form_data.append('professor_name', assignment_input.professor_name);
     form_data.append('assignment_description', assignment_input.assignment_description);
+    form_data.append('submit_assignment_id', '');
     Array.from(assignment_input.file_list).forEach((file) => {
       form_data.append('file_list', file);
     });

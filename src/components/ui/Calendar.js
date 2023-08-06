@@ -161,7 +161,8 @@ const Calendar = () => {
     set_assignment_list_modal(false);
     navigation.navigate('과제 수정', {
       assignment_id: assignment_id,
-      assignment_info: assignment_info
+      assignment_info: assignment_info,
+      submit_assignment_id: assignment_info.submit_assignment_id
     });
   };
 
