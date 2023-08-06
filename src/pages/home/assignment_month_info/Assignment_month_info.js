@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 
@@ -23,9 +23,18 @@ const Assignment_month_info = () => {
     completion_num: '',
   });
 
-  useEffect(() => {
-    calculate_assignments();
-  }, [assignment_list]);
+  useFocusEffect(
+    useCallback(() => {
+      calculate_assignments();
+
+      return () => (  //화면에 나갔다 들어올 때마다 progress bar update하기위해 빈값설정
+        set_assignment_info({
+          remaining_num: '',
+          completion_num: '',
+        })
+      );
+    }, [assignment_list])
+  );
 
   const calculate_assignments = () => {
     const remaining_assignments_num = assignment_list.filter((val) => {

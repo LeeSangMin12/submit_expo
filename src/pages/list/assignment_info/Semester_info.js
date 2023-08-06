@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
@@ -19,26 +20,28 @@ const Semester_info = () => {
     completion_num: '',
   });
 
-  useEffect(() => {
-    calculate_assignments();
-  }, [assignment_list]);
+  useFocusEffect(
+    useCallback(() => {
+      calculate_assignments();
+
+      return () => (  //화면에 나갔다 들어올 때마다 progress bar update하기위해 빈값설정
+        set_assignment_info({
+          remaining_num: '',
+          completion_num: '',
+        })
+      );
+    }, [assignment_list])
+  );
 
   const calculate_assignments = () => {
-    const remaining_assignments_num = assignment_list.filter((val) => {
-      if (val.completion_status === 'false') {
-        return true;
-      }
+    const remaining_assignments_num = assignment_list.filter((val) =>
+      val.completion_status === 'false'
+    );
+
+    set_assignment_info({
+      remaining_num: remaining_assignments_num.length,
+      completion_num: assignment_list.length - remaining_assignments_num.length,
     });
-
-    set_assignment_info((prev_state) => ({
-      ...prev_state,
-      remaining_num: remaining_assignments_num.length
-    }));
-
-    set_assignment_info((prev_state) => ({
-      ...prev_state,
-      completion_num: assignment_list.length - remaining_assignments_num.length
-    }));
   }
 
   return (
@@ -87,6 +90,7 @@ const Semester_info = () => {
       </View>
 
       <LinearProgress
+        key={assignment_list.length}
         value={assignment_info.completion_num / assignment_list.length}
         color={COLORS.primary_500}
         variant='determine'
