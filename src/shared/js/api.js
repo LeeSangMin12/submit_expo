@@ -135,11 +135,12 @@ export const exec_request_multipart = async (req_obj, navigation) => {
 
   const { url, ...data } = req_obj;
 
+  console.log('req_obj', req_obj);
+
   try {
     const response = await api.post(SERVER_URL + `/${url}`, data.form_data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data"
       },
     });
 
