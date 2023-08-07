@@ -150,10 +150,12 @@ const App = () => {
           <Stack.Screen
             name="과제 등록"
             component={Add_assignment}
+            options={{ title: '과제 일정' }}
           />
           <Stack.Screen
             name="과제 수정"
             component={Edit_assignment}
+            options={{ title: '과제 일정' }}
           />
           {/* <Stack.Screen
             name="과제 알림 설정"
@@ -184,12 +186,14 @@ const App = () => {
             component={Submit_assignment}
             options={() => ({
               headerTitleAlign: 'center',
+              title: '제출하기'
             })}
           />
           <Stack.Screen
             name="과제 제출 수정"
             component={Edit_submit_assignment}
             options={() => ({
+              title: '제출하기',
               headerTitleAlign: 'center',
             })}
           />
