@@ -22,12 +22,13 @@ const Edit_profile = () => {
     nickname: nickname,
   });
   const [err_nickname, set_err_nickname] = useState('');
+  const [btn_disabled, set_btn_disabled] = useState(false);
 
   /**
    * 닉네임 검사 후 유저 정보를 수정
    */
   const edit_user_info = async () => {
-
+    set_btn_disabled(true);
     //닉네임을 변갱했을때만 중복 닉네임 검사
     const verify_nickname = (nickname !== user_input.nickname) ? await check_nickname() : true;
 
@@ -39,6 +40,8 @@ const Edit_profile = () => {
         navigation.navigate('Bottom_navigation', { screen: '마이' });
       }
     }
+
+    set_btn_disabled(false);
   }
 
   /**
@@ -146,6 +149,7 @@ const Edit_profile = () => {
           title="완료하기"
           style={styles.btn_next}
           on_press={edit_user_info}
+          disabled={btn_disabled}
         />
       </View>
     </View >
