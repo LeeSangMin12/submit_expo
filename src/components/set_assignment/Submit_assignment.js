@@ -63,7 +63,7 @@ const Submit_assignment = ({ navigation, route }) => {
       const { file_list, ...rest } = assignment_email_input;
       const any_empty = Object.values(rest).some((value) => value === '');
       if (any_empty) {
-        Alert.alert('값이 비어있습니다.');
+        Alert.alert('내용을 입력하세요.');
         return;
       }
 
@@ -80,7 +80,7 @@ const Submit_assignment = ({ navigation, route }) => {
       const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
       const any_empty = Object.values(rest).some((value) => value === '');
       if (any_empty) {
-        Alert.alert('값이 비어있습니다.');
+        Alert.alert('내용을 입력하세요.');
         return;
       }
 
