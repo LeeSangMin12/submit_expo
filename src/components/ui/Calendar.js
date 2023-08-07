@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View, StyleSheet, Dimensions, Pressable, ScrollView } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Pressable, ScrollView, useWindowDimensions } from "react-native";
 import { useSelector } from 'react-redux';
 import { Feather, Fontisto } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
@@ -13,6 +13,8 @@ import Chip from "./Chip";
 import COLORS from "@/shared/js/colors";
 
 const window_width = Dimensions.get('window').width;
+//소수점이 너무길면 달력의 넓이가 이상하게 되는 버그가 있어서 toFixed로 소수점 3자리까지만 가져옴.
+// const date_width = parseFloat((window_width / 7).toFixed(8));  //7일에 대한 백분율 (100 / 7)
 const date_width = window_width / 7;  //7일에 대한 백분율 (100 / 7)
 
 const assignment_status_color_map = {
@@ -25,7 +27,7 @@ const assignment_status_color_map = {
 /**
  * 캘린더 그리기
  */
-const render_calender = (year, month, open_assignment_list_modal) => {
+const render_calender = (year, month, open_assignment_list_modal, date_width) => {
   const { assignment_list } = useSelector((state) => state.assignment);
 
   const date = new Date(year, month - 1);
@@ -78,7 +80,7 @@ const render_calender = (year, month, open_assignment_list_modal) => {
       date === today.getDate();
 
     const condition = i >= first_date_index && i < last_date_index ? 'this' : 'other';
-    const container_style = [styles.date, { height: `${date_height}%` }];
+    const container_style = [styles.date, { height: `${date_height}%`, width: date_width }];
     const text_style =
       [styles[condition],
       { fontSize: 13 },
@@ -94,7 +96,7 @@ const render_calender = (year, month, open_assignment_list_modal) => {
       <Pressable onPress={condition === 'this' ? () => open_assignment_list_modal(date) : null}
         style={container_style}
         key={i} >
-        {condition === 'this' && is_today && <View style={styles.today_circle} />}
+        {condition === 'this' && is_today && <View style={[styles.today_circle, { left: (date_width - 20) / 2, }]} />}
         <Text style={text_style}>{date}</Text>
 
         {this_month_assignment.map((val, idx) => {
@@ -119,6 +121,10 @@ const render_calender = (year, month, open_assignment_list_modal) => {
 
 const Calendar = () => {
   const navigation = useNavigation();
+  const window = useWindowDimensions();
+
+  const date_width = parseFloat((window.width / 7).toFixed(2));
+
   const { year, month } = useSelector((state) => state.calendar);
   const { default_semester_id } = useSelector((state) => state.semester);
 
@@ -285,16 +291,16 @@ const Calendar = () => {
   return (
     <View style={styles.calendar} >
       <View style={styles.days_container} >
-        <Text style={[styles.day, { color: 'red' }]}>일</Text>
-        <Text style={styles.day}>월</Text>
-        <Text style={styles.day}>화</Text>
-        <Text style={styles.day}>수</Text>
-        <Text style={styles.day}>목</Text>
-        <Text style={styles.day}>금</Text>
-        <Text style={[styles.day, { color: 'blue' }]}>토</Text>
+        <Text style={[styles.day, { color: 'red', width: date_width }]}>일</Text>
+        <Text style={[styles.day, { width: date_width }]}>월</Text>
+        <Text style={[styles.day, { width: date_width }]}>화</Text>
+        <Text style={[styles.day, { width: date_width }]}>수</Text>
+        <Text style={[styles.day, { width: date_width }]}>목</Text>
+        <Text style={[styles.day, { width: date_width }]}>금</Text>
+        <Text style={[styles.day, { color: 'blue', width: date_width }]}>토</Text>
       </View>
       <View style={styles.dates_container}>
-        {render_calender(year, month, open_assignment_list_modal)}
+        {render_calender(year, month, open_assignment_list_modal, date_width)}
       </View>
 
       <Custom_modal
@@ -306,6 +312,8 @@ const Calendar = () => {
   );
 };
 
+
+
 export default Calendar;
 
 const styles = StyleSheet.create({
@@ -316,7 +324,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   day: {
-    width: date_width,
     textAlign: 'center',
     marginVertical: 10,
     color: COLORS.gray_500
@@ -330,7 +337,6 @@ const styles = StyleSheet.create({
     alignItems: 'stretch'
   },
   date: {
-    width: date_width,
     alignItems: 'center',
     borderColor: COLORS.gray_490_inactive,
     borderBottomWidth: 0.5,
@@ -347,12 +353,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.black_500,
     position: 'absolute',
     top: 4.3,
-    left: (date_width - 20) / 2,
+
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  Modal_assignment_list: {
-
   },
   assignment: {
     container: {
