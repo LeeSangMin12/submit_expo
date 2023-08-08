@@ -4,6 +4,8 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
 import { Ionicons, Fontisto } from '@expo/vector-icons'
+import * as Font from "expo-font";
+import SplashScreen from 'react-native-splash-screen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
@@ -100,6 +102,16 @@ const toast_config = {
 const App = () => {
   const [page_count, set_page_count] = useState(1);
 
+  useEffect(() => {
+    fetch_fonts();
+  }, []);
+
+  const fetch_fonts = async () => {
+    await Font.loadAsync({
+      'PretendardVariable': require('@/assets/fonts/PretendardVariable.ttf'),
+    });
+  };
+
   const create_two_button_alert = ({ navigation }) =>
     Alert.alert('회원가입 취소', '홈 화면으로 이동합니다.', [
       {
@@ -108,6 +120,8 @@ const App = () => {
       },
       { text: '확인', onPress: () => navigation.navigate('Login_page') },
     ]);
+
+
 
   return (
     <Provider store={store}>
