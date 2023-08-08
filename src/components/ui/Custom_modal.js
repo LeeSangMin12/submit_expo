@@ -12,10 +12,9 @@ const Custom_modal = ({ modal_visible, position, bottom_height, content_componen
       position === 'bottom' ? { ...styles.bottom_view, container: { ...styles.bottom_view.container, height: bottom_height } } : null;
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modal_visible}>
+    <Modal animationType="slide" transparent={true} visible={modal_visible}>
+      <View style={styles.overlay} />
+      {/* 기존의 컨텐츠와 같은 레이아웃을 유지한 채로 다음과 같이 추가 */}
       <View style={view_position.container}>
         <View style={view_position.modal}>
           {content_component()}
@@ -26,6 +25,14 @@ const Custom_modal = ({ modal_visible, position, bottom_height, content_componen
 };
 
 const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.58)',
+  },
   centered_view: {
     container: {
       flex: 1,
@@ -66,7 +73,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center'
     }
-  },
+  }
 });
 
 export default Custom_modal;
