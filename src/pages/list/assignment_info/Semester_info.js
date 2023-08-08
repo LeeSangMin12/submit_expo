@@ -94,7 +94,7 @@ const Semester_info = () => {
         value={assignment_info.completion_num / assignment_list.length}
         color={COLORS.primary_500}
         variant='determine'
-        animation={{ duration: 1500 }}
+        animation={{ duration: 700 }}
         style={styles.assignment_progress} />
     </>
   );

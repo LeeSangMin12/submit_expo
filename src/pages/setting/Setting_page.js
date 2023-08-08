@@ -145,6 +145,7 @@ const Setting_page = ({
           style={styles.linear_progress}
           value={progress}
           color={COLORS.primary_500}
+          animation={{ duration: 700 }}
           variant='determine' />
       </View>
 
