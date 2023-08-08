@@ -44,8 +44,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.gray_480,
     borderRadius: 8,
-    padding: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingHorizontal: 6,
+    paddingVertical: 5
   },
   text_chip: {
     fontSize: 12,

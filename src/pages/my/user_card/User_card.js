@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import COLORS from '@/shared/js/colors';
 import { Design_chip } from '@/components/components';
-import user_profile_sm from '@/assets/img/my/user_card/user_profile_sm.png';
+import user_profile_sm from '@/assets/img/my/user_card/UserProfile.png';
 
 const User_card = ({
   img_url,
@@ -44,9 +44,9 @@ const User_card = ({
         </View>
       </View>
 
-      <View>
+      <View style={styles.edit_profile_container}>
         <Pressable onPress={() => navigation.navigate('프로필 수정')}>
-          <Text style={styles.text_edit_profile}>프로필 수정</Text>
+          <Text style={styles.edit_profile_container.edit_text}>프로필 수정</Text>
         </Pressable>
       </View>
     </View>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   card_text_container: {
-    marginLeft: 10,
+    paddingLeft: 13,
     justifyContent: 'space-between'
   },
   text_container: {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
   },
   text_university: {
     fontSize: 12,
-    marginLeft: 7
+    paddingLeft: 8
   },
   chip: {
     borderWidth: 1,
@@ -89,7 +89,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold'
   },
-  text_edit_profile: {
-    color: COLORS.gray_530
+  edit_profile_container: {
+    edit_text: {
+      color: COLORS.gray_530,
+      fontFamily: "PretendardVariable",
+    }
   }
 });

@@ -3,8 +3,7 @@ import { View, Text, Image, } from "react-native";
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import { show_toast } from '@/shared/js/common';
-import { set_store_info } from '@/shared/js/common';
+import { show_toast, set_store_info } from '@/shared/js/common_function';
 import { exec_request } from "@/shared/js/api";
 import { Button } from '@/components/components';
 import owl_left_nav from '@/assets/img/logo/owl_left_nav.png'
@@ -103,10 +102,10 @@ const Community_page = () => {
           <Text style={{ fontSize: 30 }}>신청 현황</Text>
         </View>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30, }}>
           <Text style={{ fontSize: 45, color: COLORS.primary_500 }}>{application_num}</Text>
           <Text style={{ fontSize: 45, }}> / </Text>
-          <Text style={{ fontSize: 30 }}>300</Text>
+          <Text style={{ fontSize: 30, }}>300</Text>
         </View>
 
         <View style={{ alignItems: 'flex-end', marginVertical: 30 }}>

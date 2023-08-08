@@ -3,7 +3,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import { SERVER_URL } from "@/config/config.js"
-import { async_storage_store_data, async_storage_get_data, async_storage_remove_data } from "@/shared/js/common.js";
+import { async_storage_store_data, async_storage_get_data, async_storage_remove_data } from "@/shared/js/common_function.js";
 
 const api = axios.create({
   baseURL: SERVER_URL,

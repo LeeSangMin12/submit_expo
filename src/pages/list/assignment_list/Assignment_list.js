@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Checkbox from 'expo-checkbox';
 
 import { exec_request } from '@/shared/js/api';
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Chip } from '@/components/components';
 

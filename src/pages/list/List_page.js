@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import Semester_info from '@/pages/list/assignment_info/Semester_info';
 import Assignment_list from '@/pages/list/assignment_list/Assignment_list';

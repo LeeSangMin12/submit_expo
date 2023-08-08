@@ -6,7 +6,7 @@ import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info } from '@/shared/js/common_function';
 import Design_chip from "./Design_chip";
 import Custom_modal from "./Custom_modal";
 import Chip from "./Chip";

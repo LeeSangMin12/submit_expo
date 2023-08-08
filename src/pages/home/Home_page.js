@@ -2,7 +2,7 @@ import { useEffect, } from "react";
 import { View, SafeAreaView, StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info } from '@/shared/js/common_function';
 import { exec_request } from "@/shared/js/api";
 import { Calendar } from '@/components/components.js'
 import COLORS from '@/shared/js/colors';

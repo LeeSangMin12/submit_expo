@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
-import { async_storage_remove_data } from "@/shared/js/common.js";
+import { async_storage_remove_data } from "@/shared/js/common_function.js";
 import { Button, Custom_modal } from "@/components/components";
 import COLORS from '@/shared/js/colors';
 

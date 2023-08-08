@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_request, exec_request_multipart } from "@/shared/js/api";
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
 import Set_nickname from '@/components/setting/Set_nickname';

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from "react";
 
 import { exec_request } from "@/shared/js/api";
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import User_card from "@/pages/my/user_card/User_card";
 import User_setting from "@/pages/my/user_setting/User_setting";
@@ -78,8 +78,10 @@ export default My_page;
 
 const styles = StyleSheet.create({
   user_info_container: {
-    marginTop: 15,
-    padding: 20
+    paddingTop: 14.81,
+    paddingLeft: 20,
+    paddingRight: 8,
+    paddingBottom: 13
   },
   divider: {
     height: 6,

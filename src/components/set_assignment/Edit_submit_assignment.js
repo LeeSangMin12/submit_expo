@@ -4,8 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
-import { show_toast, is_valid_email } from '@/shared/js/common';
-import { set_store_info } from '@/shared/js/common';
+import { show_toast, is_valid_email, set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Chip, Date_time_picker, File_select, Design_chip } from '@/components/components';
 import { useEffect } from 'react';

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
 import { Date_time_picker, Calendar_mini } from '@/components/components';
-import { set_store_info } from '@/shared/js/common';
+import { set_store_info } from '@/shared/js/common_function';
 
 const Set_alarm = (props) => {
   const { alarm_cycle, alarm_period, alarm_time } = useSelector(state => state.assignment_add);
