@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Text, View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
+import { View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
 import { Ionicons, Fontisto } from '@expo/vector-icons'
 import * as Font from "expo-font";
-import SplashScreen from 'react-native-splash-screen'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
@@ -49,7 +48,12 @@ const Bottom_navigation = () => {
       screenOptions={{
         headerShown: false,
         tabBarStyle: { height: 80, backgroundColor: COLORS.primary_480 },
-        tabBarShowLabel: false,
+        tabBarActiveTintColor: COLORS.primary_500,
+        tabBarInactiveTintColor: 'gray',
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: 'regular'
+        },
       }}
     >
       <Bottom_tab.Screen
@@ -283,8 +287,8 @@ export default App;
 
 const styles = StyleSheet.create({
   img_bottom_tabs: {
-    width: 40,
-    height: 40,
+    width: 28,
+    height: 28,
   },
   primary_success_toast: {
     container: {
