@@ -1,12 +1,12 @@
 import { useState, useLayoutEffect } from 'react';
-import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, is_valid_email, show_toast } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
-import { Chip, Date_time_picker, File_select, Design_chip, Custom_text } from '@/components/components';
+import { Custom_text_input, Chip, Date_time_picker, File_select, Design_chip, Custom_text } from '@/components/components';
 
 const Submit_assignment = ({ navigation, route }) => {
   const { assignment_id } = route.params;
@@ -201,7 +201,7 @@ const Submit_assignment = ({ navigation, route }) => {
             </View>
 
             <View style={{ alignItems: 'center' }}>
-              <TextInput
+              <Custom_text_input
                 value={assignment_email_input.email_address}
                 onChangeText={(label) => set_assignment_email_input((prev_state) => {
                   return { ...prev_state, email_address: label }
@@ -213,7 +213,7 @@ const Submit_assignment = ({ navigation, route }) => {
             </View>
 
             <View style={styles.input_container}>
-              <TextInput
+              <Custom_text_input
                 value={assignment_email_input.title}
                 onChangeText={(label) => set_assignment_email_input((prev_state) => {
                   return { ...prev_state, title: label }
@@ -224,7 +224,7 @@ const Submit_assignment = ({ navigation, route }) => {
             </View>
 
             <View style={styles.input_container} >
-              <TextInput
+              <Custom_text_input
                 value={assignment_email_input.description}
                 onChangeText={(label) => set_assignment_email_input((prev_state) => {
                   return { ...prev_state, description: label }
@@ -254,7 +254,7 @@ const Submit_assignment = ({ navigation, route }) => {
           :
           <>
             <View style={styles.input_container}>
-              <TextInput
+              <Custom_text_input
                 value={assignment_lms_input.url}
                 onChangeText={(label) => set_assignment_lms_input((prev_state) => {
                   return { ...prev_state, url: label }

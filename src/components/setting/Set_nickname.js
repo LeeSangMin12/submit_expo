@@ -1,6 +1,6 @@
-import { View, TextInput, StyleSheet, } from 'react-native';
-import { Custom_text } from "@/components/components";
+import { View, StyleSheet, } from 'react-native';
 
+import { Custom_text_input, Custom_text } from "@/components/components";
 import COLORS from '@/shared/js/colors';
 
 const Set_nickname = ({
@@ -14,7 +14,7 @@ const Set_nickname = ({
       <Custom_text style={styles.label}>닉네임</Custom_text>
 
       <View style={styles.img_input_container}>
-        <TextInput
+        <Custom_text_input
           style={styles.input}
           placeholder="닉네임을 입력해주세요(2글자 이상)"
           value={nickname}

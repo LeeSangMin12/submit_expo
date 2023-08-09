@@ -1,12 +1,12 @@
 import { useEffect, useState, useLayoutEffect } from 'react';
-import { View, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'
 
 import { exec_request } from "@/shared/js/api";
 import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
-import { Design_chip } from '@/components/components';
+import { Custom_text_input, Design_chip } from '@/components/components';
 
 const Add_semester = ({ navigation }) => {
   const [semester_name, set_semester_name] = useState('')
@@ -130,7 +130,7 @@ const Add_semester = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.input_container}>
-        <TextInput
+        <Custom_text_input
           style={styles.input}
           placeholder='캘린더 이름'
           value={semester_name}

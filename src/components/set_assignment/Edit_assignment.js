@@ -1,12 +1,12 @@
 import { useLayoutEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, show_toast } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
-import { Date_time_picker, Design_chip, File_select } from '@/components/components';
+import { Custom_text_input, Date_time_picker, Design_chip, File_select } from '@/components/components';
 
 const Edit_assignment = ({ navigation, route }) => {
   const {
@@ -161,7 +161,7 @@ const Edit_assignment = ({ navigation, route }) => {
         automaticallyAdjustKeyboardInsets={true}>
 
         <View style={styles.input_container}>
-          <TextInput
+          <Custom_text_input
             style={[styles.input, { fontSize: 20 }]}
             placeholder='과제 제목'
             placeholderTextColor={COLORS.gray_500}
@@ -183,7 +183,7 @@ const Edit_assignment = ({ navigation, route }) => {
         </View>
 
         <View style={{ alignItems: 'center' }}>
-          <TextInput
+          <Custom_text_input
             style={styles.input}
             placeholder='수업명'
             placeholderTextColor={COLORS.gray_500}
@@ -195,7 +195,7 @@ const Edit_assignment = ({ navigation, route }) => {
         </View>
 
         <View style={styles.input_container}>
-          <TextInput
+          <Custom_text_input
             style={styles.input}
             placeholder='교수명'
             placeholderTextColor={COLORS.gray_500}
@@ -207,7 +207,7 @@ const Edit_assignment = ({ navigation, route }) => {
         </View>
 
         <View style={styles.input_container} >
-          <TextInput
+          <Custom_text_input
             style={{
               padding: 10,
               height: 120,

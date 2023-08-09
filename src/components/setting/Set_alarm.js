@@ -1,10 +1,10 @@
 import { useState, } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector, } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
-import { Date_time_picker, Calendar_mini } from '@/components/components';
+import { Custom_text_input, Date_time_picker, Calendar_mini } from '@/components/components';
 import { set_store_info } from '@/shared/js/common_function';
 
 const Set_alarm = (props) => {
@@ -24,7 +24,7 @@ const Set_alarm = (props) => {
               onPress={() => {
                 set_select_cycle(!select_cycle)
               }}>
-              <TextInput
+              <Custom_text_input
                 style={styles.input}
                 placeholder="몇일 주기로"
                 editable={false}
@@ -66,7 +66,7 @@ const Set_alarm = (props) => {
           <Pressable
             style={styles.input_container}
             onPress={() => { set_select_cycle(!select_cycle) }}>
-            <TextInput
+            <Custom_text_input
               style={styles.input}
               placeholder={alarm_cycle !== '' ? `${alarm_cycle}일 주기로` : '주기를 선택해주세요'}
               editable={false}
@@ -88,7 +88,7 @@ const Set_alarm = (props) => {
               onPress={() => {
                 set_select_period(!select_period)
               }}>
-              <TextInput
+              <Custom_text_input
                 style={styles.input}
                 placeholder="몇일전부터"
                 editable={false}
@@ -116,7 +116,7 @@ const Set_alarm = (props) => {
           <Pressable
             style={styles.input_container}
             onPress={() => { set_select_period(!select_period) }}>
-            <TextInput
+            <Custom_text_input
               style={styles.input}
               placeholder="기간을 선택해주세요"
               editable={false}
@@ -138,7 +138,7 @@ const Set_alarm = (props) => {
               onPress={() => {
                 set_select_time(!select_time)
               }}>
-              <TextInput
+              <Custom_text_input
                 style={styles.input}
                 placeholder="몇시에"
                 editable={false}
@@ -160,7 +160,7 @@ const Set_alarm = (props) => {
           <Pressable
             style={styles.input_container}
             onPress={() => { set_select_time(!select_time) }}>
-            <TextInput
+            <Custom_text_input
               style={styles.input}
               placeholder="시간을 선택해주세요"
               editable={false}
