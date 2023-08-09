@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import COLORS from '@/shared/js/colors';
 import { Custom_text, Design_chip } from '@/components/components';
-import user_profile_sm from '@/assets/img/my/user_card/UserProfile.png';
+import user_profile_sm from '@/assets/img/my/user_card/user_profile.png';
 
 const User_card = ({
   img_url,
@@ -20,7 +20,7 @@ const User_card = ({
 
       <View style={styles.card_container}>
         {img_url === '' ?
-          <Image source={user_profile_sm} /> :
+          <Image style={{ width: 56, height: 56, }} source={user_profile_sm} /> :
           <Image
             source={{ uri: img_url.uri }}
             style={{ width: 56, height: 56, borderRadius: '50' }} />
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   card_text_container: {
+    paddingVertical: 3,
     paddingLeft: 13,
     justifyContent: 'space-between'
   },
@@ -71,11 +72,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   text_name: {
-    fontFamily: 'bold',
+    fontFamily: 'semi_bold',
     fontSize: 15
   },
   text_university: {
     fontSize: 12,
+    fontFamily: 'medium',
     paddingLeft: 8
   },
   chip: {
@@ -91,7 +93,9 @@ const styles = StyleSheet.create({
   },
   edit_profile_container: {
     edit_text: {
-      color: COLORS.gray_530,
+      color: COLORS.gray_510,
+      paddingTop: 3,
+      paddingRight: 18,
     }
   }
 });

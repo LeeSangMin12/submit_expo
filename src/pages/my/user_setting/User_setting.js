@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons'
+
 
 import { async_storage_remove_data } from "@/shared/js/common_function.js";
 import { Custom_text, Button, Custom_modal } from "@/components/components";
@@ -35,41 +37,54 @@ const User_setting = () => {
   return (
     <>
       <View style={styles.setting_container}>
-        <Custom_text style={styles.setting_text}>공지사항</Custom_text>
+        <Custom_text style={styles.setting_container.title}>정보 및 설정</Custom_text>
+        <Pressable style={styles.setting_container.sub_title_container}>
+          <Custom_text style={styles.setting_container.sub_title}>로그인 정보</Custom_text>
+          <Ionicons
+            name="chevron-forward"
+            size={25}
+            color={COLORS.gray_500}
+          />
+        </Pressable>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
-        <Custom_text style={styles.setting_text}>이벤트</Custom_text>
+        <Custom_text style={styles.setting_container.title}>공지 및 서비스 정보</Custom_text>
+        <Pressable style={styles.setting_container.sub_title_container}>
+          <Custom_text style={styles.setting_container.sub_title}>공지사항</Custom_text>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
+        </Pressable>
+        <Pressable style={styles.setting_container.sub_title_container}>
+          <Custom_text style={styles.setting_container.sub_title}>이용약관</Custom_text>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
+        </Pressable>
+        <Pressable style={styles.setting_container.sub_title_container}>
+          <Custom_text style={styles.setting_container.sub_title}>개인정보 처리방침</Custom_text>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
+        </Pressable>
+        <Pressable style={styles.setting_container.sub_title_container}>
+          <Custom_text style={styles.setting_container.sub_title}>오픈소스 라이센스</Custom_text>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
+        </Pressable>
+        <Pressable style={styles.setting_container.sub_title_container}>
+          <Custom_text style={styles.setting_container.sub_title}>버전정보</Custom_text>
+          <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
+        </Pressable>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
-        <Custom_text style={styles.setting_text}>이용약관</Custom_text>
+        <Custom_text style={styles.setting_container.title}>문의 및 지원</Custom_text>
+        <Pressable style={styles.setting_container.sub_title_container}>
+          <Custom_text style={styles.setting_container.sub_title}>카카오톡 문의</Custom_text>
+          <Ionicons
+            name="chevron-forward"
+            size={25}
+            color={COLORS.gray_500}
+          />
+        </Pressable>
       </View>
-      <View style={styles.divider} />
-
-      <View style={styles.setting_container}>
-        <Custom_text style={styles.setting_text}>운영정책</Custom_text>
-      </View>
-      <View style={styles.divider} />
-
-      <View style={styles.setting_container}>
-        <Custom_text style={styles.setting_text}>자주 묻는 질문</Custom_text>
-      </View>
-      <View style={styles.divider} />
-
-      <View style={styles.setting_container}>
-        <Custom_text style={styles.setting_text}>개인정보 처리방침</Custom_text>
-      </View>
-      <View style={styles.divider} />
-
-      <Pressable onPress={() => set_log_out_modal(true)}>
-        <View style={styles.setting_container}>
-          <Custom_text style={styles.setting_text}>로그아웃</Custom_text>
-        </View>
-      </Pressable>
-      <View style={styles.divider} />
 
       <Custom_modal
         modal_visible={log_out_modal}
@@ -84,15 +99,26 @@ export default User_setting;
 
 const styles = StyleSheet.create({
   setting_container: {
-    padding: 25,
-    justifyContent: 'center',
-  },
-  setting_text: {
-    fontSize: 16,
+    paddingHorizontal: 20,
+    paddingTop: 22,
+    title: {
+      fontSize: 18,
+      fontFamily: 'semi_bold'
+    },
+    sub_title_container: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+
+    },
+    sub_title: {
+      fontSize: 16,
+      paddingVertical: 20
+    }
   },
   divider: {
     height: 1,
-    backgroundColor: COLORS.gray_480
+    backgroundColor: COLORS.gray_490_inactive
   },
   Modal_log_out: {
     title: {

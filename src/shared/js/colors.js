@@ -15,6 +15,7 @@ const COLORS = {
   gray_510: '#777777',
   gray_520: '#4E4E4E',
   gray_530: '#363738',
+  gray_540: '#363738',
 };
 
 export default COLORS;

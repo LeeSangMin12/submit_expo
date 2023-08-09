@@ -5,9 +5,9 @@ import { useEffect } from "react";
 
 import { exec_request } from "@/shared/js/api";
 import { set_store_info } from '@/shared/js/common_function';
-import COLORS from '@/shared/js/colors';
 import User_card from "@/pages/my/user_card/User_card";
 import User_setting from "@/pages/my/user_setting/User_setting";
+import adsense_png from '@/assets/img/my/adsense.png'
 
 const My_page = () => {
   const navigation = useNavigation();
@@ -66,7 +66,7 @@ const My_page = () => {
             admission_year={admission_year}
           />
         </View>
-        <View style={styles.divider} />
+        <Image source={adsense_png} style={{ width: '100%', height: 82 }} />
         <ScrollView>
           <User_setting />
         </ScrollView>
@@ -83,8 +83,4 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingBottom: 13
   },
-  divider: {
-    height: 6,
-    backgroundColor: COLORS.gray_480
-  }
 });

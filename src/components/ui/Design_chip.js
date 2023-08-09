@@ -34,7 +34,11 @@ const Design_chip = ({
       container_style]}
       onPress={on_press}
     >
-      <Custom_text numberOfLines={1} style={[styles.text_chip, { color: text_color }, title_style]}>{title}</Custom_text>
+      <Custom_text
+        numberOfLines={1}
+        style={[styles.text_chip, { color: text_color }, title_style]}>
+        {title}
+      </Custom_text>
     </Pressable>
   );
 };
@@ -43,16 +47,13 @@ export default Design_chip;
 
 const styles = StyleSheet.create({
   chip: {
-    borderWidth: 1,
-    borderColor: COLORS.gray_480,
     borderRadius: 8,
     justifyContent: 'center',
     paddingHorizontal: 6,
     paddingVertical: 5
   },
   text_chip: {
-    fontSize: 12,
-    color: COLORS.gray_500,
-    fontFamily: 'bold',
+    fontSize: 10,
+    color: COLORS.gray_520,
   },
 });
