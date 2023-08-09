@@ -4,7 +4,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 
 import COLORS from '@/shared/js/colors';
-import { Custom_text } from "@/components/components";
+import Custom_text from '@/components/ui/Custom_text.js';
 
 /**
  * file을 첨부할수 있는 ui 생성

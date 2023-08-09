@@ -1,7 +1,7 @@
 import { StyleSheet, Pressable } from "react-native";
 import COLORS from '@/shared/js/colors';
 
-import { Custom_text } from "@/components/components";
+import Custom_text from '@/components/ui/Custom_text.js';
 
 const text_color_map = {
   [COLORS.primary_500]: COLORS.white,

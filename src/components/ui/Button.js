@@ -1,7 +1,7 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
 
 import COLORS from '../../shared/js/colors';
-import { Custom_text } from "@/components/components";
+import Custom_text from '@/components/ui/Custom_text.js';
 
 const Button = ({ title, on_press, style, disabled }) => (
   <TouchableOpacity

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 
 import COLORS from '../../shared/js/colors';
-import { Custom_text } from "@/components/components";
+import Custom_text from '@/components/ui/Custom_text.js';
 
 const label_color_map = {
   [COLORS.primary_500]: COLORS.white,

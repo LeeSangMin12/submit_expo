@@ -7,9 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
 import { set_store_info } from '@/shared/js/common_function';
-import { Custom_text, Design_chip, Custom_modal, Chip } from "@/components/components";
-
 import COLORS from "@/shared/js/colors";
+import Custom_text from '@/components/ui/Custom_text.js';
+import Design_chip from '@/components/ui/Design_chip.js';
+import Custom_modal from '@/components/ui/Custom_modal.js';
+import Chip from '@/components/ui/Chip.js';
 
 const window_width = Dimensions.get('window').width;
 //소수점이 너무길면 달력의 넓이가 이상하게 되는 버그가 있어서 toFixed로 소수점 3자리까지만 가져옴.

@@ -3,8 +3,7 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import { Custom_text } from "@/components/components";
-
+import Custom_text from '@/components/ui/Custom_text.js';
 
 LocaleConfig.locales['ko'] = {
   monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],

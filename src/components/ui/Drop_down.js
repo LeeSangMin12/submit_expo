@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, } from 'react-native';
-
 import DropDownPicker from 'react-native-dropdown-picker';
+
 import COLORS from '@/shared/js/colors';
 
 /**

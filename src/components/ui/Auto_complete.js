@@ -3,8 +3,7 @@ import { StyleSheet } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
 import COLORS from '@/shared/js/colors';
-import { Custom_text } from "@/components/components";
-
+import Custom_text from '@/components/ui/Custom_text.js';
 
 const Auto_complete = memo(({ place_holder, get_data_suggesstions, set_value }) => {
   const [loading, set_loading] = useState(false);
