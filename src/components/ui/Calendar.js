@@ -7,9 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
 import { set_store_info } from '@/shared/js/common_function';
-import Design_chip from "./Design_chip";
-import Custom_modal from "./Custom_modal";
-import Chip from "./Chip";
+import { Custom_text, Design_chip, Custom_modal, Chip } from "@/components/components";
+
 import COLORS from "@/shared/js/colors";
 
 const window_width = Dimensions.get('window').width;
@@ -97,7 +96,7 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
         style={container_style}
         key={i} >
         {condition === 'this' && is_today && <View style={[styles.today_circle, { left: (date_width - 20) / 2, }]} />}
-        <Text style={text_style}>{date}</Text>
+        <Custom_text style={text_style}>{date}</Custom_text>
 
         {this_month_assignment.map((val, idx) => {
           const formatted_date = new Date(val.registration_date)
@@ -232,15 +231,15 @@ const Calendar = () => {
     return (
       <View style={{ flex: 1, width: '100%' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 15, alignItems: 'center' }}>
-          <Text >
+          <Custom_text >
             <Feather
               name="x"
               size={24}
               color="black"
               onPress={() => set_assignment_list_modal(false)} />
-          </Text>
-          <Text style={{ fontSize: 16 }}>{month}월 {selected_date}일</Text>
-          <Text >
+          </Custom_text>
+          <Custom_text style={{ fontSize: 16 }}>{month}월 {selected_date}일</Custom_text>
+          <Custom_text >
             <Fontisto
               name="plus-a"
               size={24}
@@ -252,7 +251,7 @@ const Calendar = () => {
                   selected_date: selectd_date
                 })
               }} />
-          </Text>
+          </Custom_text>
         </View>
 
         <ScrollView>
@@ -265,12 +264,12 @@ const Calendar = () => {
                     onValueChange={() => toggle_checkbox(assignment.assignment_id, assignment.completion_status, selected_date)}
                     style={{ width: 25, height: 25 }}
                   />
-                  <Text
+                  <Custom_text
                     style={[styles.assignment.checkbox, { textDecorationLine: assignment.completion_status === 'false' ? 'none' : 'line-through' }]}
                     onPress={() => open_assignment(assignment.assignment_id)}
                   >
                     {assignment.title}
-                  </Text>
+                  </Custom_text>
                 </View>
                 <View style={styles.assignment.chip_container}>
                   <Chip
@@ -291,13 +290,13 @@ const Calendar = () => {
   return (
     <View style={styles.calendar} >
       <View style={styles.days_container} >
-        <Text style={[styles.day, { color: 'red', width: date_width }]}>일</Text>
-        <Text style={[styles.day, { width: date_width }]}>월</Text>
-        <Text style={[styles.day, { width: date_width }]}>화</Text>
-        <Text style={[styles.day, { width: date_width }]}>수</Text>
-        <Text style={[styles.day, { width: date_width }]}>목</Text>
-        <Text style={[styles.day, { width: date_width }]}>금</Text>
-        <Text style={[styles.day, { color: 'blue', width: date_width }]}>토</Text>
+        <Custom_text style={[styles.day, { color: 'red', width: date_width }]}>일</Custom_text>
+        <Custom_text style={[styles.day, { width: date_width }]}>월</Custom_text>
+        <Custom_text style={[styles.day, { width: date_width }]}>화</Custom_text>
+        <Custom_text style={[styles.day, { width: date_width }]}>수</Custom_text>
+        <Custom_text style={[styles.day, { width: date_width }]}>목</Custom_text>
+        <Custom_text style={[styles.day, { width: date_width }]}>금</Custom_text>
+        <Custom_text style={[styles.day, { color: 'blue', width: date_width }]}>토</Custom_text>
       </View>
       <View style={styles.dates_container}>
         {render_calender(year, month, open_assignment_list_modal, date_width)}

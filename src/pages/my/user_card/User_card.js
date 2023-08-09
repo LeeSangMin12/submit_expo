@@ -1,8 +1,8 @@
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, Image, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 import COLORS from '@/shared/js/colors';
-import { Design_chip } from '@/components/components';
+import { Custom_text, Design_chip } from '@/components/components';
 import user_profile_sm from '@/assets/img/my/user_card/UserProfile.png';
 
 const User_card = ({
@@ -28,8 +28,8 @@ const User_card = ({
 
         <View style={styles.card_text_container}>
           <View style={[styles.text_container, { alignItems: 'center' }]}>
-            <Text style={styles.text_name}>{nickname}</Text>
-            <Text style={styles.text_university}>{university}</Text>
+            <Custom_text style={styles.text_name}>{nickname}</Custom_text>
+            <Custom_text style={styles.text_university}>{university}</Custom_text>
           </View>
           <View style={styles.text_container}>
             <Design_chip
@@ -46,7 +46,7 @@ const User_card = ({
 
       <View style={styles.edit_profile_container}>
         <Pressable onPress={() => navigation.navigate('프로필 수정')}>
-          <Text style={styles.edit_profile_container.edit_text}>프로필 수정</Text>
+          <Custom_text style={styles.edit_profile_container.edit_text}>프로필 수정</Custom_text>
         </Pressable>
       </View>
     </View>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   text_name: {
-    fontWeight: 'bold',
+    fontFamily: 'bold',
     fontSize: 15
   },
   text_university: {
@@ -87,12 +87,11 @@ const styles = StyleSheet.create({
   },
   text_chip: {
     fontSize: 12,
-    fontWeight: 'bold'
+    fontFamily: 'bold'
   },
   edit_profile_container: {
     edit_text: {
       color: COLORS.gray_530,
-      fontFamily: "PretendardVariable",
     }
   }
 });

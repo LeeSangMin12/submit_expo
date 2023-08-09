@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, Animated, ScrollView, TouchableOpacity } from 'react-native';
-import { Fontisto, MaterialIcons, Ionicons } from '@expo/vector-icons';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useSelector, } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
 import { Date_time_picker, Calendar_mini } from '@/components/components';

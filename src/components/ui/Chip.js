@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 
 import COLORS from '../../shared/js/colors';
+import { Custom_text } from "@/components/components";
 
 const label_color_map = {
   [COLORS.primary_500]: COLORS.white,
@@ -46,7 +47,7 @@ const Chip = ({
       onPress={on_press}
       style={[chip_style, container_style]}
     >
-      <Text style={label_style}>{label}</Text>
+      <Custom_text style={label_style}>{label}</Custom_text>
     </TouchableOpacity>
   );
 };

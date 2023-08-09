@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 import { async_storage_remove_data } from "@/shared/js/common_function.js";
-import { Button, Custom_modal } from "@/components/components";
+import { Custom_text, Button, Custom_modal } from "@/components/components";
 import COLORS from '@/shared/js/colors';
 
 const User_setting = () => {
@@ -14,7 +14,7 @@ const User_setting = () => {
   const Modal_log_out = () => {
     return (
       <>
-        <Text style={styles.Modal_log_out.title}>로그아웃 하시겠습니까?</Text>
+        <Custom_text style={styles.Modal_log_out.title}>로그아웃 하시겠습니까?</Custom_text>
         <View style={styles.Modal_log_out.button_container}>
           <Button
             title='취소'
@@ -35,38 +35,38 @@ const User_setting = () => {
   return (
     <>
       <View style={styles.setting_container}>
-        <Text style={styles.setting_text}>공지사항</Text>
+        <Custom_text style={styles.setting_text}>공지사항</Custom_text>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
-        <Text style={styles.setting_text}>이벤트</Text>
+        <Custom_text style={styles.setting_text}>이벤트</Custom_text>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
-        <Text style={styles.setting_text}>이용약관</Text>
+        <Custom_text style={styles.setting_text}>이용약관</Custom_text>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
-        <Text style={styles.setting_text}>운영정책</Text>
+        <Custom_text style={styles.setting_text}>운영정책</Custom_text>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
-        <Text style={styles.setting_text}>자주 묻는 질문</Text>
+        <Custom_text style={styles.setting_text}>자주 묻는 질문</Custom_text>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
-        <Text style={styles.setting_text}>개인정보 처리방침</Text>
+        <Custom_text style={styles.setting_text}>개인정보 처리방침</Custom_text>
       </View>
       <View style={styles.divider} />
 
       <Pressable onPress={() => set_log_out_modal(true)}>
         <View style={styles.setting_container}>
-          <Text style={styles.setting_text}>로그아웃</Text>
+          <Custom_text style={styles.setting_text}>로그아웃</Custom_text>
         </View>
       </Pressable>
       <View style={styles.divider} />
@@ -88,8 +88,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   setting_text: {
-    fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
   divider: {
     height: 1,
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     title: {
       marginBottom: 15,
       fontSize: 17,
-      fontWeight: 'bold',
+      fontFamily: 'bold',
       textAlign: 'center',
     },
     button_container: {

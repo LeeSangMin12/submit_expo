@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
+import { Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import { Ionicons, Fontisto } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
 import { go_prev_month, go_next_month } from '@/store/modules/calendar_slice';
+import { Custom_text } from "@/components/components";
 import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png';
 
 const Assignment_month_info = () => {
@@ -66,7 +67,7 @@ const Assignment_month_info = () => {
 
         <Pressable onPress={() => navigation.navigate('캘린더 목록')}>
           <View style={styles.header_left_container}>
-            <Text style={{ color: COLORS.primary_500 }}>{default_semester}</Text>
+            <Custom_text style={{ color: COLORS.primary_500 }}>{default_semester}</Custom_text>
             <Ionicons
               name="chevron-forward"
               size={20}
@@ -84,12 +85,12 @@ const Assignment_month_info = () => {
       <View style={styles.content_container}>
         <View>
           <View style={styles.remaining_assignment_container}>
-            <Text style={styles.text_remaining_assignment}>{nickname}님</Text>
-            <Text style={styles.text_remaining_assignment}>이번 학기는 과제</Text>
-            <Text style={styles.text_remaining_assignment}>
-              <Text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Text>
+            <Custom_text style={styles.text_remaining_assignment}>{nickname}님</Custom_text>
+            <Custom_text style={styles.text_remaining_assignment}>이번 학기는 과제</Custom_text>
+            <Custom_text style={styles.text_remaining_assignment}>
+              <Custom_text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Custom_text>
               가 남았어요!
-            </Text>
+            </Custom_text>
           </View>
 
           <View style={styles.now_month_container}>
@@ -99,7 +100,7 @@ const Assignment_month_info = () => {
                 size={19} />
             </Pressable>
 
-            <Text style={styles.text_now_month}> {get_year_month()} </Text>
+            <Custom_text style={styles.text_now_month}> {get_year_month()} </Custom_text>
 
             <Pressable onPress={() => dispatch(go_next_month())}>
               <Ionicons

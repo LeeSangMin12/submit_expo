@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
 import COLORS from '@/shared/js/colors';
+
+import { Custom_text } from "@/components/components";
 
 const text_color_map = {
   [COLORS.primary_500]: COLORS.white,
@@ -32,7 +34,7 @@ const Design_chip = ({
       container_style]}
       onPress={on_press}
     >
-      <Text numberOfLines={1} style={[styles.text_chip, { color: text_color }, title_style]}>{title}</Text>
+      <Custom_text numberOfLines={1} style={[styles.text_chip, { color: text_color }, title_style]}>{title}</Custom_text>
     </Pressable>
   );
 };
@@ -51,6 +53,6 @@ const styles = StyleSheet.create({
   text_chip: {
     fontSize: 12,
     color: COLORS.gray_500,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
   },
 });

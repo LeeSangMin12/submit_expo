@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { View, Text, Image, } from "react-native";
+import { View, Image, } from "react-native";
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { show_toast, set_store_info } from '@/shared/js/common_function';
 import { exec_request } from "@/shared/js/api";
-import { Button } from '@/components/components';
-import owl_left_nav from '@/assets/img/logo/owl_left_nav.png'
+import { Custom_text, Button } from '@/components/components';
 import COLORS from "@/shared/js/colors";
+import owl_left_nav from '@/assets/img/logo/owl_left_nav.png'
 
 const Community_page = () => {
   const navigation = useNavigation();
@@ -98,14 +98,14 @@ const Community_page = () => {
     <View style={{ justifyContent: 'space-between', flex: 1 }}>
       <View style={{ flex: 2 }}>
         <View style={{ marginTop: 50, alignItems: 'center' }}>
-          <Text style={{ fontSize: 30 }}>{department} 커뮤니티</Text>
-          <Text style={{ fontSize: 30 }}>신청 현황</Text>
+          <Custom_text style={{ fontSize: 30 }}>{department} 커뮤니티</Custom_text>
+          <Custom_text style={{ fontSize: 30 }}>신청 현황</Custom_text>
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30, }}>
-          <Text style={{ fontSize: 45, color: COLORS.primary_500 }}>{application_num}</Text>
-          <Text style={{ fontSize: 45, }}> / </Text>
-          <Text style={{ fontSize: 30, }}>300</Text>
+          <Custom_text style={{ fontSize: 45, color: COLORS.primary_500 }}>{application_num}</Custom_text>
+          <Custom_text style={{ fontSize: 45, }}> / </Custom_text>
+          <Custom_text style={{ fontSize: 30, }}>300</Custom_text>
         </View>
 
         <View style={{ alignItems: 'flex-end', marginVertical: 30 }}>

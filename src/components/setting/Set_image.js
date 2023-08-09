@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { View, StyleSheet, Image, Pressable, Text } from 'react-native';
+import { View, StyleSheet, Image, Pressable } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import COLORS from '@/shared/js/colors';
-import { Custom_modal, Button } from "@/components/components";
+import { Custom_text, Custom_modal, Button } from "@/components/components";
 import edit_feather_btn from '@/assets/img/my/user_card/edit_feather_btn.png';
 import user_profile from '@/assets/img/my/user_card/user_profile.png';
 
@@ -70,13 +70,13 @@ const Set_image = ({
       <View style={styles.Modal_set_user_img.container}>
         <View style={styles.Modal_set_user_img.content_container}>
           <View style={[styles.Modal_set_user_img.edit_img_container, { flex: 0.7 }]}>
-            <Text style={{ fontSize: 15, color: COLORS.gray_500, }}>프로필 이미지 변경</Text>
+            <Custom_text style={{ fontSize: 15, color: COLORS.gray_500, }}>프로필 이미지 변경</Custom_text>
           </View>
           <Pressable style={[styles.Modal_set_user_img.edit_img_container, { flex: 1 }]} onPress={pick_image_async}>
-            <Text style={{ fontSize: 23, color: COLORS.primary_500, }}>앨범에서 선택</Text>
+            <Custom_text style={{ fontSize: 23, color: COLORS.primary_500, }}>앨범에서 선택</Custom_text>
           </Pressable>
           <Pressable style={[styles.Modal_set_user_img.edit_img_container, { flex: 1 }]} onPress={pick_image_initial}>
-            <Text style={{ fontSize: 23, color: COLORS.primary_500, }}>기본 이미지로 변경</Text>
+            <Custom_text style={{ fontSize: 23, color: COLORS.primary_500, }}>기본 이미지로 변경</Custom_text>
           </Pressable>
         </View>
         <View style={styles.Modal_set_user_img.cancel_button_container}>

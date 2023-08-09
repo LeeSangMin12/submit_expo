@@ -11,7 +11,7 @@ import Toast from 'react-native-toast-message';
 import store from '@/store/store'
 
 import COLORS from '@/shared/js/colors';
-import { Design_chip, Chip } from '@/components/components';
+import { Custom_text } from '@/components/components';
 
 import Login_page from '@/pages/login/Login_page';
 import Setting_page from '@/pages/setting/Setting_page';
@@ -94,21 +94,27 @@ const toast_config = {
   primary_success_toast: ({ text1 }) => (
     <View style={styles.primary_success_toast.container}>
       <Image source={success_check} style={styles.primary_success_toast.img_success_check} />
-      <Text style={styles.primary_success_toast.text1}>{text1}</Text>
+      <Custom_text style={styles.primary_success_toast.text1}>{text1}</Custom_text>
     </View>
   )
 };
 
 const App = () => {
   const [page_count, set_page_count] = useState(1);
+  const [font_loaded, set_font_loaded] = useState(false);
 
   useEffect(() => {
-    fetch_fonts();
+    fetch_fonts()
+      .then(() => set_font_loaded(true))
+      .catch((err) => console.log(err));
   }, []);
 
   const fetch_fonts = async () => {
     await Font.loadAsync({
-      'PretendardVariable': require('@/assets/fonts/PretendardVariable.ttf'),
+      "regular": require("@/assets/fonts/Pretendard-Regular.otf"),  //400
+      "medium": require("@/assets/fonts/Pretendard-Medium.otf"),  //500
+      "semi_bold": require("@/assets/fonts/Pretendard-SemiBold.otf"),  //600
+      "bold": require("@/assets/fonts/Pretendard-Bold.otf"),  //700
     });
   };
 
@@ -121,7 +127,9 @@ const App = () => {
       { text: '확인', onPress: () => navigation.navigate('Login_page') },
     ]);
 
-
+  if (!font_loaded) {
+    return <View />;
+  }
 
   return (
     <Provider store={store}>

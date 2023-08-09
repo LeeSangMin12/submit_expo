@@ -1,4 +1,5 @@
-import { View, Text, TextInput, StyleSheet, } from 'react-native';
+import { View, TextInput, StyleSheet, } from 'react-native';
+import { Custom_text } from "@/components/components";
 
 import COLORS from '@/shared/js/colors';
 
@@ -10,7 +11,7 @@ const Set_nickname = ({
 
   return (
     <View>
-      <Text style={styles.label}>닉네임</Text>
+      <Custom_text style={styles.label}>닉네임</Custom_text>
 
       <View style={styles.img_input_container}>
         <TextInput
@@ -23,7 +24,7 @@ const Set_nickname = ({
 
       </View>
 
-      <Text style={[styles.message, styles.error]}>{err_nickname}</Text>
+      <Custom_text style={[styles.message, styles.error]}>{err_nickname}</Custom_text>
     </View>
   );
 };

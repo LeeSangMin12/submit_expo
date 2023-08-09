@@ -9,6 +9,7 @@ import Chip from '@/components/ui/Chip';
 import Design_chip from '@/components/ui/Design_chip';
 import Drop_down from '@/components/ui/Drop_down';
 import Custom_modal from '@/components/ui/Custom_modal';
+import Custom_text from '@/components/ui/Custom_text';
 import Date_time_picker from '@/components/ui/Date_time_picker';
 import File_select from '@/components/ui/File_select';
 import Alarm_select from '@/components/ui/Alarm_select';
@@ -25,6 +26,7 @@ export {
   Design_chip,
   Drop_down,
   Custom_modal,
+  Custom_text,
   Date_time_picker,
   File_select,
   Alarm_select

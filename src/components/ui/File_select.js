@@ -1,9 +1,10 @@
-import { Text, View, StyleSheet, Pressable, Linking, Alert } from 'react-native';
+import { View, StyleSheet, Pressable, Linking, Alert } from 'react-native';
 import { Fontisto, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 
 import COLORS from '@/shared/js/colors';
+import { Custom_text } from "@/components/components";
 
 /**
  * file을 첨부할수 있는 ui 생성
@@ -70,7 +71,7 @@ const File_select = ({
             name="link"
             size={20}
             color={COLORS.gray_500} />
-          <Text style={styles.add_file.title}>첨부파일 추가</Text>
+          <Custom_text style={styles.add_file.title}>첨부파일 추가</Custom_text>
         </View>
 
         <Ionicons
@@ -84,7 +85,7 @@ const File_select = ({
             <View style={styles.file_list.container} key={idx}>
               <Pressable style={styles.file_list.pressable_container} onPress={() => Linking.openURL(file.uri)}>
                 <Fontisto name="link" size={20} color={COLORS.primary_500} />
-                <Text style={styles.file_list.file_name} numberOfLines='1' >{file.name}</Text>
+                <Custom_text style={styles.file_list.file_name} numberOfLines='1' >{file.name}</Custom_text>
               </Pressable>
 
               <MaterialIcons

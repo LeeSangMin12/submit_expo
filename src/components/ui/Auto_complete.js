@@ -1,8 +1,10 @@
 import React, { memo, useCallback, useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
 import COLORS from '@/shared/js/colors';
+import { Custom_text } from "@/components/components";
+
 
 const Auto_complete = memo(({ place_holder, get_data_suggesstions, set_value }) => {
   const [loading, set_loading] = useState(false);
@@ -52,7 +54,7 @@ const Auto_complete = memo(({ place_holder, get_data_suggesstions, set_value }) 
         onChangeText={get_suggesstions}
         textInputProps={{ placeholder: place_holder }}
         inputContainerStyle={styles.input_container}
-        EmptyResultComponent={<Text style={styles.empty_result_text}>값이 없습니다.</Text>}
+        EmptyResultComponent={<Custom_text style={styles.empty_result_text}>값이 없습니다.</Custom_text>}
       />
     </>
   );

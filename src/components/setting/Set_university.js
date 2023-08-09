@@ -2,8 +2,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import axios from 'axios';
 
-import { Drop_down } from '@/components/components';
-import { Auto_complete } from '@/components/components';
+import { Custom_text, Drop_down, Auto_complete } from '@/components/components';
 
 const Set_university = ({
   admission_year,
@@ -120,7 +119,7 @@ const Set_university = ({
   return (
     <View style={styles.container}>
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 100 } })]}>
-        <Text style={styles.label}>대학교</Text>
+        <Custom_text style={styles.label}>대학교</Custom_text>
         <Auto_complete
           place_holder={'학교명을 입력해 주세요'}
           get_data_suggesstions={get_university_suggesstions}
@@ -129,7 +128,7 @@ const Set_university = ({
       </View >
 
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 99 } })]}>
-        <Text style={styles.label}>학과</Text>
+        <Custom_text style={styles.label}>학과</Custom_text>
         <Auto_complete
           place_holder={'학과명을 입력해 주세요'}
           get_data_suggesstions={get_department_suggesstions}
@@ -138,7 +137,7 @@ const Set_university = ({
       </View >
 
       <View style={[styles.input_container, Platform.select({ ios: { zIndex: 98 } })]}>
-        <Text style={styles.label}>입학년도</Text>
+        <Custom_text style={styles.label}>입학년도</Custom_text>
         <Drop_down
           items={admission_year_arr}
           value={admission_year}

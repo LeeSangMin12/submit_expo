@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+
+import { Custom_text, Button, Custom_modal } from "@/components/components";
+
 
 const { width } = Dimensions.get('window');
 
@@ -16,8 +19,8 @@ const Onboarding = () => {
   const render_item = ({ item }) => {
     return (
       <View style={styles.container}>
-        <Text style={styles.main_text}>{item.title}</Text>
-        <Text style={styles.sub_text}>{item.text}</Text>
+        <Custom_text style={styles.main_text}>{item.title}</Custom_text>
+        <Custom_text style={styles.sub_text}>{item.text}</Custom_text>
         <View style={styles.img_container}>
           <Image source={item.image} resizeMode='contain' style={styles.img_carousel} />
         </View>

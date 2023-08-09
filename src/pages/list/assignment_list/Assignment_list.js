@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Checkbox from 'expo-checkbox';
@@ -6,7 +6,7 @@ import Checkbox from 'expo-checkbox';
 import { exec_request } from '@/shared/js/api';
 import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
-import { Chip } from '@/components/components';
+import { Custom_text, Chip } from '@/components/components';
 
 const assignment_status_color_map = {
   ['예정']: COLORS.primary_490,
@@ -104,12 +104,12 @@ const Assignment_list = () => {
                 onValueChange={() => toggle_checkbox(assignment.assignment_id, assignment.completion_status)}
                 style={{ width: 25, height: 25 }}
               />
-              <Text
+              <Custom_text
                 style={[styles.assignment.checkbox, { textDecorationLine: assignment.completion_status === 'false' ? 'none' : 'line-through' }]}
                 onPress={() => open_assignment(assignment.assignment_id)}
               >
                 {assignment.title}
-              </Text>
+              </Custom_text>
             </View>
             <View style={styles.assignment.chip_container}>
               <Chip

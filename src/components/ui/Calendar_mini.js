@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { View, Text } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+
 import COLORS from '@/shared/js/colors';
+import { Custom_text } from "@/components/components";
+
 
 LocaleConfig.locales['ko'] = {
   monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
@@ -17,7 +19,7 @@ const Calendar_mini = () => {
   const render_header = (date) => {
     const header_text = `${date.toString('yyyy년')} ${date.toString('MMMM')}`;
 
-    return <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{header_text}</Text>;
+    return <Custom_text style={{ fontSize: 18, fontFamily: 'bold' }}>{header_text}</Custom_text>;
   };
 
   const renderArrow = (direction) => {

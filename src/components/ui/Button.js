@@ -1,5 +1,7 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+
 import COLORS from '../../shared/js/colors';
+import { Custom_text } from "@/components/components";
 
 const Button = ({ title, on_press, style, disabled }) => (
   <TouchableOpacity
@@ -11,9 +13,9 @@ const Button = ({ title, on_press, style, disabled }) => (
     onPress={on_press}
     disabled={disabled} // disabled 설정
   >
-    <Text style={[styles.button_text, disabled]}>
+    <Custom_text style={[styles.button_text, disabled]}>
       {title}
-    </Text>
+    </Custom_text>
   </TouchableOpacity>
 );
 
@@ -30,7 +32,7 @@ const styles = StyleSheet.create({
   button_text: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'bold',
   },
   button_disabled: { // disabled일 때의 버튼 스타일
     backgroundColor: COLORS.gray_480,

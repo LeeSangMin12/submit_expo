@@ -1,13 +1,13 @@
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { Text, Image, View, StyleSheet, Pressable } from 'react-native';
+import { Image, View, StyleSheet, Pressable } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
-import { Design_chip } from '@/components/components';
+import { Custom_text, Design_chip } from '@/components/components';
 import owl_logo from '@/assets/img/logo/owl_nav.png'
 
 const Semester_info = () => {
@@ -50,7 +50,7 @@ const Semester_info = () => {
 
         <Pressable onPress={() => navigation.navigate('캘린더 목록')}>
           <View style={styles.header_left_container}>
-            <Text style={{ color: COLORS.primary_500 }}>{default_semester}</Text>
+            <Custom_text style={{ color: COLORS.primary_500 }}>{default_semester}</Custom_text>
             <Ionicons
               name="chevron-forward"
               size={20}
@@ -69,18 +69,18 @@ const Semester_info = () => {
       <View style={styles.content_container}>
         <View>
           <View style={styles.remaining_assignment_container}>
-            <Text style={styles.text_remaining_assignment}>이번 학기는 과제</Text>
-            <Text style={styles.text_remaining_assignment}>
-              <Text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Text>
+            <Custom_text style={styles.text_remaining_assignment}>이번 학기는 과제</Custom_text>
+            <Custom_text style={styles.text_remaining_assignment}>
+              <Custom_text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Custom_text>
               가 남았어요!
-            </Text>
+            </Custom_text>
           </View>
 
           <View style={styles.assignment_achivement_container}>
             <Design_chip
               title={`${assignment_list.length === 0 ? 0 : Math.floor(assignment_info.completion_num / assignment_list.length * 100)}% 완료`} />
-            <Text style={styles.text_total_assignment}>  총 {assignment_list.length}개 중</Text>
-            <Text style={styles.text_achivement_assignment}> {assignment_info.completion_num}개 완료 </Text>
+            <Custom_text style={styles.text_total_assignment}>  총 {assignment_list.length}개 중</Custom_text>
+            <Custom_text style={styles.text_achivement_assignment}> {assignment_info.completion_num}개 완료 </Custom_text>
           </View>
         </View>
 

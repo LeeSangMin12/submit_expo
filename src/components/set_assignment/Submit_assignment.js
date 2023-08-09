@@ -1,12 +1,12 @@
 import { useState, useLayoutEffect } from 'react';
-import { Text, View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, is_valid_email, show_toast } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
-import { Chip, Date_time_picker, File_select, Design_chip } from '@/components/components';
+import { Chip, Date_time_picker, File_select, Design_chip, Custom_text } from '@/components/components';
 
 const Submit_assignment = ({ navigation, route }) => {
   const { assignment_id } = route.params;
@@ -180,13 +180,13 @@ const Submit_assignment = ({ navigation, route }) => {
 
         {submit_method === 'E-mail' ?
           < >
-            <Text
+            <Custom_text
               style={{
                 color: 'red',
                 paddingVertical: 5
               }}>
               ☆과제 제출 날짜, 시간에 자동으로 메일이 예약전송 됩니다.
-            </Text>
+            </Custom_text>
 
             <View style={styles.input_container}>
               <Date_time_picker

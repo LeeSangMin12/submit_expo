@@ -1,7 +1,7 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
 
 import COLORS from '@/shared/js/colors';
-import { Chip } from '@/components/components';
+import { Custom_text, Chip } from '@/components/components';
 
 const Set_basic = ({
   name,
@@ -12,7 +12,7 @@ const Set_basic = ({
   return (
     <>
       <View style={styles.input_container}>
-        <Text style={styles.label}>이름</Text>
+        <Custom_text style={styles.label}>이름</Custom_text>
         <TextInput
           value={name}
           style={styles.input}
@@ -23,7 +23,7 @@ const Set_basic = ({
       </View>
 
       <View style={styles.input_container}>
-        <Text style={styles.label}>나이</Text>
+        <Custom_text style={styles.label}>나이</Custom_text>
         <TextInput
           value={age}
           keyboardType='number-pad'
@@ -37,7 +37,7 @@ const Set_basic = ({
       </View>
 
       <View style={styles.input_container}>
-        <Text style={styles.label}>성별을 선택해주세요</Text>
+        <Custom_text style={styles.label}>성별을 선택해주세요</Custom_text>
         <View style={styles.chip_container}>
           <Chip
             label="남성"

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { Text, ScrollView, Pressable, View, Alert } from 'react-native';
+import { ScrollView, Pressable, View, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 
 import { set_store_info } from '@/shared/js/common_function';
 import { exec_request } from "@/shared/js/api";
+import { Custom_text } from "@/components/components";
 import COLORS from '@/shared/js/colors';
 
 const Set_semester = () => {
@@ -147,17 +148,17 @@ const Set_semester = () => {
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Text style={{ fontSize: 16, fontWeight: '600' }}>
+              <Custom_text style={{ fontSize: 16, fontFamily: 'semi_bold' }}>
                 {val.semester} {val.default_semester === 'true' ? <Ionicons name="checkmark-circle" size={22} color={COLORS.primary_500} /> : ''}
-              </Text>
-              <Text>
+              </Custom_text>
+              <Custom_text>
                 <Feather
                   name="x"
                   size={30}
                   onPress={() => delete_semester(val.default_semester, val.semester_id)} />
-              </Text>
+              </Custom_text>
             </View>
-            <Text style={{ fontSize: 14, color: COLORS.primary_500 }}>{val.semester_name}</Text>
+            <Custom_text style={{ fontSize: 14, color: COLORS.primary_500 }}>{val.semester_name}</Custom_text>
           </Pressable>
         ))
       }
