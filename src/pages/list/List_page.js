@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { View, SafeAreaView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Image } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
@@ -8,6 +8,7 @@ import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import Semester_info from '@/pages/list/assignment_info/Semester_info';
 import Assignment_list from '@/pages/list/assignment_list/Assignment_list';
+import adsense_png from '@/assets/img/my/adsense.png'
 
 const List_page = () => {
   const navigation = useNavigation();
@@ -48,6 +49,7 @@ const List_page = () => {
         </SafeAreaView>
       </View>
       <Assignment_list />
+      <Image source={adsense_png} style={styles.adsense} />
     </>
   );
 }
@@ -57,6 +59,11 @@ export default List_page;
 const styles = StyleSheet.create({
   semester_info_container: {
     backgroundColor: COLORS.primary_480,
-    padding: 22
+    paddingHorizontal: 20,
+    paddingBottom: 14
   },
+  adsense: {
+    width: '100%',
+    height: 82
+  }
 });

@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, } from 'react-native';
 import { useSelector } from 'react-redux';
+import { Ionicons, } from '@expo/vector-icons';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, show_toast } from '@/shared/js/common_function';

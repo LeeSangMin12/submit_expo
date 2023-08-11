@@ -6,8 +6,8 @@ import Custom_text from '@/components/ui/Custom_text.js';
 const text_color_map = {
   [COLORS.primary_500]: COLORS.white,
   [COLORS.primary_490]: COLORS.primary_500,
-  [COLORS.gray_470_bg]: COLORS.gray_500,
-  ['#FF5454']: COLORS.white,
+  [COLORS.gray_470_bg]: COLORS.black_500,
+  ['#FFE1E1']: '#FF5454',
 };
 
 /**

@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Checkbox from 'expo-checkbox';
@@ -9,10 +9,10 @@ import COLORS from '@/shared/js/colors';
 import { Custom_text, Chip } from '@/components/components';
 
 const assignment_status_color_map = {
-  ['예정']: COLORS.primary_490,
   ['설정']: COLORS.primary_500,
-  ['LMS']: '#FF5454',
-  ['완료']: '#FF5454'
+  ['예약']: COLORS.primary_490,
+  ['LMS']: '#FFE1E1',
+  ['완료']: COLORS.gray_480
 };
 
 const Assignment_list = () => {
@@ -40,7 +40,7 @@ const Assignment_list = () => {
   };
 
   const open_submit_assignment = async (assignment) => {
-    if (assignment.status === '예정') {  //과제 예약 처음 등록할때
+    if (assignment.status === '설정') {  //과제 처음 등록할때
       navigation.navigate('과제 제출', {
         assignment_id: assignment.assignment_id
       });
@@ -97,31 +97,31 @@ const Assignment_list = () => {
     <ScrollView>
       {assignment_list.map((assignment, idx) => (
         <View key={idx}>
-          <View style={styles.assignment.container}>
+          <Pressable style={styles.assignment.container} onPress={() => open_assignment(assignment.assignment_id)}>
             <View style={styles.assignment.title_container}>
               <Checkbox
                 value={assignment.completion_status === 'false' ? false : true}
                 onValueChange={() => toggle_checkbox(assignment.assignment_id, assignment.completion_status)}
-                style={{ width: 25, height: 25 }}
+                style={styles.assignment.checkbox}
+                color={assignment.completion_status === 'false' ? null : COLORS.primary_500}
               />
               <Custom_text
-                style={[styles.assignment.checkbox, { textDecorationLine: assignment.completion_status === 'false' ? 'none' : 'line-through' }]}
-                onPress={() => open_assignment(assignment.assignment_id)}
+                style={[styles.assignment.checkbox_title, { textDecorationLine: assignment.completion_status === 'false' ? 'none' : 'line-through' }]}
               >
                 {assignment.title}
               </Custom_text>
             </View>
-            <View style={styles.assignment.chip_container}>
+            <View >
               <Chip
                 label={assignment.status}
-                on_press={() => open_submit_assignment(assignment)}
-                background_color={assignment_status_color_map[assignment.status]} />
+                background_color={assignment_status_color_map[assignment.status]}
+                on_press={() => open_assignment(assignment.assignment_id)}
+              />
             </View>
-          </View>
+          </Pressable>
           <View style={styles.divider} />
         </View>
       ))}
-
     </ScrollView>
   );
 }
@@ -134,22 +134,26 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      paddingVertical: 3,
-      paddingLeft: 6
+      paddingVertical: 13,
+      paddingHorizontal: 20
     },
     title_container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginLeft: 10,
-      paddingVertical: 15
     },
     checkbox: {
+      width: 28,
+      height: 28,
+      borderRadius: 7,
+      borderWidth: 1,
+      borderColor: COLORS.gray_480,
+      backgroundColor: '#F4F4F4'
+    },
+    checkbox_title: {
       fontSize: 16,
+      fontFamily: 'medium',
       paddingLeft: 12
     },
-    chip_container: {
-      marginRight: 15
-    }
   },
   divider: {
     height: 1,

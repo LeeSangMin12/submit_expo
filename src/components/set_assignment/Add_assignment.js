@@ -71,7 +71,7 @@ const Add_assignment = ({ navigation, route }) => {
   const api_assignment_add_assignment = async () => {
     const form_data = new FormData();
     form_data.append('semester_id', default_semester_id);
-    form_data.append('status', '예정');
+    form_data.append('status', '설정');
     form_data.append('completion_status', false);
     form_data.append('title', assignment_input.title);
     form_data.append('registration_date', String(assignment_input.registration_date));

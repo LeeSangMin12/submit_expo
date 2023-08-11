@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import COLORS from '../../shared/js/colors';
 import Custom_text from '@/components/ui/Custom_text.js';
@@ -8,7 +8,7 @@ const label_color_map = {
   [COLORS.primary_500]: COLORS.white,
   [COLORS.primary_490]: COLORS.primary_500,
   [COLORS.gray_470_bg]: COLORS.black_500,
-  ['#FF5454']: COLORS.white,
+  ['#FFE1E1']: '#FF5454',
 };
 
 /**
@@ -43,27 +43,24 @@ const Chip = ({
   ];
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={on_press}
       style={[chip_style, container_style]}
     >
       <Custom_text style={label_style}>{label}</Custom_text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: COLORS.gray_480,
     paddingVertical: 8,
     paddingHorizontal: 14,
-    marginHorizontal: 4,
-    marginVertical: 8,
   },
   label: {
-    fontSize: 15,
+    fontSize: 14,
+    fontFamily: 'medium',
     textAlign: 'center',
   },
 });

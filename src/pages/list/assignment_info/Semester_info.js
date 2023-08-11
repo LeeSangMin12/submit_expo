@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 import COLORS from '@/shared/js/colors';
 import { Custom_text, Design_chip } from '@/components/components';
-import owl_logo from '@/assets/img/logo/owl_nav.png'
+import owl_nav from '@/assets/img/logo/owl_nav.png'
 
 const Semester_info = () => {
   const navigation = useNavigation();
@@ -46,30 +46,19 @@ const Semester_info = () => {
 
   return (
     <>
-      <View style={styles.header_container}>
+      <Pressable style={styles.header_container.left_container} onPress={() => navigation.navigate('캘린더 목록')}>
 
-        <Pressable onPress={() => navigation.navigate('캘린더 목록')}>
-          <View style={styles.header_left_container}>
-            <Custom_text style={{ color: COLORS.primary_500 }}>{default_semester}</Custom_text>
-            <Ionicons
-              name="chevron-forward"
-              size={20}
-              color={COLORS.primary_500} />
-          </View>
-        </Pressable>
-
-        <Fontisto
-          onPress={() => navigation.navigate('과제 등록')}
-          name="plus-a"
-          size={24}
-          color={COLORS.gray_520}
-          style={styles.icon_plus} />
-      </View>
+        <Custom_text style={{ fontFamily: 'semi_bold', color: COLORS.primary_500 }}>{default_semester}</Custom_text>
+        <Ionicons
+          name="chevron-forward"
+          size={20}
+          color={COLORS.primary_500} />
+      </Pressable>
 
       <View style={styles.content_container}>
         <View>
           <View style={styles.remaining_assignment_container}>
-            <Custom_text style={styles.text_remaining_assignment}>이번 학기는 과제</Custom_text>
+            <Custom_text style={[styles.text_remaining_assignment, { paddingBottom: 5 }]}>이번 학기는 과제</Custom_text>
             <Custom_text style={styles.text_remaining_assignment}>
               <Custom_text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Custom_text>
               가 남았어요!
@@ -78,14 +67,18 @@ const Semester_info = () => {
 
           <View style={styles.assignment_achivement_container}>
             <Design_chip
-              title={`${assignment_list.length === 0 ? 0 : Math.floor(assignment_info.completion_num / assignment_list.length * 100)}% 완료`} />
+              title={<>
+                <Custom_text style={{ fontSize: 12, fontFamily: 'semi_bold' }}>{assignment_list.length === 0 ? 0 : Math.floor(assignment_info.completion_num / assignment_list.length * 100)}</Custom_text>
+                <Custom_text style={{ fontFamily: 'medium' }}>% 완료</Custom_text>
+              </>}
+            />
             <Custom_text style={styles.text_total_assignment}>  총 {assignment_list.length}개 중</Custom_text>
             <Custom_text style={styles.text_achivement_assignment}> {assignment_info.completion_num}개 완료 </Custom_text>
           </View>
         </View>
 
         <View>
-          <Image source={owl_logo} />
+          <Image source={owl_nav} style={{ width: 109, height: 90 }} />
         </View>
       </View>
 
@@ -105,15 +98,11 @@ export default Semester_info;
 const styles = StyleSheet.create({
   header_container: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  header_left_container: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  icon_plus: {
-    marginRight: 5,
-    marginTop: 5
+    justifyContent: 'space-between',
+    left_container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    }
   },
   content_container: {
     flexDirection: 'row',
@@ -121,26 +110,30 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   remaining_assignment_container: {
-    paddingVertical: 12
+    paddingTop: 16.81,
+    paddingBottom: 27
   },
   text_remaining_assignment: {
-    fontSize: 23
+    fontSize: 20,
   },
   text_remaining_assignment_num: {
+    fontFamily: 'bold',
     color: COLORS.primary_500
   },
   assignment_achivement_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 15
+    paddingBottom: 13,
   },
   text_total_assignment: {
     color: COLORS.gray_500,
-    fontSize: 13
+    fontSize: 12,
+    fontFamily: 'semi_bold'
   },
   text_achivement_assignment: {
     color: COLORS.primary_500,
-    fontSize: 13
+    fontSize: 12,
+    fontFamily: 'semi_bold'
   },
   assignment_progress: {
     backgroundColor: COLORS.white,
