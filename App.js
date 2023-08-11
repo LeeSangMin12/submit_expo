@@ -10,7 +10,6 @@ import Toast from 'react-native-toast-message';
 import store from '@/store/store'
 
 import COLORS from '@/shared/js/colors';
-import common_style from '@/shared/js/common_style';
 import { Custom_text } from '@/components/components';
 
 import Login_page from '@/pages/login/Login_page';
@@ -47,15 +46,22 @@ const Bottom_navigation = () => {
       initialRouteName="홈"
       screenOptions={{
         headerShown: false,
+        headerShadowVisible: false,
+        headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontSize: 18,
+          fontFamily: 'regular'
+        },
         tabBarStyle: { height: 80, backgroundColor: COLORS.primary_480 },
         tabBarActiveTintColor: COLORS.primary_500,
-        tabBarInactiveTintColor: 'gray',
+        tabBarInactiveTintColor: COLORS.gray_500,
         tabBarLabelStyle: {
           fontSize: 12,
           fontFamily: 'regular'
         },
       }}
     >
+
       <Bottom_tab.Screen
         name="홈"
         component={Home_page}
@@ -73,14 +79,13 @@ const Bottom_navigation = () => {
           ),
         })} />
       <Bottom_tab.Screen
-        name="전공 커뮤니티"
+        name="커뮤니티"
         component={Community_page}
         options={() => ({
           tabBarIcon: ({ focused }) => (
             <Image style={styles.img_bottom_tabs} source={focused ? community_active : community_inactive} />
           ),
           headerShown: true,
-          headerTitleAlign: 'center',
         })} />
       <Bottom_tab.Screen
         name="마이"
@@ -135,6 +140,7 @@ const App = () => {
     return <View />;
   }
 
+
   return (
     <Provider store={store}>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
@@ -152,6 +158,8 @@ const App = () => {
               fontSize: 18,
               fontFamily: 'regular'
             },
+            headerTitleAlign: 'center',
+            headerShadowVisible: false,
           }}>
           <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
           <Stack.Screen
@@ -194,7 +202,6 @@ const App = () => {
             name="과제 제출"
             component={Submit_assignment}
             options={() => ({
-              headerTitleAlign: 'center',
               title: '제출하기'
             })}
           />
@@ -203,15 +210,12 @@ const App = () => {
             component={Edit_submit_assignment}
             options={() => ({
               title: '제출하기',
-              headerTitleAlign: 'center',
             })}
           />
           <Stack.Screen
             name="프로필 수정"
             component={Edit_profile}
             options={({ navigation }) => ({
-              headerTitleAlign: 'center',
-              headerShadowVisible: false,
               headerLeft: () => (
                 <Ionicons
                   name="chevron-back"
@@ -253,13 +257,6 @@ const App = () => {
           <Stack.Screen
             name="새 캘린더 만들기"
             component={Add_semester}
-            options={() => ({
-              headerTitleAlign: 'center',
-              headerStyle: {
-                justifyContent: 'center',
-                alignItems: 'center',
-              },
-            })}
           />
 
         </Stack.Navigator>
