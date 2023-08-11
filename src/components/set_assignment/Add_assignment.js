@@ -8,10 +8,6 @@ import { set_store_info, show_toast } from '@/shared/js/common_function';
 import { Custom_text_input, Date_time_picker, Design_chip, File_select } from '@/components/components';
 import COLORS from '@/shared/js/colors';
 
-
-// import { Custom_text_input } from '@/components/components';
-
-
 const Add_assignment = ({ navigation, route }) => {
   const {
     default_semester_id,

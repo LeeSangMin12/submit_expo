@@ -127,6 +127,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: -25,
     left: 70,
+    width: 30,
+    height: 30,
   },
   Modal_set_user_img: {
     container: {

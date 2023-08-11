@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import COLORS from '@/shared/js/colors';
 import { Custom_text, Design_chip } from '@/components/components';
-import user_profile_sm from '@/assets/img/my/user_card/user_profile.png';
+import user_profile from '@/assets/img/my/user_card/user_profile.png';
 
 const User_card = ({
   img_url,
@@ -20,7 +20,7 @@ const User_card = ({
 
       <View style={styles.card_container}>
         {img_url === '' ?
-          <Image style={{ width: 56, height: 56, }} source={user_profile_sm} /> :
+          <Image style={{ width: 56, height: 56, }} source={user_profile} /> :
           <Image
             source={{ uri: img_url.uri }}
             style={{ width: 56, height: 56, borderRadius: '50' }} />

@@ -69,7 +69,7 @@ const User_setting = () => {
         </Pressable>
         <Pressable style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>버전정보</Custom_text>
-          <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
+          <Custom_text style={{ fontSize: 16 }}>V.2.1</Custom_text>
         </Pressable>
       </View>
       <View style={styles.divider} />
@@ -78,11 +78,7 @@ const User_setting = () => {
         <Custom_text style={styles.setting_container.title}>문의 및 지원</Custom_text>
         <Pressable style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>카카오톡 문의</Custom_text>
-          <Ionicons
-            name="chevron-forward"
-            size={25}
-            color={COLORS.gray_500}
-          />
+          <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
         </Pressable>
       </View>
 

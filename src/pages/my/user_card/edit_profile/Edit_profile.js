@@ -161,7 +161,7 @@ export default Edit_profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
+    padding: 20,
     justifyContent: 'space-between',
   },
   progress_container: {

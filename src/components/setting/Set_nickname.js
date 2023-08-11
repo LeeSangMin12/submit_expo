@@ -33,8 +33,9 @@ export default Set_nickname;
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 18,
-    marginVertical: 12,
+    fontSize: 16,
+    fontFamily: 'medium',
+    paddingBottom: 12
   },
   img_input_container: {
     flex: 1,
@@ -52,8 +53,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
   },
   message: {
-    fontSize: 12,
-    marginTop: 10,
+    fontSize: 13,
+    fontFamily: 'medium',
+    paddingTop: 12,
   },
   error: {
     color: COLORS.system_red,

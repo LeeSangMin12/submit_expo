@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, StatusBar, SafeAreaView, Alert } from 'react-native';
+import { View, Image, StyleSheet, StatusBar, SafeAreaView, Alert, Pressable } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import store from '@/store/store'
 
 import COLORS from '@/shared/js/colors';
+import common_style from '@/shared/js/common_style';
 import { Custom_text } from '@/components/components';
 
 import Login_page from '@/pages/login/Login_page';
@@ -25,7 +26,6 @@ import Submit_assignment from '@/components/set_assignment/Submit_assignment.js'
 import Edit_submit_assignment from '@/components/set_assignment/Edit_submit_assignment.js'
 import Set_semester from '@/components/set_semester/Set_semester.js'
 import Add_semester from '@/components/set_semester/Add_semester.js'
-import Set_alarm from '@/components/setting/Set_alarm';
 
 import home_inactive from '@/assets/img/bottom_tab/home_inactive.png'
 import list_inactive from '@/assets/img/bottom_tab/list_inactive.png'
@@ -36,7 +36,7 @@ import list_active from '@/assets/img/bottom_tab/list_active.png'
 import community_active from '@/assets/img/bottom_tab/community_active.png'
 import my_active from '@/assets/img/bottom_tab/my_active.png'
 
-import success_check from '@/assets/img/icon/success_check.png'
+import success_check from '@/assets/img/icon/success_check.png';
 
 const Stack = createNativeStackNavigator();
 const Bottom_tab = createBottomTabNavigator();
@@ -115,10 +115,10 @@ const App = () => {
 
   const fetch_fonts = async () => {
     await Font.loadAsync({
-      "regular": require("@/assets/fonts/Pretendard-Regular.otf"),  //400
-      "medium": require("@/assets/fonts/Pretendard-Medium.otf"),  //500
-      "semi_bold": require("@/assets/fonts/Pretendard-SemiBold.otf"),  //600
-      "bold": require("@/assets/fonts/Pretendard-Bold.otf"),  //700
+      "regular": require("@/assets/fonts/Pretendard-Regular.otf"),  //font_weight = 400
+      "medium": require("@/assets/fonts/Pretendard-Medium.otf"),  //font_weight = 500
+      "semi_bold": require("@/assets/fonts/Pretendard-SemiBold.otf"),  //font_weight = 600
+      "bold": require("@/assets/fonts/Pretendard-Bold.otf"),  //font_weight = 700
     });
   };
 
@@ -146,7 +146,13 @@ const App = () => {
             background: COLORS.white
           },
         }}>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerTitleStyle: {
+              fontSize: 18,
+              fontFamily: 'regular'
+            },
+          }}>
           <Stack.Screen name="Login_page" component={Login_page} options={{ headerShown: false }} />
           <Stack.Screen
             name="회원가입"
@@ -164,7 +170,8 @@ const App = () => {
                       set_page_count(page_count - 1);
                     }
                   }}
-                />)
+                />
+              )
             })}>
             {() => (
               <Setting_page
@@ -183,30 +190,6 @@ const App = () => {
             component={Edit_assignment}
             options={{ title: '과제 일정' }}
           />
-          {/* <Stack.Screen
-            name="과제 알림 설정"
-            component={Set_alarm}
-            options={({ navigation }) => ({
-              headerTitleAlign: 'center',
-              headerLeft: () => (
-                <Ionicons
-                  name="chevron-back"
-                  size={35}
-                  color="black"
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />),
-              headerRight: () => (
-                <Design_chip
-                  title='완료'
-                  container_style={{
-                    paddingHorizontal: 14,
-                    paddingVertical: 9,
-                    borderRadius: 50,
-                  }} />)
-            })}
-          /> */}
           <Stack.Screen
             name="과제 제출"
             component={Submit_assignment}
@@ -228,15 +211,17 @@ const App = () => {
             component={Edit_profile}
             options={({ navigation }) => ({
               headerTitleAlign: 'center',
+              headerShadowVisible: false,
               headerLeft: () => (
                 <Ionicons
                   name="chevron-back"
                   size={35}
-                  color="black"
+                  color={'black'}
                   onPress={() => {
                     navigation.goBack();
                   }}
-                />)
+                />
+              )
             })}
           />
           <Stack.Screen
@@ -248,11 +233,12 @@ const App = () => {
                 <Ionicons
                   name="chevron-back"
                   size={35}
-                  color="black"
+                  color={'black'}
                   onPress={() => {
                     navigation.goBack();
                   }}
-                />),
+                />
+              ),
               headerRight: () => (
                 <Fontisto
                   name="plus-a"
@@ -271,7 +257,7 @@ const App = () => {
               headerTitleAlign: 'center',
               headerStyle: {
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               },
             })}
           />
