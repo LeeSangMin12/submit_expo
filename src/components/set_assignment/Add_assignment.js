@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, show_toast } from '@/shared/js/common_function';
@@ -25,27 +25,21 @@ const Add_assignment = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Ionicons
-          name="chevron-back"
-          size={35}
-          color="black"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />),
-      headerRight: () => (
-        <>
-          <Design_chip
-            title='완료'
-            on_press={add_assignment}
-            container_style={{
-              paddingHorizontal: 14,
-              paddingVertical: 9,
-              borderRadius: 50,
-            }}
+        <Pressable onPress={() => navigation.goBack()}>
+          <Feather
+            name="x"
+            size={30}
+            color="white"
           />
-        </>
-      )
+        </Pressable>),
+      headerRight: () => (
+        <Pressable onPress={add_assignment}>
+          <Feather
+            name="check"
+            size={30}
+            color="white"
+          />
+        </Pressable>)
     });
   }, [navigation, assignment_input]);
 
@@ -112,21 +106,10 @@ const Add_assignment = ({ navigation, route }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : null}>
+      <StatusBar barStyle="light-content" />
       <ScrollView
         style={styles.content_container}
         automaticallyAdjustKeyboardInsets={true}>
-
-        <View style={styles.input_container}>
-          <Custom_text_input
-            style={[styles.input, { fontSize: 20 }]}
-            placeholder='과제 제목'
-            placeholderTextColor={COLORS.gray_500}
-            value={assignment_input.title}
-            onChangeText={(label) => set_assignment_input((prev_state) => {
-              return { ...prev_state, title: label }
-            })}
-          />
-        </View>
 
         <View style={styles.input_container}>
 
@@ -137,6 +120,18 @@ const Add_assignment = ({ navigation, route }) => {
               return { ...prev_state, registration_date: val }
             })}
             date_title='등록날짜' />
+        </View>
+
+        {/* <View style={styles.input_container}>
+          <Custom_text_input
+            style={[styles.input, { fontSize: 20 }]}
+            placeholder='과제 제목'
+            placeholderTextColor={COLORS.gray_500}
+            value={assignment_input.title}
+            onChangeText={(label) => set_assignment_input((prev_state) => {
+              return { ...prev_state, title: label }
+            })}
+          />
         </View>
 
         <View style={{ alignItems: 'center' }}>
@@ -192,7 +187,7 @@ const Add_assignment = ({ navigation, route }) => {
           value={assignment_input.file_list}
           set_value={set_assignment_input}
           container_style={{ marginTop: 15, marginBottom: 10 }}
-        />
+        /> */}
 
       </ScrollView>
     </KeyboardAvoidingView>

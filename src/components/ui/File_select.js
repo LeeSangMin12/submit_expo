@@ -69,9 +69,9 @@ const File_select = ({
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Fontisto
             name="link"
-            size={20}
-            color={COLORS.gray_500} />
-          <Custom_text style={styles.add_file.title}>첨부파일 추가</Custom_text>
+            size={16}
+            color={COLORS.black_500} />
+          <Custom_text style={styles.add_file.title}>파일 첨부</Custom_text>
         </View>
 
         <Ionicons
@@ -84,14 +84,14 @@ const File_select = ({
           return (
             <View style={styles.file_list.container} key={idx}>
               <Pressable style={styles.file_list.pressable_container} onPress={() => Linking.openURL(file.uri)}>
-                <Fontisto name="link" size={20} color={COLORS.primary_500} />
+                <Fontisto name="link" size={16} color={COLORS.primary_500} />
                 <Custom_text style={styles.file_list.file_name} numberOfLines='1' >{file.name}</Custom_text>
               </Pressable>
 
               <MaterialIcons
                 name="cancel"
-                size={26}
-                color={COLORS.gray_500}
+                size={24}
+                color={COLORS.black_500}
                 onPress={() => de_select_file(idx)} />
             </View>
           )

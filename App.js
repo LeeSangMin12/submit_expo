@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import store from '@/store/store'
 
 import COLORS from '@/shared/js/colors';
+import common_style from '@/shared/js/common_style';
 import { Custom_text } from '@/components/components';
 
 import Login_page from '@/pages/login/Login_page';
@@ -191,26 +192,22 @@ const App = () => {
           <Stack.Screen
             name="과제 등록"
             component={Add_assignment}
-            options={{ title: '과제 일정' }}
+            options={common_style.assignment_header_options('과제 일정')}
           />
           <Stack.Screen
             name="과제 수정"
             component={Edit_assignment}
-            options={{ title: '과제 일정' }}
+            options={common_style.assignment_header_options('과제 일정')}
           />
           <Stack.Screen
             name="과제 제출"
             component={Submit_assignment}
-            options={() => ({
-              title: '제출하기'
-            })}
+            options={common_style.assignment_header_options('제출하기')}
           />
           <Stack.Screen
             name="과제 제출 수정"
             component={Edit_submit_assignment}
-            options={() => ({
-              title: '제출하기',
-            })}
+            options={common_style.assignment_header_options('제출하기')}
           />
           <Stack.Screen
             name="프로필 수정"

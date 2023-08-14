@@ -1,6 +1,6 @@
 import { useState, useLayoutEffect } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable } from 'react-native';
+import { Feather } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
@@ -31,37 +31,24 @@ const Edit_submit_assignment = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Ionicons
-          name="chevron-back"
-          size={35}
-          color="black"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />),
+        <Pressable onPress={() => navigation.goBack()}>
+          <Feather
+            name="x"
+            size={30}
+            color="white"
+          />
+        </Pressable>
+      ),
+
       headerRight: () => (
-        <>
-          <Design_chip
-            title='삭제'
-            on_press={delete_submit_assignment}
-            background_color={'#FF5454'}
-            container_style={{
-              paddingHorizontal: 14,
-              paddingVertical: 9,
-              borderRadius: 50,
-              marginRight: 5
-            }}
+        <Pressable onPress={edit_submit_assignment}>
+          <Feather
+            name="check"
+            size={30}
+            color="white"
           />
-          <Design_chip
-            title='수정'
-            on_press={edit_submit_assignment}
-            container_style={{
-              paddingHorizontal: 14,
-              paddingVertical: 9,
-              borderRadius: 50,
-            }}
-          />
-        </>)
+        </Pressable>
+      )
     });
   }, [navigation, submit_method, assignment_email_input, assignment_lms_input]);
 
@@ -261,6 +248,7 @@ const Edit_submit_assignment = ({ navigation, route }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : null}>
+      <StatusBar barStyle="light-content" />
       <ScrollView
         style={styles.content_container}
         automaticallyAdjustKeyboardInsets={true}>
