@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, StyleSheet, Dimensions, Pressable, ScrollView, useWindowDimensions } from "react-native";
+import { View, StyleSheet, Image, Pressable, ScrollView, useWindowDimensions } from "react-native";
 import { useSelector } from 'react-redux';
 import { Feather, Fontisto } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
@@ -12,6 +12,7 @@ import Custom_text from '@/components/ui/Custom_text.js';
 import Design_chip from '@/components/ui/Design_chip.js';
 import Custom_modal from '@/components/ui/Custom_modal.js';
 import Chip from '@/components/ui/Chip.js';
+import adsense_png from '@/assets/img/my/adsense.png';
 
 const assignment_status_color_map = {
   ['설정']: COLORS.primary_500,
@@ -253,6 +254,7 @@ const Calendar = () => {
         </View>
 
         <ScrollView>
+          <Image source={adsense_png} style={styles.adsense} />
           {today_assignment_list.map((assignment, idx) => (
             <View key={idx}>
               <Pressable style={styles.assignment.container} onPress={() => open_assignment(assignment.assignment_id)}>
@@ -281,7 +283,6 @@ const Calendar = () => {
             </View>
           ))}
         </ScrollView>
-
       </View>
     );
   };
@@ -380,6 +381,10 @@ const styles = StyleSheet.create({
       fontFamily: 'medium',
       paddingLeft: 12
     },
+  },
+  adsense: {
+    width: '100%',
+    height: 82
   },
   divider: {
     height: 1,

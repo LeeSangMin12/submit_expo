@@ -8,7 +8,7 @@ import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import Semester_info from '@/pages/list/assignment_info/Semester_info';
 import Assignment_list from '@/pages/list/assignment_list/Assignment_list';
-import adsense_png from '@/assets/img/my/adsense.png'
+import adsense_png from '@/assets/img/my/adsense.png';
 
 const List_page = () => {
   const navigation = useNavigation();
