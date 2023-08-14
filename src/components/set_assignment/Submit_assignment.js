@@ -9,7 +9,7 @@ import COLORS from '@/shared/js/colors';
 import { Custom_text_input, Chip, Date_time_picker, File_select, Design_chip, Custom_text } from '@/components/components';
 
 const Submit_assignment = ({ navigation, route }) => {
-  const { assignment_id } = route.params;
+  // const { assignment_id } = route.params;
   const {
     default_semester_id,
   } = useSelector((state) => state.semester);
@@ -161,97 +161,94 @@ const Submit_assignment = ({ navigation, route }) => {
         style={styles.content_container}
         automaticallyAdjustKeyboardInsets={true}>
 
-        <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 9, }}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 16, paddingHorizontal: 20 }}>
           <Chip
             label="E-mail"
+            container_style={{ marginRight: 8 }}
+            background_color={COLORS.gray_480}
             selected={submit_method === 'E-mail'}
             on_press={() => set_submit_method('E-mail')} />
 
           <Chip
             label="LMS"
+            background_color={COLORS.gray_480}
             selected={submit_method === 'LMS'}
             on_press={() => set_submit_method('LMS')} />
         </View>
 
-        <View style={{ alignItems: 'center' }}>
-          <View style={{ height: 5, backgroundColor: COLORS.gray_480, width: '95%' }} />
-        </View>
+        <View style={styles.divider} />
 
         {submit_method === 'E-mail' ?
           < >
-            <Custom_text
-              style={{
-                color: 'red',
-                paddingVertical: 5
-              }}>
-              ☆과제 제출 날짜, 시간에 자동으로 메일이 예약전송 됩니다.
-            </Custom_text>
-
-            <View style={styles.input_container}>
+            <View style={styles.date_container}>
               <Date_time_picker
                 picker_mode='date_time'
                 value={assignment_email_input.submit_date_time}
                 set_value={(val) => set_assignment_email_input((prev_state) => {
                   return { ...prev_state, submit_date_time: val }
                 })}
-                date_title='제출날짜'
-                time_title='제출시간'
               />
             </View>
 
-            <View style={{ alignItems: 'center' }}>
-              <Custom_text_input
-                value={assignment_email_input.email_address}
-                onChangeText={(label) => set_assignment_email_input((prev_state) => {
-                  return { ...prev_state, email_address: label }
-                })}
-                style={styles.input}
-                keyboardType="email-address"
-                placeholder='제출할 메일주소'
-                placeholderTextColor={COLORS.gray_500} />
-            </View>
+            <View style={[styles.divider, { marginTop: 20 }]} />
 
-            <View style={styles.input_container}>
-              <Custom_text_input
-                value={assignment_email_input.title}
-                onChangeText={(label) => set_assignment_email_input((prev_state) => {
-                  return { ...prev_state, title: label }
-                })}
-                style={styles.input}
-                placeholder='메일 제목'
-                placeholderTextColor={COLORS.gray_500} />
-            </View>
+            <View style={{ paddingHorizontal: 20 }}>
 
-            <View style={styles.input_container} >
-              <Custom_text_input
-                value={assignment_email_input.description}
-                onChangeText={(label) => set_assignment_email_input((prev_state) => {
-                  return { ...prev_state, description: label }
-                })}
-                style={{
-                  padding: 10,
-                  height: 120,
-                  fontSize: 15,
-                  borderWidth: 1,
-                  borderColor: COLORS.gray_480,
-                  width: '100%'
-                }}
-                multiline
-                textAlignVertical="top"
-                numberOfLines={4}
-                maxLength={100}
-                placeholder='과제내용'
-                placeholderTextColor={COLORS.gray_500} />
-            </View>
+              <View style={styles.input_container}>
+                <Custom_text_input
+                  value={assignment_email_input.email_address}
+                  onChangeText={(label) => set_assignment_email_input((prev_state) => {
+                    return { ...prev_state, email_address: label }
+                  })}
+                  style={styles.input}
+                  keyboardType="email-address"
+                  placeholder='제출할 메일주소'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
 
-            <File_select
-              value={assignment_email_input.file_list}
-              set_value={set_assignment_email_input}
-              container_style={{ marginTop: 30, marginBottom: 10 }}
-            />
+              <View style={styles.input_container}>
+                <Custom_text_input
+                  value={assignment_email_input.title}
+                  onChangeText={(label) => set_assignment_email_input((prev_state) => {
+                    return { ...prev_state, title: label }
+                  })}
+                  style={styles.input}
+                  placeholder='메일 제목'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+
+              <View style={styles.input_container} >
+                <Custom_text_input
+                  value={assignment_email_input.description}
+                  onChangeText={(label) => set_assignment_email_input((prev_state) => {
+                    return { ...prev_state, description: label }
+                  })}
+                  style={{
+                    padding: 10,
+                    height: 200,
+                    fontSize: 15,
+                    borderWidth: 1,
+                    borderColor: COLORS.gray_490_inactive,
+                    borderRadius: 6,
+                    width: '100%'
+                  }}
+                  multiline
+                  textAlignVertical="top"
+                  numberOfLines={4}
+                  maxLength={100}
+                  placeholder='실제 메일에 작성되는 내용이에요!'
+                  placeholderTextColor={COLORS.gray_500} />
+              </View>
+
+              <File_select
+                value={assignment_email_input.file_list}
+                set_value={set_assignment_email_input}
+                container_style={{ marginTop: 30, marginBottom: 10 }}
+              />
+            </View>
           </>
           :
-          <>
+          <View style={{ paddingHorizontal: 20 }}>
             <View style={styles.input_container}>
               <Custom_text_input
                 value={assignment_lms_input.url}
@@ -266,9 +263,9 @@ const Submit_assignment = ({ navigation, route }) => {
             <File_select
               value={assignment_lms_input.file_list}
               set_value={set_assignment_lms_input}
-              container_style={{ marginTop: 30, marginBottom: 10 }}
+              container_style={{ marginTop: 30, marginBottom: 10, }}
             />
-          </>
+          </View>
         }
 
       </ScrollView>
@@ -281,18 +278,24 @@ export default Submit_assignment;
 const styles = StyleSheet.create({
   content_container: {
     flex: 1,
-    paddingHorizontal: 18,
+  },
+  date_container: {
+    marginTop: 10,
+    paddingHorizontal: 20
   },
   input_container: {
-    marginTop: 25,
-    alignItems: 'center'
+    paddingTop: 20,
   },
   input: {
     height: 50,
     fontSize: 15,
     borderBottomWidth: 1,
-    borderColor: COLORS.gray_480,
+    borderColor: COLORS.gray_490_inactive,
     paddingHorizontal: 6,
     width: '100%'
+  },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.gray_490_inactive
   },
 });

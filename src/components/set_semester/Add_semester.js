@@ -27,6 +27,7 @@ const Add_semester = ({ navigation }) => {
       headerRight: () => (
         <Design_chip
           title='완료'
+          background_color={COLORS.primary_500}
           container_style={{
             paddingHorizontal: 14,
             paddingVertical: 9,

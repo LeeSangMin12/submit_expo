@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
       color: COLORS.gray_500,
       marginLeft: 10,
       maxWidth: '80%',
-      fontSize: 14
+      fontSize: 16
     }
   },
   file_list: {

@@ -35,6 +35,10 @@ const Date_time_picker = ({
     set_mode(currentMode);
   };
 
+  const show_date_time_picker = () => {
+    show_mode('datetime');
+  };
+
   const show_date_picker = () => {
     show_mode('date');
   };
@@ -63,8 +67,9 @@ const Date_time_picker = ({
       <View style={{ flexDirection: 'row' }}>
         {
           picker_mode === 'date_time' ?
-            <>
-              <Pressable style={{ flex: 1 }} onPress={show_date_picker}>
+            <Pressable onPress={show_date_time_picker} >
+              <Custom_text>제출날짜</Custom_text>
+              {/* <Pressable style={{ flex: 1 }} onPress={show_date_picker}>
                 <Input
                   label={date_title}
                   value={get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())}
@@ -78,8 +83,12 @@ const Date_time_picker = ({
                   value={get_time(value.getHours(), value.getMinutes())}
                   disabled={true}
                   disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
-              </Pressable>
-            </>
+              </Pressable> */}
+              <Custom_text style={{ marginLeft: 10, fontSize: 18, fontFamily: 'medium', paddingTop: 8 }}>
+                {get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())}
+                {get_time(value.getHours(), value.getMinutes())}
+              </Custom_text>
+            </Pressable>
             : picker_mode === 'date' ?
               <Pressable
                 style={styles.date_container}
@@ -107,7 +116,7 @@ const Date_time_picker = ({
       </View>
 
       {show && (
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
+        <View style={styles.picker_container}>
           <DateTimePicker
             testID="dateTimePicker"
             value={value}
@@ -140,12 +149,18 @@ const styles = StyleSheet.create({
   },
   calendar_img: {
     position: 'absolute',
-    left: 70,
+    left: 90,
     width: 40,
     height: 40
   },
   date_text: {
     fontSize: 18,
     fontFamily: 'semi_bold'
+  },
+  picker_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 20
   }
 });

@@ -256,11 +256,14 @@ const Edit_submit_assignment = ({ navigation, route }) => {
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 9, }}>
           <Chip
             label="E-mail"
+            container_style={{ marginRight: 8 }}
+            background_color={COLORS.gray_480}
             selected={submit_method === 'E-mail'}
             on_press={() => set_submit_method('E-mail')} />
 
           <Chip
             label="LMS"
+            background_color={COLORS.gray_480}
             selected={submit_method === 'LMS'}
             on_press={() => set_submit_method('LMS')} />
         </View>
