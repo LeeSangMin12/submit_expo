@@ -100,4 +100,17 @@ export const get_day_of_week = (date) => {
   const day_of_week = week[new Date(date).getDay()];
 
   return day_of_week;
-}
+};
+
+/**
+ * 24시 시간 형식을 12시 시간 형식으로 변환
+ */
+export const convert_12_hour_format = (time24) => {
+  const [hour, minute] = time24.split(":");
+
+  const hour24 = parseInt(hour, 10);
+  const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+  const am_pm = hour24 >= 12 ? "오후" : "오전";
+
+  return `${am_pm} ${hour12}:${minute} `;
+};

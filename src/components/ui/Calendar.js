@@ -103,7 +103,7 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
             return (
               <Design_chip
                 key={idx}
-                title={val.title}
+                title={val.assignment_name}
                 background_color={assignment_status_color_map[val.status]}
                 container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
                 title_style={{ fontSize: 11, }} />
@@ -247,7 +247,7 @@ const Calendar = () => {
                 const selectd_date = new Date(year, month - 1, selected_date);
                 set_assignment_list_modal(false);
                 navigation.navigate('과제 등록', {
-                  selected_date: selectd_date
+                  selected_date: selectd_date.toISOString()
                 })
               }} />
           </Custom_text>
@@ -268,7 +268,7 @@ const Calendar = () => {
                   <Custom_text
                     style={[styles.assignment.checkbox_title, { textDecorationLine: assignment.completion_status === 'false' ? 'none' : 'line-through' }]}
                   >
-                    {assignment.title}
+                    {assignment.assignment_name}
                   </Custom_text>
                 </View>
                 <View >

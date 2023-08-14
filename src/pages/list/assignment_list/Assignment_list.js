@@ -39,20 +39,6 @@ const Assignment_list = () => {
     });
   };
 
-  const open_submit_assignment = async (assignment) => {
-    if (assignment.status === '설정') {  //과제 처음 등록할때
-      navigation.navigate('과제 제출', {
-        assignment_id: assignment.assignment_id
-      });
-    } else {
-      navigation.navigate('과제 제출 수정', {
-        assignment_id: assignment.assignment_id,
-        assignment_status: assignment.status,
-        submit_assignment_id: assignment.submit_assignment_id
-      });
-    }
-  }
-
   const api_assignment_set_completion_status = async (assignment_id, completion_status) => {
     const params = {
       url: 'assignment/set_completion_status',
@@ -108,7 +94,7 @@ const Assignment_list = () => {
               <Custom_text
                 style={[styles.assignment.checkbox_title, { textDecorationLine: assignment.completion_status === 'false' ? 'none' : 'line-through' }]}
               >
-                {assignment.title}
+                {assignment.assignment_name}
               </Custom_text>
             </View>
             <View >

@@ -1,40 +1,65 @@
-import { useLayoutEffect, useState, } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable, Image, Switch, Text } from 'react-native';
-import { Tooltip, FAB } from '@rneui/themed';
+import { Tooltip } from '@rneui/themed';
 import { useSelector } from 'react-redux';
 import { Feather, Ionicons } from '@expo/vector-icons'
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, show_toast } from '@/shared/js/common_function';
-import { Custom_text, Custom_text_input, Date_time_picker, Design_chip, File_select } from '@/components/components';
+import { Custom_text, Custom_text_input, Date_time_picker, File_select } from '@/components/components';
 import COLORS from '@/shared/js/colors';
 import question_mark_tooltip_img from '@/assets/img/icon/question_mark_tooltip.png';
 import alarm_img from '@/assets/img/icon/alarm.png';
 import paper_airplane from '@/assets/img/icon/paper_airplane.png';
 
 const Add_assignment = ({ navigation, route }) => {
-  const {
-    default_semester_id,
-  } = useSelector((state) => state.semester);
+  const { default_semester_id } = useSelector((state) => state.semester);
 
   const [assignment_input, set_assignment_input] = useState({
-    registration_date: route?.params?.selected_date || new Date(),  //캘린더 날짜 클릭 후 과제 등록시 selected_date값 들어옴
+    registration_date: new Date(route.params?.selected_date ?? new Date()),  //캘린더 날짜 클릭 후 과제 등록시 selected_date값 들어옴
     assignment_name: '',
     professor_name: '',
     assignment_description: '',
     obsession_alarm: false,
     file_list: [],
-    // title: '',
-    // registration_date: route?.params?.selected_date || new Date(),  //캘린더 날짜 클릭 후 과제 등록시 selected_date값 들어옴
-    // class_name: '',
-    // professor_name: '',
-    // assignment_description: '',
-    // file_list: [],
   });
+  const [assignment_status, set_assignment_status] = useState('설정');
+  const [submit_method, set_submit_method] = useState('E-mail');
+  const [assignment_email_input, set_assignment_email_input] = useState({
+    submit_date_time: new Date(),
+    email_address: '',
+    title: '',
+    description: '',
+    file_list: [],
+  });
+  const [assignment_lms_input, set_assignment_lms_input] = useState({
+    url: '',
+    file_list: [],
+  });
+
   const [submit_tooltip, set_submit_tooltip] = useState(false);
   const [alarm_tooltip, set_alarm_tooltip] = useState(false);
 
-  const toggleSwitch = () => set_assignment_input((prev_state) => {
+  const status_color_map = {
+    설정: {
+      backgroundColor: COLORS.primary_500,
+      color: COLORS.white,
+    },
+    예약: {
+      backgroundColor: COLORS.primary_490,
+      color: COLORS.primary_500,
+    },
+    LMS: {
+      backgroundColor: "#FFE1E1",
+      color: "#FF5454",
+    },
+    완료: {
+      backgroundColor: COLORS.gray_480,
+      color: COLORS.black_500,
+    },
+  };
+
+  const toggle_obsession_alarm = () => set_assignment_input((prev_state) => {
     return { ...prev_state, obsession_alarm: !prev_state.obsession_alarm }
   })
 
@@ -57,7 +82,43 @@ const Add_assignment = ({ navigation, route }) => {
           />
         </Pressable>)
     });
-  }, [navigation, assignment_input]);
+  }, [navigation, assignment_input, route.params]);
+
+  /**
+   * submit_assignmet에서 assignment_status을 받아와서 동적으로 업데이트
+   */
+  useEffect(() => {
+    if (route.params?.assignment_status === '설정') {
+      set_assignment_status(route.params.assignment_status);
+      set_submit_method(route.params.submit_method);
+      set_assignment_email_input(() => ({
+        submit_date_time: new Date(),
+        email_address: '',
+        title: '',
+        file_list: [],
+      }));
+      set_assignment_lms_input(() => ({
+        url: '',
+        file_list: [],
+      }));
+    } else if (route.params?.assignment_status === '예약') {
+      set_assignment_status(route.params.assignment_status);
+      set_submit_method(route.params.submit_method);
+      set_assignment_email_input(() => ({
+        submit_date_time: new Date(route.params.submit_date_time),
+        email_address: route.params.email_address,
+        title: route.params.title,
+        file_list: route.params.file_list,
+      }));
+    } else if (route.params?.assignment_status === 'LMS') {
+      set_assignment_status(route.params.assignment_status);
+      set_submit_method(route.params.submit_method);
+      set_assignment_lms_input(() => ({
+        url: route.params.url,
+        file_list: route.params.file_list,
+      }));
+    }
+  }, [route.params?.assignment_status])
 
 
   const add_assignment = async () => {
@@ -68,24 +129,40 @@ const Add_assignment = ({ navigation, route }) => {
       return;
     }
 
-    const add_assignment = await api_assignment_add_assignment();
+    const assignment_id = await api_assignment_add_assignment();
 
-    if (add_assignment) {
-      const assignment_list = await api_assignment_get_assignment_list();
-
-      set_store_info('assignment', 'assignment_list', assignment_list);
-      navigation.navigate('Bottom_navigation', { screen: '홈' });
-      show_toast('과제가 등록되었습니다.');
+    if (submit_method === 'E-mail') {
+      await api_assignment_submit_email(assignment_id);
+    } else if (submit_method === 'LMS') {
+      await api_assignment_submit_lms(assignment_id);
     }
+
+    const assignment_list = await api_assignment_get_assignment_list();
+
+    set_store_info('assignment', 'assignment_list', assignment_list);
+    navigation.goBack();
+    show_toast('과제가 등록되었습니다.');
   }
 
-  const open_submit_assignment = async (assignment) => {
-    navigation.navigate('과제 제출');
-    // if (assignment.status === '설정') {  //과제 처음 등록할때
-    //   navigation.navigate('과제 제출', {
-    //     assignment_id: assignment.assignment_id
-    //   });
-    // } else {
+  const open_submit_assignment = async () => {
+    if (submit_method === 'E-mail') {
+      navigation.navigate('과제 제출', {
+        assignment_status: assignment_status,
+        submit_method: submit_method,
+        submit_date_time: assignment_email_input.submit_date_time.toISOString(),
+        email_address: assignment_email_input.email_address,
+        title: assignment_email_input.title,
+        email_file_list: assignment_email_input.file_list,
+      });
+    } else if (submit_method === 'LMS') {
+      navigation.navigate('과제 제출', {
+        assignment_status: assignment_status,
+        submit_method: submit_method,
+        url: assignment_lms_input.url,
+        lms_file_list: assignment_lms_input.file_list
+      });
+    }
+    // else {
     //   navigation.navigate('과제 제출 수정', {
     //     assignment_id: assignment.assignment_id,
     //     assignment_status: assignment.status,
@@ -99,11 +176,11 @@ const Add_assignment = ({ navigation, route }) => {
     form_data.append('semester_id', default_semester_id);
     form_data.append('status', '설정');
     form_data.append('completion_status', false);
-    form_data.append('title', assignment_input.title);
     form_data.append('registration_date', String(assignment_input.registration_date));
-    form_data.append('class_name', assignment_input.class_name);
+    form_data.append('assignment_name', assignment_input.assignment_name);
     form_data.append('professor_name', assignment_input.professor_name);
     form_data.append('assignment_description', assignment_input.assignment_description);
+    form_data.append('obsession_alarm', assignment_input.obsession_alarm);
     form_data.append('submit_assignment_id', '');
     Array.from(assignment_input.file_list).forEach((file) => {
       form_data.append('file_list', file);
@@ -117,9 +194,56 @@ const Add_assignment = ({ navigation, route }) => {
     const result = await exec_request_multipart(params, navigation);
 
     if (result.status === 'ok') {
-      return true;
+      return result.data.assignment_id;
     }
   }
+
+  const api_assignment_submit_email = async (assignment_id) => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_id);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', '예약');
+    form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
+    form_data.append('email_address', assignment_email_input.email_address);
+    form_data.append('title', assignment_email_input.title);
+    form_data.append('description', assignment_email_input.description);
+    Array.from(assignment_email_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/submit_email',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_submit_lms = async (assignment_id) => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_id);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', 'LMS');
+    form_data.append('url', assignment_lms_input.url);
+    Array.from(assignment_lms_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/submit_lms',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
 
   const api_assignment_get_assignment_list = async () => {
     const params = {
@@ -138,13 +262,12 @@ const Add_assignment = ({ navigation, route }) => {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : null}>
-      <StatusBar barStyle="light-content" />
       <ScrollView
         style={styles.content_container}
         automaticallyAdjustKeyboardInsets={true}>
+        <StatusBar barStyle="light-content" />
 
         <View style={styles.date_container}>
-
           <Date_time_picker
             picker_mode='date'
             value={assignment_input.registration_date}
@@ -165,9 +288,9 @@ const Add_assignment = ({ navigation, route }) => {
               placeholder='경영학개론'
               placeholderTextColor={COLORS.gray_510}
               style={styles.input}
-              value={assignment_input.title}
+              value={assignment_input.assignment_name}
               onChangeText={(label) => set_assignment_input((prev_state) => {
-                return { ...prev_state, title: label }
+                return { ...prev_state, assignment_name: label }
               })}
             />
           </View>
@@ -179,10 +302,10 @@ const Add_assignment = ({ navigation, route }) => {
               placeholder='김정우'
               placeholderTextColor={COLORS.gray_510}
               style={styles.input}
-              value={assignment_input.title}
+              value={assignment_input.professor_name}
 
               onChangeText={(label) => set_assignment_input((prev_state) => {
-                return { ...prev_state, title: label }
+                return { ...prev_state, professor_name: label }
               })}
             />
           </View>
@@ -205,28 +328,37 @@ const Add_assignment = ({ navigation, route }) => {
             />
           </View>
 
-          <Pressable onPress={open_submit_assignment} style={{ flexDirection: 'row', alignItems: 'center', marginTop: 34, justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={paper_airplane} style={{ width: 18, height: 18, marginRight: 10 }} />
-              <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5 }}>예약 제출</Custom_text>
-              <Tooltip
-                visible={submit_tooltip}
-                onOpen={() => set_submit_tooltip(true)}
-                onClose={() => set_submit_tooltip(false)}
-                width={220}
-                backgroundColor={'#EBEBEB'}
-                popover={<Custom_text style={{ fontSize: 10, }}>날짜를 설정하면 자동으로 메일이 전송됩니다.😊</Custom_text>}
-              >
-                <Image source={question_mark_tooltip_img} style={{ width: 14, height: 14 }} />
-              </Tooltip>
+          <View>
+            <Pressable onPress={open_submit_assignment} style={{ flexDirection: 'row', alignItems: 'baseline', marginTop: 34, justifyContent: 'space-between' }}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image source={paper_airplane} style={{ width: 18, height: 18, marginRight: 10 }} />
+                <View>
+                  <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5, paddingBottom: 10 }}>예약 제출</Custom_text>
+                  {
+                    <View style={{ backgroundColor: status_color_map[assignment_status].backgroundColor, width: 52, height: 26, alignItems: 'center', justifyContent: 'center' }}>
+                      <Custom_text style={{ color: status_color_map[assignment_status].color, fontSize: 12 }}>{assignment_status}</Custom_text>
+                    </View>
+                  }
+                </View>
+                <Tooltip
+                  visible={submit_tooltip}
+                  onOpen={() => set_submit_tooltip(true)}
+                  onClose={() => set_submit_tooltip(false)}
+                  width={220}
+                  backgroundColor={'#EBEBEB'}
+                  popover={<Custom_text style={{ fontSize: 10, }}>날짜를 설정하면 자동으로 메일이 전송됩니다.😊</Custom_text>}
+                >
+                  <Image source={question_mark_tooltip_img} style={{ width: 14, height: 14 }} />
+                </Tooltip>
 
-            </View>
+              </View>
 
-            <Ionicons
-              name="chevron-forward"
-              size={24}
-              color={COLORS.gray_500} />
-          </Pressable>
+              <Ionicons
+                name="chevron-forward"
+                size={24}
+                color={COLORS.gray_500} />
+            </Pressable>
+          </View>
 
           <Pressable style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25, justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row' }}>
@@ -255,8 +387,7 @@ const Add_assignment = ({ navigation, route }) => {
             <Switch
               trackColor={{ false: '#767577', true: COLORS.primary_500 }}
               thumbColor={assignment_input.obsession_alarm ? COLORS.white : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
+              onValueChange={toggle_obsession_alarm}
               value={assignment_input.obsession_alarm}
               style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }}
             />
@@ -265,7 +396,7 @@ const Add_assignment = ({ navigation, route }) => {
           <File_select
             value={assignment_input.file_list}
             set_value={set_assignment_input}
-            container_style={{ marginTop: 25, marginBottom: 10 }}
+            container_style={styles.file_container}
           />
         </View>
 
@@ -310,6 +441,10 @@ const styles = StyleSheet.create({
     borderColor: COLORS.gray_510,
     borderRadius: 6,
     width: '100%'
+  },
+  file_container: {
+    marginTop: 25,
+    marginBottom: 10
   },
   divider: {
     height: 1,

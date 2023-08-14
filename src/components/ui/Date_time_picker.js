@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Input } from '@rneui/themed';
 
 import COLORS from '@/shared/js/colors';
-import { get_day_of_week } from "@/shared/js/common_function";
+import { convert_12_hour_format, get_day_of_week } from "@/shared/js/common_function";
 import Custom_text from '@/components/ui/Custom_text.js';
 import set_date_img from '@/assets/img/icon/set_date.png';
 
@@ -59,7 +59,8 @@ const Date_time_picker = ({
     const formatted_hours = String(hours).padStart(2, '0');
     const formatted_minutes = String(minutes).padStart(2, '0');
 
-    return `${formatted_hours}:${formatted_minutes}`;
+    const twelve_hour_time = convert_12_hour_format(`${formatted_hours}:${formatted_minutes}`);
+    return twelve_hour_time;
   };
 
   return (
@@ -69,23 +70,8 @@ const Date_time_picker = ({
           picker_mode === 'date_time' ?
             <Pressable onPress={show_date_time_picker} >
               <Custom_text>제출날짜</Custom_text>
-              {/* <Pressable style={{ flex: 1 }} onPress={show_date_picker}>
-                <Input
-                  label={date_title}
-                  value={get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())}
-                  disabled={true}
-                  disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
-              </Pressable>
-
-              <Pressable style={{ flex: 1 }} onPress={show_time_picker}>
-                <Input
-                  label={time_title}
-                  value={get_time(value.getHours(), value.getMinutes())}
-                  disabled={true}
-                  disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
-              </Pressable> */}
               <Custom_text style={{ marginLeft: 10, fontSize: 18, fontFamily: 'medium', paddingTop: 8 }}>
-                {get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())}
+                {get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())},&nbsp;
                 {get_time(value.getHours(), value.getMinutes())}
               </Custom_text>
             </Pressable>

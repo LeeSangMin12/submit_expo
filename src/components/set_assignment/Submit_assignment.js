@@ -1,30 +1,33 @@
 import { useState, useLayoutEffect } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable, Image } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 import { useSelector } from 'react-redux';
+import { FAB } from '@rneui/themed';
+import store from '@/store/store';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, is_valid_email, show_toast } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Custom_text_input, Chip, Date_time_picker, File_select, Design_chip, Custom_text } from '@/components/components';
+import delete_img from '@/assets/img/icon/delete.png';
 
 const Submit_assignment = ({ navigation, route }) => {
-  // const { assignment_id } = route.params;
   const {
     default_semester_id,
   } = useSelector((state) => state.semester);
+  const assignment_submit_info = useSelector((state) => state.assignment_submit);
 
-  const [submit_method, set_submit_method] = useState('E-mail');
+  const [submit_method, set_submit_method] = useState(route.params.submit_method);
   const [assignment_email_input, set_assignment_email_input] = useState({
-    submit_date_time: new Date(),
-    email_address: '',
-    title: '',
-    description: '',
-    file_list: [],
+    submit_date_time: route.params.submit_date_time ? new Date(route.params.submit_date_time) : new Date(),
+    email_address: route.params.email_address ?? '',
+    title: route.params.title ?? '',
+    description: route.params.description ?? '',
+    file_list: route.params.email_file_list ?? [],
   });
   const [assignment_lms_input, set_assignment_lms_input] = useState({
-    url: '',
-    file_list: [],
+    url: route.params.url ?? '',
+    file_list: route.params.lms_file_list ?? [],
   });
 
   useLayoutEffect(() => {
@@ -49,6 +52,7 @@ const Submit_assignment = ({ navigation, route }) => {
     });
   }, [navigation, submit_method, assignment_email_input, assignment_lms_input]);
 
+
   const submit_assignment = async () => {
     if (submit_method === 'E-mail') {
 
@@ -63,16 +67,23 @@ const Submit_assignment = ({ navigation, route }) => {
         Alert.alert('내용을 입력하세요.');
         return;
       }
+      // const set_email = await api_assignment_submit_email();
+      // if (set_email) {
+      //   const assignment_list = await api_assignment_get_assignment_list();
 
-      const set_email = await api_assignment_submit_email();
-      if (set_email) {
-        const assignment_list = await api_assignment_get_assignment_list();
+      //   set_store_info('assignment', 'assignment_list', assignment_list);
+      //   navigation.goBack();
+      //   show_toast('과제가 예약되었습니다.');
+      // }
 
-        set_store_info('assignment', 'assignment_list', assignment_list);
-        navigation.goBack();
-        show_toast('과제가 예약되었습니다.');
-      }
-
+      navigation.navigate('과제 등록', {
+        assignment_status: '예약',
+        submit_method: 'E-mail',
+        submit_date_time: assignment_email_input.submit_date_time.toISOString(),
+        email_address: assignment_email_input.email_address,
+        title: assignment_email_input.title,
+        file_list: assignment_email_input.file_list,
+      });
     } else if (submit_method === 'LMS') {
       const { file_list, ...rest } = assignment_lms_input;  //파일빼고 나머지 값 비어있는지 확인
       const any_empty = Object.values(rest).some((value) => value === '');
@@ -81,14 +92,13 @@ const Submit_assignment = ({ navigation, route }) => {
         return;
       }
 
-      const set_lms = await api_assignment_submit_lms();
-      if (set_lms) {
-        const assignment_list = await api_assignment_get_assignment_list();
-
-        set_store_info('assignment', 'assignment_list', assignment_list);
-        navigation.goBack();
-        show_toast('과제가 예약되었습니다.');
-      }
+      navigation.navigate('과제 등록', {
+        assignment_status: 'LMS',
+        submit_method: 'LMS',
+        submit_method: submit_method,
+        url: assignment_lms_input.url,
+        file_list: assignment_lms_input.file_list
+      });
     }
   };
 
@@ -243,8 +253,14 @@ const Submit_assignment = ({ navigation, route }) => {
               <File_select
                 value={assignment_email_input.file_list}
                 set_value={set_assignment_email_input}
-                container_style={{ marginTop: 30, marginBottom: 10 }}
+                container_style={{ marginTop: 25, marginBottom: 10 }}
               />
+
+            </View>
+            <View style={{ width: '100%', height: 82, backgroundColor: '#ECF0F2', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+              <Custom_text >제출날짜를 <Custom_text style={{ color: COLORS.primary_500 }}>현재 날짜, 시간 이전으로 설정</Custom_text> 시</Custom_text>
+              <Custom_text>메일이 <Custom_text style={{ color: COLORS.primary_500 }}>즉시 발송되므로 주의</Custom_text>하세요!</Custom_text>
+
             </View>
           </>
           :
@@ -268,7 +284,27 @@ const Submit_assignment = ({ navigation, route }) => {
           </View>
         }
 
+
       </ScrollView>
+      <FAB
+        visible={route.params.assignment_status !== '설정'}
+        onPress={() => {
+          navigation.navigate('과제 등록', {
+            assignment_status: '설정',
+            submit_method: 'E-mail',
+          });
+        }}
+        style={{
+          position: 'absolute',
+          bottom: 40,
+          left: 0,
+          right: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        icon={{ name: 'delete', color: 'white' }}
+        color="#FF5454"
+      />
     </KeyboardAvoidingView>
   );
 };
