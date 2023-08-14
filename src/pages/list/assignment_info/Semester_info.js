@@ -77,9 +77,7 @@ const Semester_info = () => {
           </View>
         </View>
 
-        <View>
-          <Image source={owl_nav} style={{ width: 109, height: 90 }} />
-        </View>
+        <Image source={owl_nav} style={{ width: 109, height: 90 }} />
       </View>
 
       <LinearProgress
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   remaining_assignment_container: {
-    paddingTop: 16.81,
+    paddingTop: 16,
     paddingBottom: 27
   },
   text_remaining_assignment: {

@@ -97,6 +97,7 @@ export default Home_page;
 const styles = StyleSheet.create({
   assignment_month_info_container: {
     backgroundColor: COLORS.primary_480,
-    padding: 22
+    paddingHorizontal: 20,
+    paddingBottom: 14
   }
 });

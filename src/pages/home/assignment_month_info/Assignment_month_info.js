@@ -6,9 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Ionicons, Fontisto } from '@expo/vector-icons';
 
 import COLORS from '@/shared/js/colors';
-import { go_prev_month, go_next_month } from '@/store/modules/calendar_slice';
+import { go_prev_month, go_next_month, go_today } from '@/store/modules/calendar_slice';
 import { Custom_text } from "@/components/components";
-import owl_nav_sm from '@/assets/img/logo/owl_nav_sm.png';
+import go_today_img from '@/assets/img/logo/go_today.png';
 
 const Assignment_month_info = () => {
   const navigation = useNavigation();
@@ -55,65 +55,59 @@ const Assignment_month_info = () => {
     }));
   }
 
-  const get_year_month = () => {
-    const formatted_month = String(month).padStart(2, '0');
-
-    return `${year}.${formatted_month}`;
-  };
-
   return (
     <>
       <View style={styles.header_container}>
 
-        <Pressable onPress={() => navigation.navigate('캘린더 목록')}>
-          <View style={styles.header_left_container}>
-            <Custom_text style={{ color: COLORS.primary_500 }}>{default_semester}</Custom_text>
-            <Ionicons
-              name="chevron-forward"
-              size={20}
-              color={COLORS.primary_500} />
-          </View>
+        <Pressable style={styles.left_container} onPress={() => navigation.navigate('캘린더 목록')}>
+
+          <Custom_text style={{ fontFamily: 'semi_bold', color: COLORS.primary_500 }}>{default_semester}</Custom_text>
+          <Ionicons
+            name="chevron-forward"
+            size={20}
+            color={COLORS.primary_500} />
         </Pressable>
 
-        <Fontisto
-          onPress={() => navigation.navigate('과제 등록')}
-          name="plus-a"
-          size={24}
-          color={COLORS.gray_520} />
+        <Pressable onPress={() => navigation.navigate('과제 등록')} >
+          <Fontisto
+            name="plus-a"
+            size={23}
+            color={COLORS.gray_520} />
+        </Pressable>
       </View>
 
-      <View style={styles.content_container}>
-        <View>
-          <View style={styles.remaining_assignment_container}>
-            <Custom_text style={styles.text_remaining_assignment}>{nickname}님</Custom_text>
-            <Custom_text style={styles.text_remaining_assignment}>이번 학기는 과제</Custom_text>
-            <Custom_text style={styles.text_remaining_assignment}>
-              <Custom_text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Custom_text>
-              가 남았어요!
-            </Custom_text>
-          </View>
+      <View style={styles.remaining_assignment_container}>
+        <Custom_text style={styles.text_remaining_assignment}>{nickname}님,</Custom_text>
 
-          <View style={styles.now_month_container}>
-            <Pressable onPress={() => dispatch(go_prev_month())}>
-              <Ionicons
-                name="chevron-back"
-                size={19} />
-            </Pressable>
+        <Custom_text style={styles.text_remaining_assignment}>
+          <Custom_text style={[styles.text_remaining_assignment]}>이번 학기는 과제</Custom_text>
+          <Custom_text style={styles.text_remaining_assignment_num}>{assignment_info.remaining_num}개</Custom_text>
+          가 남았어요!
+        </Custom_text>
+      </View>
 
-            <Custom_text style={styles.text_now_month}> {get_year_month()} </Custom_text>
+      <View style={styles.month_container}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Pressable onPress={() => dispatch(go_prev_month())}>
+            <Ionicons name="chevron-back" size={19} />
+          </Pressable>
 
-            <Pressable onPress={() => dispatch(go_next_month())}>
-              <Ionicons
-                name="chevron-forward"
-                size={19} />
-            </Pressable>
+          <Custom_text style={styles.text_year}> {year}년</Custom_text>
+          <Custom_text style={styles.text_month}> {month}월 </Custom_text>
 
-          </View>
+          <Pressable onPress={() => dispatch(go_next_month())}>
+            <Ionicons
+              name="chevron-forward"
+              size={19} />
+          </Pressable>
         </View>
 
-        <View>
-          <Image source={owl_nav_sm} style={styles.img_owl_nav} />
-        </View>
+        <Pressable onPress={() => dispatch(go_today())}>
+          <Image
+            source={go_today_img}
+            style={{ width: 48, height: 40, }} />
+        </Pressable>
+
       </View >
 
       <LinearProgress
@@ -132,39 +126,37 @@ const styles = StyleSheet.create({
   header_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 8
   },
-  header_left_container: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  text_semester: {
-    color: COLORS.primary_500
-  },
-  content_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
-  },
-  remaining_assignment_container: {
-    paddingVertical: 12
-  },
-  text_remaining_assignment: {
-    fontSize: 23
-  },
-  text_remaining_assignment_num: {
-    color: COLORS.primary_500
-  },
-  now_month_container: {
+  left_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 15
   },
-  text_now_month: {
-    fontSize: 16,
+  remaining_assignment_container: {
+    paddingTop: 16,
+    paddingBottom: 10
   },
-  img_owl_nav: {
-    marginRight: 15,
+  text_remaining_assignment: {
+    fontSize: 20,
+  },
+  text_remaining_assignment_num: {
+    fontFamily: 'bold',
+    color: COLORS.primary_500
+  },
+  month_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    paddingBottom: 13,
+    paddingRight: 3,
+  },
+  text_year: {
+    fontSize: 20,
+    fontFamily: 'semi_bold'
+  },
+  text_month: {
+    fontSize: 20,
+    fontFamily: 'bold',
+    color: COLORS.primary_500
   },
   assignment_progress: {
     backgroundColor: COLORS.white,
