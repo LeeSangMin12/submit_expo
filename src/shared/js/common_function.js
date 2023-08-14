@@ -91,3 +91,13 @@ export const is_valid_email = (email) => {
   const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
   return regex.test(email);
 };
+
+/**
+ * 요일 구하기
+ */
+export const get_day_of_week = (date) => {
+  const week = ['일', '월', '화', '수', '목', '금', '토'];
+  const day_of_week = week[new Date(date).getDay()];
+
+  return day_of_week;
+}

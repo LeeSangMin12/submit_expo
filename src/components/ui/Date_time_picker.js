@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { View, Platform, Pressable } from "react-native";
+import { View, Platform, Pressable, Image, StyleSheet } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Input } from '@rneui/themed';
 
 import COLORS from '@/shared/js/colors';
+import { get_day_of_week } from "@/shared/js/common_function";
+import Custom_text from '@/components/ui/Custom_text.js';
+import set_date_img from '@/assets/img/icon/set_date.png';
 
 /**
  * : 무조건 scrollview로 감싸야됨(날짜, 시간 설정시 설정하는 input창이 나와야 하므로)
@@ -43,8 +46,9 @@ const Date_time_picker = ({
   const get_date = (year, month, date) => {
     const formatted_month = String(month).padStart(2, '0');
     const formatted_date = String(date).padStart(2, '0');
+    const day_of_week = get_day_of_week(`${year}-${formatted_month}-${formatted_date}`);
 
-    return `${year}.${formatted_month}.${formatted_date}`;
+    return `${year}.${formatted_month}.${formatted_date}(${day_of_week})`;
   };
 
   const get_time = (hours, minutes) => {
@@ -77,13 +81,19 @@ const Date_time_picker = ({
               </Pressable>
             </>
             : picker_mode === 'date' ?
-              <Pressable style={{ flex: 1 }} onPress={show_date_picker}>
-                <Input
-                  label={date_title}
-                  value={get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())}
-                  disabled={true}
-                  disabledInputStyle={{ color: COLORS.black_500, opacity: 1 }} />
+              <Pressable
+                style={styles.date_container}
+                onPress={show_date_picker}
+              >
+                <Image
+                  source={set_date_img}
+                  style={styles.calendar_img} // position 속성 변경
+                />
+                <Custom_text style={styles.date_text}>
+                  {get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())}
+                </Custom_text>
               </Pressable>
+
               : picker_mode === 'time' ?
                 <Pressable style={{ flex: 1 }} onPress={show_time_picker}>
                   <Input
@@ -97,7 +107,7 @@ const Date_time_picker = ({
       </View>
 
       {show && (
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: 20 }}>
           <DateTimePicker
             testID="dateTimePicker"
             value={value}
@@ -110,7 +120,7 @@ const Date_time_picker = ({
             style={{ marginLeft: 10 }}
             name="cancel"
             size={26}
-            color={COLORS.gray_500}
+            color={COLORS.black_500}
             onPress={() => set_show(false)} />
         </View>
       )}
@@ -119,3 +129,23 @@ const Date_time_picker = ({
 };
 
 export default Date_time_picker;
+
+const styles = StyleSheet.create({
+  date_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  calendar_img: {
+    position: 'absolute',
+    left: 70,
+    width: 40,
+    height: 40
+  },
+  date_text: {
+    fontSize: 18,
+    fontFamily: 'semi_bold'
+  }
+});
