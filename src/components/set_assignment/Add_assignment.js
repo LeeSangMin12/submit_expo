@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable, Image, Switch, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable, Image, Switch } from 'react-native';
 import { Tooltip } from '@rneui/themed';
 import { useSelector } from 'react-redux';
 import { Feather, Ionicons } from '@expo/vector-icons'
@@ -61,7 +61,7 @@ const Add_assignment = ({ navigation, route }) => {
 
   const toggle_obsession_alarm = () => set_assignment_input((prev_state) => {
     return { ...prev_state, obsession_alarm: !prev_state.obsession_alarm }
-  })
+  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -95,6 +95,7 @@ const Add_assignment = ({ navigation, route }) => {
         submit_date_time: new Date(),
         email_address: '',
         title: '',
+        description: '',
         file_list: [],
       }));
       set_assignment_lms_input(() => ({
@@ -108,6 +109,7 @@ const Add_assignment = ({ navigation, route }) => {
         submit_date_time: new Date(route.params.submit_date_time),
         email_address: route.params.email_address,
         title: route.params.title,
+        description: route.params.description,
         file_list: route.params.file_list,
       }));
     } else if (route.params?.assignment_status === 'LMS') {
@@ -128,12 +130,11 @@ const Add_assignment = ({ navigation, route }) => {
       Alert.alert('내용을 입력하세요.');
       return;
     }
-
     const assignment_id = await api_assignment_add_assignment();
 
-    if (submit_method === 'E-mail') {
+    if (assignment_status === '예약') {
       await api_assignment_submit_email(assignment_id);
-    } else if (submit_method === 'LMS') {
+    } else if (assignment_status === 'LMS') {
       await api_assignment_submit_lms(assignment_id);
     }
 
@@ -152,6 +153,7 @@ const Add_assignment = ({ navigation, route }) => {
         submit_date_time: assignment_email_input.submit_date_time.toISOString(),
         email_address: assignment_email_input.email_address,
         title: assignment_email_input.title,
+        description: assignment_email_input.description,
         email_file_list: assignment_email_input.file_list,
       });
     } else if (submit_method === 'LMS') {
@@ -162,13 +164,6 @@ const Add_assignment = ({ navigation, route }) => {
         lms_file_list: assignment_lms_input.file_list
       });
     }
-    // else {
-    //   navigation.navigate('과제 제출 수정', {
-    //     assignment_id: assignment.assignment_id,
-    //     assignment_status: assignment.status,
-    //     submit_assignment_id: assignment.submit_assignment_id
-    //   });
-    // }
   }
 
   const api_assignment_add_assignment = async () => {

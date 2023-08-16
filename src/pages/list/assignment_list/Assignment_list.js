@@ -33,9 +33,15 @@ const Assignment_list = () => {
   const open_assignment = async (assignment_id) => {
     const assignment_info = await api_assignment_get_assignment(assignment_id);
 
+    const assignment_submit_info =
+      assignment_info.submit_assignment_id === '' ? { submit_method: "E-mail" } :  //과제 제출을 등록 안했을때
+        assignment_info.status === 'LMS' ? await api_assignment_get_submit_lms(assignment_id) :
+          await api_assignment_get_submit_email(assignment_id)
+
     navigation.navigate('과제 수정', {
       assignment_id: assignment_id,
       assignment_info: assignment_info,
+      assignment_submit_info: assignment_submit_info
     });
   };
 
@@ -69,6 +75,32 @@ const Assignment_list = () => {
   const api_assignment_get_assignment = async (assignment_id) => {
     const params = {
       url: 'assignment/get_assignment',
+      assignment_id: assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
+
+  const api_assignment_get_submit_email = async (assignment_id) => {
+    const params = {
+      url: 'assignment/get_submit_email',
+      assignment_id: assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return result.data;
+    }
+  };
+
+  const api_assignment_get_submit_lms = async (assignment_id) => {
+    const params = {
+      url: 'assignment/get_submit_lms',
       assignment_id: assignment_id
     };
 
