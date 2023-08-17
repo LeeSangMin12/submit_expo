@@ -115,7 +115,6 @@ const Edit_assignment = ({ navigation, route }) => {
         set_submit_assignment_id(assignment_info.submit_assignment_id);
         set_submit_method('E-mail');
         const assignment_submit_info = await api_assignment_get_submit_email(route.params.assignment_id);
-        console.log('assignment_submit_info', assignment_submit_info);
         set_assignment_email_input(() => ({
           submit_date_time: new Date(assignment_submit_info.submit_date_time),
           email_address: assignment_submit_info.email_address,

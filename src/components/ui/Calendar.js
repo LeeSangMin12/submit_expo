@@ -103,6 +103,7 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
             return (
               <Design_chip
                 key={idx}
+                on_press={condition === 'this' ? () => open_assignment_list_modal(date) : null}
                 title={val.assignment_name}
                 background_color={assignment_status_color_map[val.status]}
                 container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
@@ -167,22 +168,6 @@ const Calendar = () => {
       assignment_id: assignment_id,
       assignment_info: assignment_info,
     });
-  };
-
-  const open_submit_assignment = async (assignment) => {
-    set_assignment_list_modal(false);
-
-    if (assignment.status === '설정') {  //과제 처음 등록할때
-      navigation.navigate('과제 제출', {
-        assignment_id: assignment.assignment_id
-      });
-    } else {
-      navigation.navigate('과제 제출 수정', {
-        assignment_id: assignment.assignment_id,
-        assignment_status: assignment.status,
-        submit_assignment_id: assignment.submit_assignment_id
-      });
-    }
   };
 
   const api_assignment_set_completion_status = async (assignment_id, completion_status) => {
