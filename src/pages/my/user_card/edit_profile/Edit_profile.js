@@ -22,13 +22,11 @@ const Edit_profile = () => {
     nickname: nickname,
   });
   const [err_nickname, set_err_nickname] = useState('');
-  const [btn_disabled, set_btn_disabled] = useState(false);
 
   /**
    * 닉네임 검사 후 유저 정보를 수정
    */
   const edit_user_info = async () => {
-    set_btn_disabled(true);
     //닉네임을 변갱했을때만 중복 닉네임 검사
     const verify_nickname = (nickname !== user_input.nickname) ? await check_nickname() : true;
 
@@ -41,7 +39,6 @@ const Edit_profile = () => {
       }
     }
 
-    set_btn_disabled(false);
   }
 
   /**
@@ -89,9 +86,14 @@ const Edit_profile = () => {
    * 유저 정보 수정
    */
   const api_user_edit_info = async () => {
+    //이미지를 바꾸지 않았을때 db에 저장을 안해주기 위해 빈값을 보냄.
+    const img_url = user_input.img_url?.name === undefined ? '' : user_input.img_url;  //name값이 없으면 이미지가 바뀌지 않은것.
+    const is_empty_img = user_input.img_url === '' ? true : false;  //유저 이미지가 기본 이미지인지 체크
+
     const form_data = new FormData();
-    form_data.append('img_url', user_input.img_url);
+    form_data.append('img_url', img_url);
     form_data.append('nickname', user_input.nickname);
+    form_data.append('is_empty_img', is_empty_img);
 
     const params = {
       url: "user/edit_info",
@@ -149,7 +151,6 @@ const Edit_profile = () => {
           title="완료하기"
           style={styles.btn_next}
           on_press={do_once(edit_user_info)}
-          disabled={btn_disabled}
         />
       </View>
     </View >
