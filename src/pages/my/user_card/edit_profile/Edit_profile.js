@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_request, exec_request_multipart } from "@/shared/js/api";
-import { set_store_info } from '@/shared/js/common_function';
+import { set_store_info, do_once } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
 import Set_nickname from '@/components/setting/Set_nickname';
@@ -148,7 +148,7 @@ const Edit_profile = () => {
         <Button
           title="완료하기"
           style={styles.btn_next}
-          on_press={edit_user_info}
+          on_press={do_once(edit_user_info)}
           disabled={btn_disabled}
         />
       </View>

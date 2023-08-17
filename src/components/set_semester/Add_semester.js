@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'
 
 import { exec_request } from "@/shared/js/api";
-import { set_store_info } from '@/shared/js/common_function';
+import { set_store_info, do_once } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Custom_text_input, Design_chip } from '@/components/components';
 
@@ -33,7 +33,7 @@ const Add_semester = ({ navigation }) => {
             paddingVertical: 9,
             borderRadius: 50,
           }}
-          on_press={submit_semester}
+          on_press={do_once(submit_semester)}
         />)
     });
   }, [navigation, semester_name, selected_semester]);

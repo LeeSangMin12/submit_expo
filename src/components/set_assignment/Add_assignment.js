@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Feather, Ionicons } from '@expo/vector-icons'
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
-import { set_store_info, show_toast } from '@/shared/js/common_function';
+import { set_store_info, show_toast, do_once } from '@/shared/js/common_function';
 import { Custom_text, Custom_text_input, Date_time_picker, File_select } from '@/components/components';
 import COLORS from '@/shared/js/colors';
 import question_mark_tooltip_img from '@/assets/img/icon/question_mark_tooltip.png';
@@ -74,7 +74,7 @@ const Add_assignment = ({ navigation, route }) => {
           />
         </Pressable>),
       headerRight: () => (
-        <Pressable onPress={add_assignment}>
+        <Pressable onPress={do_once(add_assignment)}>
           <Feather
             name="check"
             size={30}

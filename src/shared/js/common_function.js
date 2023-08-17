@@ -114,3 +114,16 @@ export const convert_12_hour_format = (time24) => {
 
   return `${am_pm} ${hour12}:${minute} `;
 };
+
+/**
+ * 버튼을 한번만 클릭 가능하게 해주는 함수
+ */
+export const do_once = (fn) => {
+  let done = false;
+  return (...args) => {
+    if (!done) {
+      done = true
+      fn(...args)
+    }
+  }
+}
