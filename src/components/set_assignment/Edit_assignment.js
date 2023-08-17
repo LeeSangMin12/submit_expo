@@ -513,40 +513,36 @@ const Edit_assignment = ({ navigation, route }) => {
             />
           </View>
 
-          <View>
-            <Pressable onPress={open_submit_assignment} style={{ flexDirection: 'row', alignItems: 'baseline', marginTop: 34, justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row' }}>
-                <Image source={paper_airplane} style={{ width: 18, height: 18, marginRight: 10 }} />
-                <View>
-                  <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5, paddingBottom: 10 }}>예약 제출</Custom_text>
-                  {
-                    <View style={{ backgroundColor: status_color_map[assignment_status].backgroundColor, width: 52, height: 26, alignItems: 'center', justifyContent: 'center' }}>
-                      <Custom_text style={{ color: status_color_map[assignment_status].color, fontSize: 12 }}>{assignment_status}</Custom_text>
-                    </View>
-                  }
-                </View>
-                <Tooltip
-                  visible={submit_tooltip}
-                  onOpen={() => set_submit_tooltip(true)}
-                  onClose={() => set_submit_tooltip(false)}
-                  width={220}
-                  backgroundColor={'#EBEBEB'}
-                  popover={<Custom_text style={{ fontSize: 10, }}>날짜를 설정하면 자동으로 메일이 전송됩니다.😊</Custom_text>}
-                >
-                  <Image source={question_mark_tooltip_img} style={{ width: 14, height: 14 }} />
-                </Tooltip>
+          <Pressable onPress={open_submit_assignment} style={{ flexDirection: 'row', alignItems: 'baseline', marginTop: 34, justifyContent: 'space-between' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={paper_airplane} style={{ width: 18, height: 18, marginRight: 10 }} />
+              <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5, }}>예약 제출</Custom_text>
+              <Tooltip
+                visible={submit_tooltip}
+                onOpen={() => set_submit_tooltip(true)}
+                onClose={() => set_submit_tooltip(false)}
+                width={220}
+                backgroundColor={'#EBEBEB'}
+                popover={<Custom_text style={{ fontSize: 10, }}>날짜를 설정하면 자동으로 메일이 전송됩니다.😊</Custom_text>}
+              >
+                <Image source={question_mark_tooltip_img} style={{ width: 14, height: 14, }} />
+              </Tooltip>
+            </View>
 
-              </View>
+            <Ionicons
+              name="chevron-forward"
+              size={24}
+              color={COLORS.gray_500} />
+          </Pressable>
 
-              <Ionicons
-                name="chevron-forward"
-                size={24}
-                color={COLORS.gray_500} />
-            </Pressable>
-          </View>
+          {
+            <View style={{ backgroundColor: status_color_map[assignment_status].backgroundColor, width: 52, height: 26, alignItems: 'center', justifyContent: 'center', marginTop: 10, marginLeft: 30 }}>
+              <Custom_text style={{ color: status_color_map[assignment_status].color, fontSize: 12 }}>{assignment_status}</Custom_text>
+            </View>
+          }
 
           <Pressable style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25, justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={alarm_img} style={{ width: 18, height: 18, marginRight: 10 }} />
               <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5 }}>집착 알림</Custom_text>
               <Tooltip
