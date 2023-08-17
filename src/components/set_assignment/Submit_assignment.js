@@ -60,7 +60,7 @@ const Submit_assignment = ({ navigation, route }) => {
 
       navigation.navigate('과제 등록', {
         assignment_status: '예약',
-        submit_method: 'E-mail',
+        submit_method: submit_method,
         submit_date_time: assignment_email_input.submit_date_time.toISOString(),
         email_address: assignment_email_input.email_address,
         title: assignment_email_input.title,
@@ -77,7 +77,6 @@ const Submit_assignment = ({ navigation, route }) => {
 
       navigation.navigate('과제 등록', {
         assignment_status: 'LMS',
-        submit_method: 'LMS',
         submit_method: submit_method,
         url: assignment_lms_input.url,
         file_list: assignment_lms_input.file_list

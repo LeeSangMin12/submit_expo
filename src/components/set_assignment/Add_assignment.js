@@ -66,7 +66,7 @@ const Add_assignment = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable onPress={() => navigation.navigate('Bottom_navigation', { screen: '홈' })}>
           <Feather
             name="x"
             size={30}
@@ -82,7 +82,7 @@ const Add_assignment = ({ navigation, route }) => {
           />
         </Pressable>)
     });
-  }, [navigation, assignment_input, route.params]);
+  }, [navigation, assignment_input, assignment_status, submit_method, assignment_email_input, assignment_lms_input]);
 
   /**
    * submit_assignmet에서 assignment_status을 받아와서 동적으로 업데이트
@@ -120,8 +120,7 @@ const Add_assignment = ({ navigation, route }) => {
         file_list: route.params.file_list,
       }));
     }
-  }, [route.params?.assignment_status])
-
+  }, [route.params?.assignment_status]);
 
   const add_assignment = async () => {
     const { file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
@@ -141,9 +140,9 @@ const Add_assignment = ({ navigation, route }) => {
     const assignment_list = await api_assignment_get_assignment_list();
 
     set_store_info('assignment', 'assignment_list', assignment_list);
-    navigation.goBack();
+    navigation.navigate('Bottom_navigation', { screen: '홈' });
     show_toast('과제가 등록되었습니다.');
-  }
+  };
 
   const open_submit_assignment = async () => {
     if (submit_method === 'E-mail') {
@@ -164,7 +163,7 @@ const Add_assignment = ({ navigation, route }) => {
         lms_file_list: assignment_lms_input.file_list
       });
     }
-  }
+  };
 
   const api_assignment_add_assignment = async () => {
     const form_data = new FormData();
@@ -191,7 +190,7 @@ const Add_assignment = ({ navigation, route }) => {
     if (result.status === 'ok') {
       return result.data.assignment_id;
     }
-  }
+  };
 
   const api_assignment_submit_email = async (assignment_id) => {
     const form_data = new FormData();

@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, P
 import { Tooltip } from '@rneui/themed';
 import { useSelector } from 'react-redux';
 import { Feather, Ionicons } from '@expo/vector-icons'
+import { FAB } from '@rneui/themed';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, show_toast } from '@/shared/js/common_function';
@@ -16,6 +17,7 @@ const Edit_assignment = ({ navigation, route }) => {
   const { default_semester_id } = useSelector((state) => state.semester);
 
   const [assignment_input, set_assignment_input] = useState({
+    assignment_id: '',
     completion_status: '',
     registration_date: new Date(),
     assignment_name: '',
@@ -26,6 +28,7 @@ const Edit_assignment = ({ navigation, route }) => {
   });
   const [assignment_status, set_assignment_status] = useState('설정');
   const [submit_method, set_submit_method] = useState('E-mail');
+  const [submit_assignment_id, set_submit_assignment_id] = useState('');
   const [assignment_email_input, set_assignment_email_input] = useState({
     submit_date_time: route.params.submit_date_time ? new Date(route.params.submit_date_time) : new Date(),
     email_address: route.params.email_address ?? '',
@@ -37,6 +40,7 @@ const Edit_assignment = ({ navigation, route }) => {
     url: route.params.url ?? '',
     file_list: route.params.file_list ?? [],
   });
+
   const [submit_tooltip, set_submit_tooltip] = useState(false);
   const [alarm_tooltip, set_alarm_tooltip] = useState(false);
 
@@ -66,7 +70,7 @@ const Edit_assignment = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable onPress={() => navigation.navigate('Bottom_navigation', { screen: '홈' })}>
           <Feather
             name="x"
             size={30}
@@ -82,12 +86,13 @@ const Edit_assignment = ({ navigation, route }) => {
           />
         </Pressable>)
     });
-  }, [navigation, assignment_input, route.params]);
+  }, [navigation, assignment_input, assignment_status, submit_method, submit_assignment_id, assignment_email_input, assignment_lms_input]);
 
   useEffect(() => {
     const fetch_data = async () => {
       const assignment_info = await api_assignment_get_assignment(route.params.assignment_id);
       set_assignment_input({
+        assignment_id: route.params.assignment_id,
         completion_status: assignment_info.completion_status,
         registration_date: new Date(assignment_info.registration_date),
         assignment_name: assignment_info.assignment_name,
@@ -96,9 +101,10 @@ const Edit_assignment = ({ navigation, route }) => {
         obsession_alarm: assignment_info.obsession_alarm,
         file_list: assignment_info.file_list,
       })
-      set_assignment_status(assignment_info.status)
+      set_assignment_status(assignment_info.status);
 
       if (assignment_info.status === 'LMS') {
+        set_submit_assignment_id(assignment_info.submit_assignment_id);
         set_submit_method('LMS');
         const assignment_submit_info = await api_assignment_get_submit_lms(route.params.assignment_id);
         set_assignment_lms_input(() => ({
@@ -106,9 +112,10 @@ const Edit_assignment = ({ navigation, route }) => {
           file_list: assignment_submit_info.file_list,
         }));
       } else if (assignment_info.status === '예약' || assignment_info.status === '완료') {
+        set_submit_assignment_id(assignment_info.submit_assignment_id);
         set_submit_method('E-mail');
         const assignment_submit_info = await api_assignment_get_submit_email(route.params.assignment_id);
-        console.log('assignment_submit_info', assignment_submit_info.description);
+        console.log('assignment_submit_info', assignment_submit_info);
         set_assignment_email_input(() => ({
           submit_date_time: new Date(assignment_submit_info.submit_date_time),
           email_address: assignment_submit_info.email_address,
@@ -148,7 +155,7 @@ const Edit_assignment = ({ navigation, route }) => {
         submit_date_time: new Date(route.params.submit_date_time),
         email_address: route.params.email_address,
         title: route.params.title,
-        description: '',
+        description: route.params.description,
         file_list: route.params.file_list,
       }));
     } else if (route.params?.assignment_status === 'LMS') {
@@ -169,10 +176,33 @@ const Edit_assignment = ({ navigation, route }) => {
       return;
     }
 
-    const edit_assignment = await api_assignment_edit_assignment();
+    await api_assignment_edit_assignment();
+
+    if (submit_assignment_id === '') {
+      if (assignment_status === '예약') {
+        await api_assignment_submit_email();
+      } else if (assignment_status === 'LMS') {
+        await api_assignment_submit_lms();
+      }
+    } else {
+      if (route.params?.assignment_status === '설정') {  //과제 제출값을 삭제했을 때
+        await api_assignment_delete_submit_assignment();
+      } else if (route.params?.assignment_status === '예약') {
+        await api_assignment_edit_submit_email();
+      } else if (route.params?.assignment_status === 'LMS') {
+        await api_assignment_edit_submit_lms();
+      }
+    }
+
+    const assignment_list = await api_assignment_get_assignment_list();
+
+    set_store_info('assignment', 'assignment_list', assignment_list);
+    navigation.navigate('Bottom_navigation', { screen: '홈' });
+    show_toast('과제가 수정되었습니다.');
   };
 
   const open_submit_assignment = async () => {
+    console.log('registration_date', assignment_email_input);
     if (submit_method === 'E-mail') {
       navigation.navigate('과제 제출 수정', {
         assignment_status: assignment_status,
@@ -203,7 +233,7 @@ const Edit_assignment = ({ navigation, route }) => {
             const assignment_list = await api_assignment_get_assignment_list();
 
             set_store_info('assignment', 'assignment_list', assignment_list);
-            navigation.navigate('Bottom_navigation', { screen: '예약전송' });
+            navigation.navigate('Bottom_navigation', { screen: '홈' });
           }
         }
       }
@@ -212,7 +242,7 @@ const Edit_assignment = ({ navigation, route }) => {
 
   const api_assignment_edit_assignment = async () => {
     const form_data = new FormData();
-    form_data.append('assignment_id', route.params.assignment_id);
+    form_data.append('assignment_id', assignment_input.assignment_id);
     form_data.append('semester_id', default_semester_id);
     form_data.append('status', assignment_status);
     form_data.append('completion_status', assignment_input.completion_status);
@@ -221,7 +251,6 @@ const Edit_assignment = ({ navigation, route }) => {
     form_data.append('professor_name', assignment_input.professor_name);
     form_data.append('assignment_description', assignment_input.assignment_description);
     form_data.append('obsession_alarm', assignment_input.obsession_alarm);
-    // form_data.append('submit_assignment_id', route.params.assignment_submit_info.assignment_id);
     Array.from(assignment_input.file_list).forEach((file) => {
       form_data.append('file_list', file);
     });
@@ -238,71 +267,10 @@ const Edit_assignment = ({ navigation, route }) => {
     }
   };
 
-  const api_assignment_delete_assignment = async () => {
+  const api_assignment_get_assignment = async (assignment_id) => {
     const params = {
-      url: 'assignment/delete_assignment',
-      assignment_id: route.params.assignment_id,
-      submit_assignment_id: route.params.assignment_info.submit_assignment_id
-    };
-
-    const result = await exec_request(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_submit_email = async (assignment_id) => {
-    const form_data = new FormData();
-    form_data.append('assignment_id', assignment_id);
-    form_data.append('submit_method', submit_method);
-    form_data.append('status', '예약');
-    form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
-    form_data.append('email_address', assignment_email_input.email_address);
-    form_data.append('title', assignment_email_input.title);
-    form_data.append('description', assignment_email_input.description);
-    Array.from(assignment_email_input.file_list).forEach((file) => {
-      form_data.append('file_list', file);
-    });
-
-    const params = {
-      url: 'assignment/submit_email',
-      form_data: form_data
-    };
-
-    const result = await exec_request_multipart(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_submit_lms = async (assignment_id) => {
-    const form_data = new FormData();
-    form_data.append('assignment_id', assignment_id);
-    form_data.append('submit_method', submit_method);
-    form_data.append('status', 'LMS');
-    form_data.append('url', assignment_lms_input.url);
-    Array.from(assignment_lms_input.file_list).forEach((file) => {
-      form_data.append('file_list', file);
-    });
-
-    const params = {
-      url: 'assignment/submit_lms',
-      form_data: form_data
-    };
-
-    const result = await exec_request_multipart(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_get_assignment_list = async () => {
-    const params = {
-      url: 'assignment/get_assignment_list',
-      semester_id: default_semester_id
+      url: 'assignment/get_assignment',
+      assignment_id: assignment_id
     };
 
     const result = await exec_request(params, navigation);
@@ -311,6 +279,7 @@ const Edit_assignment = ({ navigation, route }) => {
       return result.data;
     }
   };
+
   const api_assignment_get_submit_email = async (assignment_id) => {
     const params = {
       url: 'assignment/get_submit_email',
@@ -337,10 +306,135 @@ const Edit_assignment = ({ navigation, route }) => {
     }
   };
 
-  const api_assignment_get_assignment = async (assignment_id) => {
+  const api_assignment_submit_email = async () => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_input.assignment_id);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', '예약');
+    form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
+    form_data.append('email_address', assignment_email_input.email_address);
+    form_data.append('title', assignment_email_input.title);
+    form_data.append('description', assignment_email_input.description);
+    Array.from(assignment_email_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
     const params = {
-      url: 'assignment/get_assignment',
-      assignment_id: assignment_id
+      url: 'assignment/submit_email',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_submit_lms = async () => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_input.assignment_id);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', 'LMS');
+    form_data.append('url', assignment_lms_input.url);
+    Array.from(assignment_lms_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/submit_lms',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_edit_submit_email = async () => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_input.assignment_id);
+    form_data.append('submit_assignment_id', submit_assignment_id);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', '예약');
+    form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
+    form_data.append('email_address', assignment_email_input.email_address);
+    form_data.append('title', assignment_email_input.title);
+    form_data.append('description', assignment_email_input.description);
+    Array.from(assignment_email_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/edit_submit_email',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_edit_submit_lms = async () => {
+    const form_data = new FormData();
+    form_data.append('assignment_id', assignment_input.assignment_id);
+    form_data.append('submit_assignment_id', submit_assignment_id);
+    form_data.append('submit_method', submit_method);
+    form_data.append('status', 'LMS');
+    form_data.append('url', assignment_lms_input.url);
+    Array.from(assignment_lms_input.file_list).forEach((file) => {
+      form_data.append('file_list', file);
+    });
+
+    const params = {
+      url: 'assignment/edit_submit_lms',
+      form_data: form_data
+    };
+
+    const result = await exec_request_multipart(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_delete_assignment = async () => {
+    const params = {
+      url: 'assignment/delete_assignment',
+      assignment_id: assignment_input.assignment_id,
+      submit_assignment_id: submit_assignment_id
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_delete_submit_assignment = async () => {
+    const params = {
+      url: 'assignment/delete_submit_assignment',
+      assignment_id: assignment_input.assignment_id,
+      submit_assignment_id: submit_assignment_id,
+      submit_method: submit_method,
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
+
+  const api_assignment_get_assignment_list = async () => {
+    const params = {
+      url: 'assignment/get_assignment_list',
+      semester_id: default_semester_id
     };
 
     const result = await exec_request(params, navigation);
@@ -493,6 +587,22 @@ const Edit_assignment = ({ navigation, route }) => {
         </View>
 
       </ScrollView>
+      <FAB
+        visible={true}
+        onPress={() => {
+          delete_assignment();
+        }}
+        style={{
+          position: 'absolute',
+          bottom: 40,
+          left: 0,
+          right: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        icon={{ name: 'delete', color: 'white' }}
+        color="#FF5454"
+      />
     </KeyboardAvoidingView >
   )
 };
