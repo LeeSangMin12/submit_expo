@@ -32,8 +32,8 @@ export const exec_login = async (req_obj) => {
     async_storage_store_data('token', result.access_token);
 
     return result;
-  } catch (xhr) {
-    console.error('request 에러:', xhr);
+  } catch (error) {
+    console.error('request 에러:', error);
     console.error(req_obj.url + 'r 에러');
     return null;
   }
@@ -41,11 +41,16 @@ export const exec_login = async (req_obj) => {
 
 /**
  * 토큰 만료 검사
- * : 1. 토큰이 만료 되거나 만료되기 5분전 일때 ->  refresh token 검증후 새로운 토큰 발급
- * : 2. 토큰이 존재하지 않음 -> 로그인 페이지 이동
- * : 3. acccess, refresh 토큰 만료 -> 로그인 페이지 이동
+ * 1. 토큰이 만료 되거나 만료되기 5분전 일때 ->  refresh token 검증후 새로운 토큰 발급
+ * 2. 토큰이 존재하지 않음 -> 로그인 페이지 이동
+ * 3. acccess, refresh 토큰 만료 -> 로그인 페이지 이동
+ * 
+ * 현재 구글 로그인이 완료되면 무조건 토큰을 Async_storage에 저장해줌.
+ * 그러다 보니 유저가 세팅페이지에서 정보를 입력하던 중간에 나가버리면, 토큰은 있는데 정보가 없어 홈 화면에서 에러가남
+ * 그래서 자동로그인인용 토큰 검증인지 bool값으로 확인해줘야함,
+ * @param {boolean} is_auto_login
  */
-export const check_exp_token = async () => {
+export const check_exp_token = async (is_auto_login) => {
   const token = await async_storage_get_data('token') ? await async_storage_get_data('token') : '';
 
   if (token === '') return 'token_expired';
@@ -55,7 +60,7 @@ export const check_exp_token = async () => {
   const current_time_stamp = Math.floor(Date.now() / 1000)  //밀리초를 초로 변환
   const five_minutes_ago_time_stamp = token_info.exp - (5 * 60);
 
-  if (current_time_stamp >= five_minutes_ago_time_stamp) {  //access token이 만료 되기 5분전 일때
+  if (current_time_stamp >= five_minutes_ago_time_stamp || is_auto_login) {  //access token이 만료 되기 5분전 일때
     const data = {
       user_id: token_info.user_id
     }
@@ -92,6 +97,7 @@ export const exec_request = async (req_obj, navigation) => {
   const token = await check_exp_token();
 
   if (token === 'token_expired') {
+    await async_storage_remove_data('token');
     navigation.navigate('Login_page');
     Alert.alert('토큰이 만료되었습니다. 재 로그인 해주세요.');
     return false;
@@ -113,8 +119,8 @@ export const exec_request = async (req_obj, navigation) => {
 
     const result = response.data;
     return result;
-  } catch (xhr) {
-    console.error("request 에러:", xhr);
+  } catch (error) {
+    console.error("request 에러:", error);
     console.error(req_obj.url + " 에러");
     return null;
   };
@@ -128,6 +134,7 @@ export const exec_request_multipart = async (req_obj, navigation) => {
   const token = await check_exp_token();
 
   if (token === 'token_expired') {
+    await async_storage_remove_data('token');
     navigation.navigate('Login_page');
     Alert.alert('토큰이 만료되었습니다. 재 로그인 해주세요.');
     return false;
@@ -144,8 +151,8 @@ export const exec_request_multipart = async (req_obj, navigation) => {
 
     const result = response.data;
     return result;
-  } catch (xhr) {
-    console.error("request 에러:", xhr);
+  } catch (error) {
+    console.error("request 에러:", error);
     console.error(req_obj.url + " 에러");
     return null;
   };
