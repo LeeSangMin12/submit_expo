@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { View, Image, StyleSheet, Dimensions } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-import { Custom_text, Button, Custom_modal } from "@/components/components";
-
+import { Custom_text } from "@/components/components";
+import COLORS from '@/shared/js/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
     marginHorizontal: 0,
-    backgroundColor: '#946BF6',
+    backgroundColor: COLORS.primary_500,
   },
   inactive_dot_style: {
     backgroundColor: '#C4C4C4',

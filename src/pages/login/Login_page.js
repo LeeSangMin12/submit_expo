@@ -87,6 +87,7 @@ const Login_page = () => {
         </View>
         <Pressable style={{ flex: 0.2 }} onPress={() => handle_login('google')}>
           <Image
+            style={{ height: 55, width: 370 }}
             source={btn_google_login}
           />
         </Pressable>
