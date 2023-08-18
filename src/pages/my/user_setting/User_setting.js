@@ -38,7 +38,7 @@ const User_setting = () => {
     <>
       <View style={styles.setting_container}>
         <Custom_text style={styles.setting_container.title}>정보 및 설정</Custom_text>
-        <Pressable style={styles.setting_container.sub_title_container}>
+        <Pressable style={styles.setting_container.sub_title_container} onPress={() => navigation.navigate('Login_info_page')}>
           <Custom_text style={styles.setting_container.sub_title}>로그인 정보</Custom_text>
           <Ionicons
             name="chevron-forward"

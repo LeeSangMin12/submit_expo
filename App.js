@@ -20,6 +20,8 @@ import List_page from '@/pages/list/List_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
 import Edit_profile from '@/pages/my/user_card/edit_profile/Edit_profile.js'
+import Login_info_page from '@/pages/my/login_info_page/Login_info_page';
+import Withdrawal_page from '@/pages/my/withdrawal_page/Withdrawal_page';
 import Add_assignment from '@/components/set_assignment/Add_assignment.js'
 import Edit_assignment from '@/components/set_assignment/Edit_assignment.js'
 import Submit_assignment from '@/components/set_assignment/Submit_assignment.js'
@@ -254,6 +256,38 @@ const App = () => {
           <Stack.Screen
             name="새 캘린더 만들기"
             component={Add_semester}
+          />
+          <Stack.Screen
+            name="Login_info_page"
+            component={Login_info_page}
+            options={({ navigation }) => ({
+              title: '로그인 정보',
+              headerLeft: () => (
+                <Pressable onPress={() => navigation.goBack()}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={35}
+                    color="black"
+                  />
+                </Pressable>
+              )
+            })}
+          />
+          <Stack.Screen
+            name="Withdrawal_page"
+            component={Withdrawal_page}
+            options={({ navigation }) => ({
+              title: '회원 탈퇴',
+              headerLeft: () => (
+                <Pressable onPress={() => navigation.goBack()}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={35}
+                    color="black"
+                  />
+                </Pressable>
+              )
+            })}
           />
 
         </Stack.Navigator>

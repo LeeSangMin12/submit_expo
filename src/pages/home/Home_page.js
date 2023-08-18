@@ -25,6 +25,8 @@ const Home_page = () => {
             default_semester.semester.split(' ')[1] === '2학기' ? 9 :
               default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : '';
 
+
+      set_store_info('user', 'user_email', user_data.user_email);
       set_store_info('user', 'nickname', user_data.nickname);
       set_store_info('semester', 'default_semester', default_semester.semester);
       set_store_info('semester', 'default_semester_id', default_semester.semester_id);

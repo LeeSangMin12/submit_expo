@@ -7,19 +7,8 @@ const initial_state = {
   email_title: '',
   email_description: '',
   email_file_list: [],
-  // assignment_email_input: {
-  //   submit_date_time: new Date().toISOString(),
-  //   email_address: '',
-  //   title: '',
-  //   description: '',
-  //   file_list: [],
-  // },
   lms_url: '',
   lms_file_list: [],
-  // assignment_lms_input: {
-  //   url: '',
-  //   file_list: [],
-  // }
 };
 
 const assignment_submit_slice = createSlice({

@@ -8,14 +8,21 @@ export default StyleSheet.create({
       height: 32,
     }
   },
-  assignment_header_options: (title) => ({
+  header_options: (title) => ({
     title,
-    headerStyle: {
-      backgroundColor: COLORS.primary_500,
-    },
     headerTitleStyle: {
       fontSize: 16,
       fontFamily: 'medium'
+    },
+  }),
+  assignment_header_options: (title) => ({
+    title,
+    headerTitleStyle: {
+      fontSize: 16,
+      fontFamily: 'medium'
+    },
+    headerStyle: {
+      backgroundColor: COLORS.primary_500,
     },
     headerTintColor: COLORS.white,
   })

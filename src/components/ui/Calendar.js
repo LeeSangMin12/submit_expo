@@ -97,7 +97,7 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
         <Custom_text style={text_style}>{date}</Custom_text>
 
         {this_month_assignment.map((val, idx) => {
-          const formatted_date = new Date(val.registration_date)
+          const formatted_date = new Date(val.registration_date);
 
           if (condition === 'this' && formatted_date.getDate() == date) {
             return (
@@ -233,7 +233,7 @@ const Calendar = () => {
                 set_assignment_list_modal(false);
                 navigation.navigate('과제 등록', {
                   selected_date: selectd_date.toISOString()
-                })
+                });
               }} />
           </Custom_text>
         </View>
