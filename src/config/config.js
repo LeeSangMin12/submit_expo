@@ -11,7 +11,7 @@ export const CARRER_NET_UNIVERSITY =
   "contentType=json&" +
   "gubun=univ_list";
 
-export const SERVER_URL = `http://${manifest.debuggerHost.split(':').shift()}:3000`;
+export const SERVER_URL = `https://port-0-submit-server-ac2nlkq7twkt.sel4.cloudtype.app`;
 
 export const REDIRECT_URI = 'https://auth.expo.io/@sangminleee/submit_expo';
 
