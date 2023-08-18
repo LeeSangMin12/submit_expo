@@ -24,7 +24,8 @@ const Login_page = () => {
    * : 엑세스 토큰이 있을 경우만, 토큰 검증 후 홈화면으로 이동
    */
   const auto_login = async () => {
-    const token = await check_exp_token(true);
+    const IS_AUTO_LOGIN = true;
+    const token = await check_exp_token(IS_AUTO_LOGIN);
 
     if (token !== 'token_expired') {  //토큰이 존재할 경우
       navigation.navigate('Bottom_navigation', { screen: '홈' });
