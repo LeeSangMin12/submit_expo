@@ -74,7 +74,7 @@ const Bottom_navigation = () => {
           ),
         })} />
       <Bottom_tab.Screen
-        name="예약전송"
+        name="리스트"
         component={List_page}
         options={() => ({
           tabBarIcon: ({ focused }) => (

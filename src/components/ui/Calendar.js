@@ -6,7 +6,7 @@ import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
-import { set_store_info } from '@/shared/js/common_function';
+import { set_store_info, kor_iso_string } from '@/shared/js/common_function';
 import COLORS from "@/shared/js/colors";
 import Custom_text from '@/components/ui/Custom_text.js';
 import Design_chip from '@/components/ui/Design_chip.js';
@@ -232,7 +232,7 @@ const Calendar = () => {
                 const selectd_date = new Date(year, month - 1, selected_date);
                 set_assignment_list_modal(false);
                 navigation.navigate('과제 등록', {
-                  selected_date: selectd_date.toISOString()
+                  selected_date: kor_iso_string(selectd_date)
                 });
               }} />
           </Custom_text>

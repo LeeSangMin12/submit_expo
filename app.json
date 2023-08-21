@@ -3,7 +3,7 @@
     "name": "submit_expo",
     "slug": "submit_expo",
     "scheme": "com.submitexpo.rn",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,12 +14,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.4",
       "supportsTablet": true,
       "bundleIdentifier": "com.submitexpo.rn"
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 5,
 
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",

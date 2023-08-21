@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const kor_iso_string = (date_obj) => {
+  const kor_date = new Date(date_obj.getTime() - (date_obj.getTimezoneOffset() * 60000)).toISOString();
+
+  return kor_date;
+}
+
 const initial_state = {
   submit_method: 'E-mail',
-  email_submit_date_time: new Date().toISOString(),
+  email_submit_date_time: kor_iso_string(new Date()),
   email_email_address: '',
   email_title: '',
   email_description: '',

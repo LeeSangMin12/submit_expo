@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, P
 import { Feather } from '@expo/vector-icons'
 import { FAB } from '@rneui/themed';
 
-import { is_valid_email } from '@/shared/js/common_function';
+import { is_valid_email, kor_iso_string } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Custom_text_input, Chip, Date_time_picker, File_select, Custom_text } from '@/components/components';
 
@@ -60,7 +60,7 @@ const Edit_submit_assignment = ({ navigation, route }) => {
       navigation.navigate('과제 수정', {
         assignment_status: '예약',
         submit_method: 'E-mail',
-        submit_date_time: assignment_email_input.submit_date_time.toISOString(),
+        submit_date_time: kor_iso_string(assignment_email_input.submit_date_time),
         email_address: assignment_email_input.email_address,
         title: assignment_email_input.title,
         description: assignment_email_input.description,

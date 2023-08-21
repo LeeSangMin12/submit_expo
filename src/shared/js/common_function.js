@@ -116,7 +116,7 @@ export const convert_12_hour_format = (time24) => {
 };
 
 /**
- * 버튼을 한번만 클릭 가능하게 해주는 함수
+ * 한번만 클릭 가능하게 해주는 함수(중복 클릭 방지)
  */
 export const do_once = (fn) => {
   let done = false;
@@ -126,4 +126,15 @@ export const do_once = (fn) => {
       fn(...args)
     }
   }
+}
+
+/**
+ * toISOString 시간 맞추기
+ * :new Date에 toISOString 함수는 UTC시간을 기준으로 반환해, 
+ * :한국과 9시간의 시차가 있어서 그 시차를 제거
+ */
+export const kor_iso_string = (date_obj) => {
+  const kor_date = new Date(date_obj.getTime() - (date_obj.getTimezoneOffset() * 60000)).toISOString();
+
+  return kor_date;
 }

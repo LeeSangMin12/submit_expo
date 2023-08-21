@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Feather, Ionicons } from '@expo/vector-icons'
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
-import { set_store_info, show_toast, do_once } from '@/shared/js/common_function';
+import { set_store_info, show_toast, do_once, kor_iso_string } from '@/shared/js/common_function';
 import { Custom_text, Custom_text_input, Date_time_picker, File_select } from '@/components/components';
 import COLORS from '@/shared/js/colors';
 import question_mark_tooltip_img from '@/assets/img/icon/question_mark_tooltip.png';
@@ -149,7 +149,7 @@ const Add_assignment = ({ navigation, route }) => {
       navigation.navigate('과제 제출', {
         assignment_status: assignment_status,
         submit_method: submit_method,
-        submit_date_time: assignment_email_input.submit_date_time.toISOString(),
+        submit_date_time: kor_iso_string(assignment_email_input.submit_date_time),
         email_address: assignment_email_input.email_address,
         title: assignment_email_input.title,
         description: assignment_email_input.description,
@@ -170,7 +170,7 @@ const Add_assignment = ({ navigation, route }) => {
     form_data.append('semester_id', default_semester_id);
     form_data.append('status', '설정');
     form_data.append('completion_status', false);
-    form_data.append('registration_date', String(assignment_input.registration_date));
+    form_data.append('registration_date', kor_iso_string(assignment_input.registration_date));
     form_data.append('assignment_name', assignment_input.assignment_name);
     form_data.append('professor_name', assignment_input.professor_name);
     form_data.append('assignment_description', assignment_input.assignment_description);
@@ -197,7 +197,7 @@ const Add_assignment = ({ navigation, route }) => {
     form_data.append('assignment_id', assignment_id);
     form_data.append('submit_method', submit_method);
     form_data.append('status', '예약');
-    form_data.append('submit_date_time', String(assignment_email_input.submit_date_time));
+    form_data.append('submit_date_time', kor_iso_string(assignment_email_input.submit_date_time));
     form_data.append('email_address', assignment_email_input.email_address);
     form_data.append('title', assignment_email_input.title);
     form_data.append('description', assignment_email_input.description);
