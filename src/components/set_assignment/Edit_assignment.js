@@ -70,7 +70,7 @@ const Edit_assignment = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <Pressable onPress={() => navigation.navigate('Bottom_navigation', { screen: '홈' })}>
+        <Pressable onPress={() => navigation.goBack()}>
           <Feather
             name="x"
             size={30}
@@ -201,7 +201,6 @@ const Edit_assignment = ({ navigation, route }) => {
   };
 
   const open_submit_assignment = async () => {
-    console.log('registration_date', assignment_email_input);
     if (submit_method === 'E-mail') {
       navigation.navigate('과제 제출 수정', {
         assignment_status: assignment_status,

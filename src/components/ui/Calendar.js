@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { View, StyleSheet, Image, Pressable, ScrollView, useWindowDimensions } from "react-native";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Feather, Fontisto } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 
 import { exec_request } from '@/shared/js/api';
+import { go_prev_month, go_next_month } from '@/store/modules/calendar_slice';
 import { set_store_info, kor_iso_string } from '@/shared/js/common_function';
 import COLORS from "@/shared/js/colors";
 import Custom_text from '@/components/ui/Custom_text.js';
@@ -42,42 +43,64 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
   const this_month_day = this_month_last.getDay();
 
   const prev_dates_arr = [];
-  const this_dates_arr = [...Array(this_month_date + 1).keys()].slice(1);
+  const this_dates_arr = [];
   const next_dates_arr = [];
 
   if (prev_month_day !== 6) {  //지난달 마지막 요일이 토요일이 아닐때
     for (let i = 0; i < prev_month_day + 1; i++) {  //남는 지난달 날짜 추가
-      prev_dates_arr.unshift(prev_month_date - i);
+      prev_dates_arr.unshift({
+        month: month - 1,
+        date: prev_month_date - i
+      });
     }
   }
 
+  for (let i = 1; i <= this_month_date; i++) {
+    this_dates_arr.push({
+      month: month,
+      date: i
+    })
+  }
+
   for (let i = 1; i < 7 - this_month_day; i++) {  //남는 다음달 날짜 추가
-    next_dates_arr.push(i);
+    next_dates_arr.push({
+      month: month + 1,
+      date: i
+    });
   };
 
   const dates = [...prev_dates_arr, ...this_dates_arr, ...next_dates_arr];
 
-  const first_date_index = dates.indexOf(1);
-  const last_date_index = dates.lastIndexOf(this_month_date) + 1;
+  assignment_list.forEach(assignment => {
+    const assignment_date = new Date(assignment.registration_date);
+    const assignment_month = assignment_date.getMonth() + 1;
+    const assignment_day = assignment_date.getDate();
+
+    const matching_date = dates.find(date => date.month === assignment_month && date.date === assignment_day);
+
+    if (matching_date) {
+      matching_date.assignments = matching_date.assignments || [];
+      matching_date.assignments.push(assignment);
+    }
+  });
 
   const date_height =
     dates.length > 35 ? (100 / 6) :
       dates.length < 35 ? (100 / 4) : (100 / 5);  //date의 갯수에 따라 높이 지정
-
-  const formatted_month = String(month).padStart(2, '0');
-  const this_month_assignment = assignment_list.filter((assignment) => {
-    return assignment.registration_date.startsWith(`${year}-${formatted_month}`)
-  });
 
   const rendered_dates = dates.map((date, i) => {
     const today = new Date();
     const is_today =
       view_year === today.getFullYear() &&
       view_month === today.getMonth() + 1 &&
-      date === today.getDate();
+      date.date === today.getDate();
 
-    const condition = i >= first_date_index && i < last_date_index ? 'this' : 'other';
+    const condition =
+      date.month === month - 1 ? 'prev_month' :
+        date.month === month + 1 ? 'last_month' : 'this'
+
     const container_style = [styles.date, { height: `${date_height}%`, width: date_width }];
+
     const text_style =
       [styles[condition],
       { fontSize: 13 },
@@ -90,34 +113,30 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
     }
 
     return (
-      <Pressable onPress={condition === 'this' ? () => open_assignment_list_modal(date) : null}
+      <Pressable
+        onPress={() => open_assignment_list_modal(date)}
         style={container_style}
-        key={i} >
+        key={i}>
         {condition === 'this' && is_today && <View style={[styles.today_circle, { left: (date_width - 20) / 2, }]} />}
-        <Custom_text style={text_style}>{date}</Custom_text>
+        <Custom_text style={text_style}>{date.date}</Custom_text>
 
-        {this_month_assignment.map((val, idx) => {
-          const formatted_date = new Date(val.registration_date);
-
-          if (condition === 'this' && formatted_date.getDate() == date) {
-            return (
-              <Design_chip
-                key={idx}
-                on_press={condition === 'this' ? () => open_assignment_list_modal(date) : null}
-                title={val.assignment_name}
-                background_color={assignment_status_color_map[val.status]}
-                container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
-                title_style={{ fontSize: 11, }} />
-            )
-          }
-        })}
+        {date.assignments?.length >= 1 ? date.assignments.map((assignment, idx) => (
+          <Design_chip
+            key={idx}
+            on_press={() => open_assignment_list_modal(date)}
+            title={assignment.assignment_name}
+            background_color={assignment_status_color_map[assignment.status]}
+            container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
+            title_style={{ fontSize: 11, }} />
+        )) : null}
       </Pressable>
-    );
-  })
+    )
+  });
   return rendered_dates;
 };
 
 const Calendar = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const window = useWindowDimensions();
 
@@ -148,16 +167,23 @@ const Calendar = () => {
   };
 
   const open_assignment_list_modal = async (date) => {
-    const select_date = new Date(year, month - 1, date);
+    const select_date = new Date(year, date.month - 1, date.date);
 
-    const assignment_list = await api_assignment_get_assignment_list();
-    const today_assignment_list = assignment_list.filter((assignment) => {
-      return new Date(assignment.registration_date).toLocaleString().slice(0, 11) === new Date(select_date).toLocaleString().slice(0, 11);
-    });
+    if (date.month < month) {  //지난달로 이동
+      dispatch(go_prev_month())
+    } else if (date.month > month) {  //다음달로 이동
+      dispatch(go_next_month())
+    } else {
+      const assignment_list = await api_assignment_get_assignment_list();
+      const today_assignment_list = assignment_list.filter((assignment) => {
+        return new Date(assignment.registration_date).toLocaleString().slice(0, 11) === new Date(select_date).toLocaleString().slice(0, 11);
+      });
 
-    set_today_assignment_list(today_assignment_list);
-    set_assignment_list_modal(true);
-    set_selected_date(date)
+      set_today_assignment_list(today_assignment_list);
+      set_assignment_list_modal(true);
+      set_selected_date(date.date)
+    }
+
   };
 
   const open_assignment = async (assignment_id) => {
@@ -327,7 +353,10 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     overflow: 'hidden',
   },
-  other: {
+  prev_month: {
+    opacity: 0.3,
+  },
+  last_month: {
     opacity: 0.3,
   },
   today_circle: {
