@@ -540,7 +540,7 @@ const Edit_assignment = ({ navigation, route }) => {
             </View>
           }
 
-          <Pressable style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25, justifyContent: 'space-between' }}>
+          {/* <Pressable style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25, justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={alarm_img} style={{ width: 18, height: 18, marginRight: 10 }} />
               <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5 }}>집착 알림</Custom_text>
@@ -571,7 +571,7 @@ const Edit_assignment = ({ navigation, route }) => {
               value={!!assignment_input.obsession_alarm}
               style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }}
             />
-          </Pressable>
+          </Pressable> */}
 
           <File_select
             value={assignment_input.file_list}

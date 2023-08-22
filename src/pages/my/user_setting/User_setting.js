@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable, Linking, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'
-
 
 import { async_storage_remove_data } from "@/shared/js/common_function.js";
 import { Custom_text, Button, Custom_modal } from "@/components/components";
@@ -51,32 +50,42 @@ const User_setting = () => {
 
       <View style={styles.setting_container}>
         <Custom_text style={styles.setting_container.title}>공지 및 서비스 정보</Custom_text>
-        <Pressable style={styles.setting_container.sub_title_container}>
+        <Pressable
+          onPress={() => Alert.alert('준비중이에요!')}
+          style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>공지사항</Custom_text>
           <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
         </Pressable>
-        <Pressable style={styles.setting_container.sub_title_container}>
+        <Pressable
+          onPress={() => Alert.alert('준비중이에요!')}
+          style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>이용약관</Custom_text>
           <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
         </Pressable>
-        <Pressable style={styles.setting_container.sub_title_container}>
+        <Pressable
+          onPress={() => Alert.alert('준비중이에요!')}
+          style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>개인정보 처리방침</Custom_text>
           <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
         </Pressable>
-        <Pressable style={styles.setting_container.sub_title_container}>
+        <Pressable
+          onPress={() => Alert.alert('준비중이에요!')}
+          style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>오픈소스 라이센스</Custom_text>
           <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
         </Pressable>
         <Pressable style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>버전정보</Custom_text>
-          <Custom_text style={{ fontSize: 16 }}>V.2.1</Custom_text>
+          <Custom_text style={{ fontSize: 16 }}>V.1.0.5</Custom_text>
         </Pressable>
       </View>
       <View style={styles.divider} />
 
       <View style={styles.setting_container}>
         <Custom_text style={styles.setting_container.title}>문의 및 지원</Custom_text>
-        <Pressable style={styles.setting_container.sub_title_container}>
+        <Pressable
+          onPress={() => Linking.openURL('https://open.kakao.com/o/szDGGGCf')}
+          style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>카카오톡 문의</Custom_text>
           <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />
         </Pressable>

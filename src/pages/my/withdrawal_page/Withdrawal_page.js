@@ -16,7 +16,7 @@ const Withdrawal_page = () => {
       { text: '취소', style: 'cancel' },
       {
         text: '삭제', onPress: () => {
-          Alert.alert('아직 안만들었지롱');
+          Alert.alert('아직 만들지 못했어요. ㅠㅠ ');
         }
       }
     ]);
