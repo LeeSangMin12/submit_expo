@@ -66,7 +66,7 @@ const My_page = () => {
             admission_year={admission_year}
           />
         </View>
-        <Image source={adsense_png} style={{ width: '100%', height: 82 }} />
+        {/* <Image source={adsense_png} style={{ width: '100%', height: 82 }} /> */}
         <ScrollView>
           <User_setting />
         </ScrollView>

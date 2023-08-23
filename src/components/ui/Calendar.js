@@ -265,7 +265,7 @@ const Calendar = () => {
         </View>
 
         <ScrollView>
-          <Image source={adsense_png} style={styles.adsense} />
+          {/* <Image source={adsense_png} style={styles.adsense} /> */}
           {today_assignment_list.map((assignment, idx) => (
             <View key={idx}>
               <Pressable style={styles.assignment.container} onPress={() => open_assignment(assignment.assignment_id)}>

@@ -49,7 +49,7 @@ const List_page = () => {
         </SafeAreaView>
       </View>
       <Assignment_list />
-      <Image source={adsense_png} style={styles.adsense} />
+      {/* <Image source={adsense_png} style={styles.adsense} /> */}
     </>
   );
 }

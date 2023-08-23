@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Checkbox from 'expo-checkbox';
 
 import { exec_request } from '@/shared/js/api';
-import { set_store_info } from '@/shared/js/common_function';
+import { set_store_info, kor_iso_string } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Custom_text, Chip } from '@/components/components';
 
@@ -105,6 +105,27 @@ const Assignment_list = () => {
     }
   };
 
+  const calculate_d_day_assignment = (assignment) => {
+
+
+    // const today = new Date();
+
+    // const bt_time = today.getTime() - new Date(assignment.registration_date).getTime();
+    // const bt_day = Math.abs(bt_time / (1000 * 60 * 60 * 24));
+
+    // console.log('bt_day', bt_day);
+
+    const dateA = new Date('2022/06/01');
+    const dateB = new Date('2022/05/01');
+
+    console.log('dateA', dateA);
+    console.log('dateB', dateB);
+    // const diffMSec = dateA.getTime() - dateB.getTime();
+    // const diffDate = diffMSec / (24 * 60 * 60 * 1000);
+
+    return 'hi';
+  }
+
   return (
     <ScrollView>
       {assignment_list.map((assignment, idx) => (
@@ -122,6 +143,7 @@ const Assignment_list = () => {
               >
                 {assignment.assignment_name}
               </Custom_text>
+              <Custom_text style={{ fontSize: 11, paddingBottom: 10, paddingLeft: 7 }}>{calculate_d_day_assignment(assignment)}</Custom_text>
             </View>
             <View >
               <Chip
