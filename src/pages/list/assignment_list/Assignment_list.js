@@ -79,34 +79,22 @@ const Assignment_list = () => {
     }
   };
 
-  const api_assignment_get_submit_email = async (assignment_id) => {
-    const params = {
-      url: 'assignment/get_submit_email',
-      assignment_id: assignment_id
-    };
-
-    const result = await exec_request(params, navigation);
-
-    if (result.status === 'ok') {
-      return result.data;
-    }
-  };
-
-  const api_assignment_get_submit_lms = async (assignment_id) => {
-    const params = {
-      url: 'assignment/get_submit_lms',
-      assignment_id: assignment_id
-    };
-
-    const result = await exec_request(params, navigation);
-
-    if (result.status === 'ok') {
-      return result.data;
-    }
-  };
-
   const calculate_d_day_assignment = (assignment) => {
-    return 'hi';
+
+    const today = new Date(kor_iso_string(new Date()));
+    const comparison_date = new Date(assignment.registration_date);
+
+    // 두 날짜의 차이(밀리초 단위)를 구함
+    let difference_millie_seconds = comparison_date - today;
+
+    // 밀리초 단위의 차이를 일(day) 단위로 변환
+    let difference_in_days = Math.round(difference_millie_seconds / (1000 * 60 * 60 * 24));
+
+    if (difference_in_days < 0) {
+      return '';
+    } else if (difference_in_days >= 0) {
+      return `D-${difference_in_days}`
+    }
   }
 
   return (

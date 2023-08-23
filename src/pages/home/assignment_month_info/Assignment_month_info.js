@@ -115,7 +115,7 @@ const Assignment_month_info = () => {
         <Pressable onPress={() => dispatch(go_today())}>
           <Image
             source={go_today_img}
-            style={{ width: 48, height: 40, }} />
+            style={{ width: 48, height: 40 }} />
         </Pressable>
 
       </View >

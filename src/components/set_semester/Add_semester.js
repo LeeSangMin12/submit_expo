@@ -49,6 +49,11 @@ const Add_semester = ({ navigation }) => {
    */
   const make_semester_list = () => {
     let now_year = String(new Date().getFullYear());
+
+    var date = new Date()
+    date.setHours(date.getHours() + 9)
+    const date_format = date.toISOString().replace('T', ' ').substring(0, 19)
+
     let year_arr = [];
 
     for (let i = Number(now_year); i >= 2010; i--) {

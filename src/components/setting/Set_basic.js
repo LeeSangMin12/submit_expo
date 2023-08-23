@@ -41,12 +41,21 @@ const Set_basic = ({
         <View style={styles.chip_container}>
           <Chip
             label="남성"
+            container_style={{
+              borderWidth: 1,
+              borderColor: COLORS.gray_490_inactive,
+              marginRight: 5
+            }}
             selected={gender === 'male'}
             on_press={() => set_value((prev_state) => {
               return { ...prev_state, gender: 'male' }
             })} />
           <Chip
             label="여성"
+            container_style={{
+              borderWidth: 1,
+              borderColor: COLORS.gray_490_inactive,
+            }}
             selected={gender === 'female'}
             on_press={() => set_value((prev_state) => {
               return { ...prev_state, gender: 'female' }

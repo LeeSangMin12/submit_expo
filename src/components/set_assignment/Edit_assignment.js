@@ -640,7 +640,7 @@ const styles = StyleSheet.create({
   },
   file_container: {
     marginTop: 25,
-    marginBottom: 10
+    marginBottom: 10,
   },
   divider: {
     height: 1,
