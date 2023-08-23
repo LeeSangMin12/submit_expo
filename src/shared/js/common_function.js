@@ -129,7 +129,7 @@ export const do_once = (fn) => {
 }
 
 /**
- * toISOString 시간 맞추기
+ * toISOString 한국으로 시간 맞추기
  * :new Date에 toISOString 함수는 UTC시간을 기준으로 반환해, 
  * :한국과 9시간의 시차가 있어서 그 시차를 제거
  */

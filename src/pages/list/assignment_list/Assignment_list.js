@@ -106,23 +106,6 @@ const Assignment_list = () => {
   };
 
   const calculate_d_day_assignment = (assignment) => {
-
-
-    // const today = new Date();
-
-    // const bt_time = today.getTime() - new Date(assignment.registration_date).getTime();
-    // const bt_day = Math.abs(bt_time / (1000 * 60 * 60 * 24));
-
-    // console.log('bt_day', bt_day);
-
-    const dateA = new Date('2022/06/01');
-    const dateB = new Date('2022/05/01');
-
-    console.log('dateA', dateA);
-    console.log('dateB', dateB);
-    // const diffMSec = dateA.getTime() - dateB.getTime();
-    // const diffDate = diffMSec / (24 * 60 * 60 * 1000);
-
     return 'hi';
   }
 

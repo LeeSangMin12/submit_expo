@@ -9,6 +9,7 @@ import COLORS from '@/shared/js/colors';
 import { go_prev_month, go_next_month, go_today } from '@/store/modules/calendar_slice';
 import { Custom_text } from "@/components/components";
 import go_today_img from '@/assets/img/logo/go_today.png';
+import guide from '@/assets/img/icon/guide.png';
 
 const Assignment_month_info = () => {
   const navigation = useNavigation();
@@ -68,12 +69,21 @@ const Assignment_month_info = () => {
             color={COLORS.primary_500} />
         </Pressable>
 
-        <Pressable onPress={() => navigation.navigate('과제 등록')} >
-          <Fontisto
-            name="plus-a"
-            size={23}
-            color={COLORS.gray_520} />
-        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Pressable onPress={() => navigation.navigate('Guide_page')}>
+            <Image
+              source={guide}
+              style={{ width: 30, height: 30, marginRight: 13 }} />
+          </Pressable>
+
+          <Pressable onPress={() => navigation.navigate('과제 등록')}>
+            <Fontisto
+              name="plus-a"
+              size={23}
+              color={COLORS.gray_520} />
+          </Pressable>
+        </View>
+
       </View>
 
       <View style={styles.remaining_assignment_container}>

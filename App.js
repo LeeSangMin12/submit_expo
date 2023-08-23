@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, StatusBar, SafeAreaView, Alert, Pressable } from 'react-native';
+import { View, Image, StyleSheet, StatusBar, Alert, Pressable } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
@@ -16,6 +16,7 @@ import { Custom_text } from '@/components/components';
 import Login_page from '@/pages/login/Login_page';
 import Setting_page from '@/pages/setting/Setting_page';
 import Home_page from '@/pages/home/Home_page';
+import Guide_page from '@/pages/home/guide_page/Guide_page';
 import List_page from '@/pages/list/List_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
@@ -191,6 +192,22 @@ const App = () => {
               />)}
           </Stack.Screen>
           <Stack.Screen name="Bottom_navigation" component={Bottom_navigation} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Guide_page"
+            component={Guide_page}
+            options={({ navigation }) => ({
+              title: '써브밋 가이드',
+              headerLeft: () => (
+                <Pressable onPress={() => navigation.goBack()}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={35}
+                    color="black"
+                  />
+                </Pressable>
+              )
+            })}
+          />
           <Stack.Screen
             name="과제 등록"
             component={Add_assignment}
