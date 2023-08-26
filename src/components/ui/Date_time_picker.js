@@ -23,11 +23,25 @@ const Date_time_picker = ({
   const [show, set_show] = useState(false);
 
   const on_change = (event, selected_date) => {
-    const current_date = new Date(selected_date) || value;
+    const current_date = selected_date || value;
     if (Platform.OS === 'android') {
       set_show(false); // for iOS, add a button that closes the picker
     }
-    set_value(current_date);
+
+    //react-native-community/datetimepicker에 따로 datetime picker 안드로이드 버전이 없어서 만듬.
+    if (picker_mode === 'date_time' && Platform.OS === 'android') {
+      if (mode == 'date') {
+        set_value(current_date);
+        set_mode('time');
+        set_show(Platform.OS !== 'ios'); //시간 설정 오픈
+      } else {
+        set_value(current_date);
+        set_show(Platform.OS === 'ios'); //피커 닫기
+        set_mode('date'); //defaulting to date for next open
+      }
+    } else {
+      set_value(current_date);
+    }
   };
 
   const show_mode = (currentMode) => {
@@ -36,7 +50,11 @@ const Date_time_picker = ({
   };
 
   const show_date_time_picker = () => {
-    show_mode('datetime');
+    if (Platform.OS === 'android') {
+      show_mode('date');
+    } else {
+      show_mode('datetime');
+    }
   };
 
   const show_date_picker = () => {
