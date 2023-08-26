@@ -25,7 +25,7 @@ const List_page = () => {
       };
 
       fetch_data();
-    }, [])
+    }, [default_semester_id])
   );
 
   const api_assignment_get_assignment_list = async (default_semester_id) => {
