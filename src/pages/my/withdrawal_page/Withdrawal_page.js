@@ -1,8 +1,11 @@
 import { View, StyleSheet, Alert } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Button, Custom_text } from '@/components/components';
 
+
 const Withdrawal_page = () => {
+  const { nickname } = useSelector((state) => state.user);
 
   const render_info_row = (content) => (
     <View style={styles.row}>
@@ -26,13 +29,13 @@ const Withdrawal_page = () => {
     <View style={styles.container}>
       <View style={styles.content_container}>
         <View style={styles.warning_container}>
-          <Custom_text style={styles.warning_text}>김도리님,잠시만요!</Custom_text>
+          <Custom_text style={styles.warning_text}>{nickname}님,잠시만요!</Custom_text>
           <Custom_text style={styles.warning_text}>탈퇴하기 전에 한번 더 확인해주세요!</Custom_text>
           <Custom_text style={styles.warning_text}>계정을 삭제하면</Custom_text>
         </View>
 
         <View>
-          {render_info_row('김도리님의 과제데이터가 모두 사라지고 복구되지 않아요!')}
+          {render_info_row(`${nickname}님의 과제데이터가 모두 사라지고 복구되지 않아요!`)}
           {render_info_row('현재 계정으로 다시는 로그인 할 수 없어요')}
           {render_info_row('탈퇴 후 7일 간 재가입을 할 수 없어요')}
         </View>
@@ -41,7 +44,7 @@ const Withdrawal_page = () => {
       <View style={styles.bottom_container}>
         <View style={styles.delete_info_container}>
           <Custom_text style={styles.bold_text}>아래의 계정 삭제 버튼을 누르면</Custom_text>
-          <Custom_text style={[styles.bold_text, styles.red_text]}>김도리님의 데이터가 영구히 삭제됩니다.</Custom_text>
+          <Custom_text style={[styles.bold_text, styles.red_text]}>{nickname}님의 데이터가 영구히 삭제됩니다.</Custom_text>
         </View>
 
         <Button
