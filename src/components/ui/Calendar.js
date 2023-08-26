@@ -71,6 +71,7 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
 
   const dates = [...prev_dates_arr, ...this_dates_arr, ...next_dates_arr];
 
+
   assignment_list.forEach(assignment => {
     const assignment_date = new Date(assignment.registration_date);
     const assignment_month = assignment_date.getMonth() + 1;

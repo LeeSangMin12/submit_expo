@@ -134,11 +134,19 @@ export const do_once = (fn) => {
  * :한국과 9시간의 시차가 있어서 그 시차를 제거
  */
 export const kor_iso_string = (date_obj) => {
+
+
+
+
+
+
+
+
   // const kor_date = new Date(date_obj.getTime() - (date_obj.getTimezoneOffset() * 60000)).toISOString();
   var date = new Date(date_obj);
   date.setHours(date.getHours() + 9);
-  // const kor_date = date.toISOString().replace('T', ' ').substring(0, 19);  //안드로이드에서 인식을 못함
-  const kor_date = date.toISOString().substring(0, 19);
+  const kor_date = date.toISOString().replace('T', ' ').substring(0, 19);  //안드로이드에서 인식을 못함
+  const formatted_date_Str = kor_date.replace(/-/g, "/");
 
-  return kor_date;
+  return formatted_date_Str;
 }
