@@ -100,7 +100,7 @@ const Edit_assignment = ({ navigation, route }) => {
         assignment_description: assignment_info.assignment_description,
         obsession_alarm: assignment_info.obsession_alarm,
         file_list: assignment_info.file_list,
-      })
+      });
       set_assignment_status(assignment_info.status);
 
       if (assignment_info.status === 'LMS') {
