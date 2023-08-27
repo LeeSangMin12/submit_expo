@@ -1,10 +1,11 @@
 import { View, StyleSheet, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import { exec_request } from '@/shared/js/api';
 import { Button, Custom_text } from '@/components/components';
 
 
-const Withdrawal_page = () => {
+const Withdrawal_page = ({ navigation }) => {
   const { nickname } = useSelector((state) => state.user);
 
   const render_info_row = (content) => (
@@ -15,15 +16,31 @@ const Withdrawal_page = () => {
   );
 
   const withdrawal_account = () => {
-    Alert.alert('정말 삭제하시겠습니까?', '삭제후 되돌릴 수 없습니다', [
+    Alert.alert('정말 삭제하시겠습니까?', '삭제후 되돌릴 수 없습니다.', [
       { text: '취소', style: 'cancel' },
       {
-        text: '삭제', onPress: () => {
-          Alert.alert('아직 만들지 못했어요. ㅠㅠ ');
+        text: '삭제', onPress: async () => {
+          const withdrawl_account = await api_user_withdrawl_account();
+          if (withdrawl_account) {
+            navigation.navigate('Login_page');
+            Alert.alert('계정이 정상적으로 탈퇴되었습니다.');
+          }
         }
       }
     ]);
-  }
+  };
+
+  const api_user_withdrawl_account = async () => {
+    const params = {
+      url: 'user/withdrawl_account'
+    };
+
+    const result = await exec_request(params, navigation);
+
+    if (result.status === 'ok') {
+      return true;
+    }
+  };
 
   return (
     <View style={styles.container}>
