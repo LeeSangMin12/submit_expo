@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
 import COLORS from '@/shared/js/colors';
@@ -43,19 +43,18 @@ const Auto_complete = memo(({ place_holder, get_data_suggesstions, set_value }) 
   };
 
   return (
-    <>
-      <AutocompleteDropdown
-        dataSet={remote_date_set}
-        useFilter={false}
-        clearOnFocus={false}
-        loading={loading}
-        onSelectItem={handle_set_value}
-        onChangeText={get_suggesstions}
-        textInputProps={{ placeholder: place_holder }}
-        inputContainerStyle={styles.input_container}
-        EmptyResultComponent={<Custom_text style={styles.empty_result_text}>값이 없습니다.</Custom_text>}
-      />
-    </>
+    <AutocompleteDropdown
+      suggestionsListContainerStyle={{ zIndex: 10000 }}
+      dataSet={remote_date_set}
+      useFilter={false}
+      clearOnFocus={false}
+      loading={loading}
+      onSelectItem={handle_set_value}
+      onChangeText={get_suggesstions}
+      textInputProps={{ placeholder: place_holder }}
+      inputContainerStyle={styles.input_container}
+      EmptyResultComponent={<Custom_text style={styles.empty_result_text}>값이 없습니다.</Custom_text>}
+    />
   );
 });
 
