@@ -579,7 +579,8 @@ const Edit_assignment = ({ navigation, route }) => {
             container_style={styles.file_container}
           />
         </View>
-
+        {/* FAB 요소 가림방지 */}
+        <View style={{ marginBottom: 300 }} />
       </ScrollView>
       <FAB
         visible={true}

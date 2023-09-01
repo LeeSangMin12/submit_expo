@@ -204,8 +204,8 @@ const Edit_submit_assignment = ({ navigation, route }) => {
             />
           </View>
         }
-
-
+        {/* FAB 요소 가림방지 */}
+        <View style={{ marginBottom: 300 }} />
       </ScrollView>
       <FAB
         visible={route.params.assignment_status !== '설정'}
