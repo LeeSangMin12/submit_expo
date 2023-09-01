@@ -167,6 +167,14 @@ const Calendar = () => {
     }
   };
 
+  const show_d_day = (assignment_d_day) => {
+    if (assignment_d_day < 0) {
+      return '';
+    } else if (assignment_d_day >= 0) {
+      return `D-${assignment_d_day}`
+    }
+  }
+
   const open_assignment_list_modal = async (date) => {
     const select_date = new Date(year, date.month - 1, date.date);
 
@@ -304,7 +312,7 @@ const Calendar = () => {
                   >
                     {assignment.assignment_name}
                   </Custom_text>
-                  <Custom_text style={{ fontSize: 11, paddingBottom: 10, paddingLeft: 7 }}>{calculate_d_day_assignment(assignment)}</Custom_text>
+                  <Custom_text style={{ fontSize: 11, paddingBottom: 10, paddingLeft: 7 }}>{show_d_day(assignment.assignment_d_day)}</Custom_text>
                 </View>
                 <View >
                   <Chip

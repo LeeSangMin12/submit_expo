@@ -30,6 +30,14 @@ const Assignment_list = () => {
     }
   };
 
+  const show_d_day = (assignment_d_day) => {
+    if (assignment_d_day < 0) {
+      return '';
+    } else if (assignment_d_day >= 0) {
+      return `D-${assignment_d_day}`
+    }
+  }
+
   const open_assignment = async (assignment_id) => {
     const assignment_info = await api_assignment_get_assignment(assignment_id);
 
@@ -79,26 +87,6 @@ const Assignment_list = () => {
     }
   };
 
-  const calculate_d_day_assignment = (assignment) => {
-    const today = new Date(kor_iso_string(new Date()));
-    const comparison_date = new Date(assignment.registration_date);
-
-    today.setHours(0, 0, 0, 0);  //시간 차이 제거
-    comparison_date.setHours(0, 0, 0, 0);  ////시간 차이 제거
-
-    // 두 날짜의 차이(밀리초 단위)를 구함
-    let difference_millie_seconds = comparison_date - today;
-
-    // 밀리초 단위의 차이를 일(day) 단위로 변환
-    let difference_in_days = difference_millie_seconds / (1000 * 60 * 60 * 24);
-
-    if (difference_in_days < 0) {
-      return '';
-    } else if (difference_in_days >= 0) {
-      return `D-${difference_in_days}`
-    }
-  }
-
   return (
     <ScrollView>
       {assignment_list.map((assignment, idx) => (
@@ -116,7 +104,7 @@ const Assignment_list = () => {
               >
                 {assignment.assignment_name}
               </Custom_text>
-              <Custom_text style={{ fontSize: 11, paddingBottom: 10, paddingLeft: 7 }}>{calculate_d_day_assignment(assignment)}</Custom_text>
+              <Custom_text style={{ fontSize: 11, paddingBottom: 10, paddingLeft: 7 }}>{show_d_day(assignment.assignment_d_day)}</Custom_text>
             </View>
             <View >
               <Chip
