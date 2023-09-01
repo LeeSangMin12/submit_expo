@@ -175,6 +175,12 @@ const Edit_assignment = ({ navigation, route }) => {
       return;
     }
 
+    const total_file_size = file_list.reduce((total, file) => total + file.size, 0);
+    if (52428800 <= total_file_size) {  //50mb보다 많을때
+      Alert.alert('파일 용량이 너무 큽니다.');
+      return;
+    }
+
     await api_assignment_edit_assignment();
 
     if (submit_assignment_id === '') {

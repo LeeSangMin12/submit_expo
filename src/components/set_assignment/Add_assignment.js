@@ -129,6 +129,13 @@ const Add_assignment = ({ navigation, route }) => {
       Alert.alert('내용을 입력하세요.');
       return;
     }
+
+    const total_file_size = file_list.reduce((total, file) => total + file.size, 0);
+    if (52428800 <= total_file_size) {  //50mb보다 많을때
+      Alert.alert('파일 용량이 너무 큽니다.');
+      return;
+    }
+
     const assignment_id = await api_assignment_add_assignment();
 
     if (assignment_status === '예약') {

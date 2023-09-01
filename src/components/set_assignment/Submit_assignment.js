@@ -57,6 +57,11 @@ const Submit_assignment = ({ navigation, route }) => {
         Alert.alert('내용을 입력하세요.');
         return;
       }
+      const total_file_size = file_list.reduce((total, file) => total + file.size, 0);
+      if (52428800 <= total_file_size) {  //50mb보다 많을때
+        Alert.alert('파일 용량이 너무 큽니다.');
+        return;
+      }
 
       navigation.navigate('과제 등록', {
         assignment_status: '예약',
@@ -72,6 +77,11 @@ const Submit_assignment = ({ navigation, route }) => {
       const any_empty = Object.values(rest).some((value) => value === '');
       if (any_empty) {
         Alert.alert('내용을 입력하세요.');
+        return;
+      }
+      const total_file_size = file_list.reduce((total, file) => total + file.size, 0);
+      if (52428800 <= total_file_size) {  //50mb보다 많을때
+        Alert.alert('파일 용량이 너무 큽니다.');
         return;
       }
 
