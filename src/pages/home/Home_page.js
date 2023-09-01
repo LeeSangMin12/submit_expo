@@ -19,19 +19,14 @@ const Home_page = () => {
 
       const assignment_list = await api_assignment_get_assignment_list(default_semester.semester_id);
 
-      const conversion_month_to_num =
-        default_semester.semester.split(' ')[1] === '1학기' ? 3 :
-          default_semester.semester.split(' ')[1] === '여름학기' ? 6 :
-            default_semester.semester.split(' ')[1] === '2학기' ? 9 :
-              default_semester.semester.split(' ')[1] === '겨울학기' ? 12 : '';
-
+      const now_month = new Date().getMonth() + 1;
 
       set_store_info('user', 'user_email', user_data.user_email);
       set_store_info('user', 'nickname', user_data.nickname);
       set_store_info('semester', 'default_semester', default_semester.semester);
       set_store_info('semester', 'default_semester_id', default_semester.semester_id);
       set_store_info('calendar', 'year', parseInt(default_semester.semester.split(' ')[0].replace('년', '')));
-      set_store_info('calendar', 'month', parseInt(conversion_month_to_num));
+      set_store_info('calendar', 'month', now_month);
       set_store_info('assignment', 'assignment_list', assignment_list);
     };
     fetch_data();
