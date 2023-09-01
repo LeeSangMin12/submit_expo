@@ -106,7 +106,6 @@ const Date_time_picker = ({
                   {get_date(value.getFullYear(), value.getMonth() + 1, value.getDate())}
                 </Custom_text>
               </Pressable>
-
               : picker_mode === 'time' ?
                 <Pressable style={{ flex: 1 }} onPress={show_time_picker}>
                   <Input
@@ -117,7 +116,7 @@ const Date_time_picker = ({
                 </Pressable>
                 : null
         }
-      </View>
+      </View >
 
       {show && (
         <View style={styles.picker_container}>
@@ -136,7 +135,8 @@ const Date_time_picker = ({
             color={COLORS.black_500}
             onPress={() => set_show(false)} />
         </View>
-      )}
+      )
+      }
     </>
   );
 };
@@ -149,13 +149,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
+    marginRight: 40,
   },
   calendar_img: {
-    position: 'absolute',
-    left: 90,
     width: 40,
-    height: 40
+    height: 40,
+    marginRight: 10
   },
   date_text: {
     fontSize: 18,
