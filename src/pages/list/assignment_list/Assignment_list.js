@@ -87,7 +87,7 @@ const Assignment_list = () => {
     comparison_date.setHours(0, 0, 0, 0);  ////시간 차이 제거
 
     // 두 날짜의 차이(밀리초 단위)를 구함
-    let difference_millie_seconds = Math.abs(comparison_date - today);
+    let difference_millie_seconds = comparison_date - today;
 
     // 밀리초 단위의 차이를 일(day) 단위로 변환
     let difference_in_days = difference_millie_seconds / (1000 * 60 * 60 * 24);
