@@ -107,9 +107,9 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
       { fontSize: 13 },
       condition === 'this' && is_today && { color: 'white' }];
 
-    if (i % 7 === 0) {
+    if (i % 7 === 0 && condition !== 'this') {
       text_style.push({ color: 'red' });  //일요일에 빨간색 적용
-    } else if ((i + 1) % 7 === 0) {
+    } else if ((i + 1) % 7 === 0 && condition !== 'this') {
       text_style.push({ color: 'blue' });  //토요일에 파란색 적용
     }
 
@@ -396,7 +396,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.black_500,
     position: 'absolute',
     top: 4.3,
-
     justifyContent: 'center',
     alignItems: 'center',
   },

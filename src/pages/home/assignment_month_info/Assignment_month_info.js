@@ -98,14 +98,14 @@ const Assignment_month_info = () => {
 
       <View style={styles.month_container}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Pressable onPress={() => dispatch(go_prev_month())}>
+          <Pressable style={{ padding: 5 }} onPress={() => dispatch(go_prev_month())}>
             <Ionicons name="chevron-back" size={19} />
           </Pressable>
 
           <Custom_text style={styles.text_year}> {year}년</Custom_text>
           <Custom_text style={styles.text_month}> {month}월 </Custom_text>
 
-          <Pressable onPress={() => dispatch(go_next_month())}>
+          <Pressable style={{ padding: 5 }} onPress={() => dispatch(go_next_month())}>
             <Ionicons
               name="chevron-forward"
               size={19} />
