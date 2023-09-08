@@ -4,9 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import { exec_login, check_exp_token } from "@/shared/js/api";
 import Login_modal from "@/pages/login/login_modal/Login_modal";
-import { REDIRECT_URI, GOOGLE_AUTH_URL } from "@/config/config";
+import { REDIRECT_URI, GOOGLE_AUTH_URL, KAKAO_AUTH_URL, APPLE_AUTH_URL } from "@/config/config";
 import On_boarding from "@/pages/login/onboarding/Onboarding";
 import btn_google_login from "@/assets/img/login/btn_google_login.png";
+import btn_kakao_login from "@/assets/img/login/btn_kakao_login.png";
+import btn_apple_login from "@/assets/img/login/btn_apple_login.png";
 
 const Login_page = () => {
   const navigation = useNavigation();
@@ -33,11 +35,15 @@ const Login_page = () => {
   }
 
   const handle_login = (login_method) => {
+    set_login_method(login_method);
     if (login_method === 'google') {
-      set_login_method('google');
       set_uri(GOOGLE_AUTH_URL);
-      set_login_modal(true);
+    } else if (login_method === 'kakao') {
+      set_uri(KAKAO_AUTH_URL);
+    } else if (login_method === 'apple') {
+      set_uri(APPLE_AUTH_URL);
     }
+    set_login_modal(true);
   };
 
   /**
@@ -49,13 +55,15 @@ const Login_page = () => {
     const url = event.nativeEvent.url;
     if (url.startsWith(REDIRECT_URI) === false) return; //로그인 후 결과하면이 아닌 경우 
 
-    const extract_code_from_url = () => {
-      const start_index = url.indexOf("code=") + 5;
-      const end_indx = url.indexOf("&", start_index);
-      return url.substring(start_index, end_indx);
+    const code = url.match(/code=([^&]+)/)[1];
+
+    if (login_method === 'google') {
+      api_login_google(code);
+    } else if (login_method === 'kakao') {
+      api_login_kakao(code);
+    } else if (login_method === 'apple') {
+      api_login_apple(code);
     }
-    const code = extract_code_from_url(url);
-    api_login_google(code);
   };
 
   /**
@@ -78,6 +86,46 @@ const Login_page = () => {
     }
   };
 
+  /**
+  * 카카오 로그인
+  */
+  const api_login_kakao = async (authorization_code) => {
+    const params = {
+      url: 'login/kakao',
+      authorization_code: authorization_code,
+    };
+
+    const result = await exec_login(params);
+
+    if (result.registered === "false") {
+      set_login_modal(false);
+      navigation.navigate('회원가입');
+    } else {
+      set_login_modal(false);
+      navigation.navigate('Bottom_navigation', { screen: '홈' });
+    }
+  };
+
+  /**
+  * 애플 로그인
+  */
+  const api_login_apple = async (authorization_code) => {
+    const params = {
+      url: 'login/apple',
+      authorization_code: authorization_code,
+    };
+
+    const result = await exec_login(params);
+
+    if (result.registered === "false") {
+      set_login_modal(false);
+      navigation.navigate('회원가입');
+    } else {
+      set_login_modal(false);
+      navigation.navigate('Bottom_navigation', { screen: '홈' });
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -85,12 +133,22 @@ const Login_page = () => {
 
           <On_boarding />
         </View>
-        <Pressable style={{ flex: 0.2 }} onPress={() => handle_login('google')}>
-          <Image
-            style={{ height: 55, width: 370 }}
-            source={btn_google_login}
-          />
-        </Pressable>
+        <View style={{ flex: 0.2 }}>
+
+
+          <Pressable style={{}} onPress={() => handle_login('kakao')}>
+            <Image
+              style={{ height: 50, width: 370 }}
+              source={btn_kakao_login}
+            />
+          </Pressable>
+          <Pressable style={{ marginTop: 20 }} onPress={() => handle_login('apple')}>
+            <Image
+              style={{ height: 50, width: 370 }}
+              source={btn_apple_login}
+            />
+          </Pressable>
+        </View>
       </View>
 
       <Login_modal
