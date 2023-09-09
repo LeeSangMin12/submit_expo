@@ -25,8 +25,6 @@ import Login_info_page from '@/pages/my/login_info_page/Login_info_page';
 import Withdrawal_page from '@/pages/my/withdrawal_page/Withdrawal_page';
 import Add_assignment from '@/components/set_assignment/Add_assignment.js'
 import Edit_assignment from '@/components/set_assignment/Edit_assignment.js'
-import Submit_assignment from '@/components/set_assignment/Submit_assignment.js'
-import Edit_submit_assignment from '@/components/set_assignment/Edit_submit_assignment.js'
 import Set_semester from '@/components/set_semester/Set_semester.js'
 import Add_semester from '@/components/set_semester/Add_semester.js'
 
@@ -217,16 +215,6 @@ const App = () => {
             name="과제 수정"
             component={Edit_assignment}
             options={common_style.assignment_header_options('과제 일정')}
-          />
-          <Stack.Screen
-            name="과제 제출"
-            component={Submit_assignment}
-            options={common_style.assignment_header_options('제출하기')}
-          />
-          <Stack.Screen
-            name="과제 제출 수정"
-            component={Edit_submit_assignment}
-            options={common_style.assignment_header_options('제출하기')}
           />
           <Stack.Screen
             name="프로필 수정"
