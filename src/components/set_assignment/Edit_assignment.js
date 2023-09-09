@@ -1,16 +1,13 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable, Image } from 'react-native';
-import { Tooltip } from '@rneui/themed';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Feather, Ionicons } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 import { FAB } from '@rneui/themed';
 
 import { exec_request, exec_request_multipart } from '@/shared/js/api';
 import { set_store_info, show_toast, do_once, kor_iso_string } from '@/shared/js/common_function';
 import { Custom_text, Custom_text_input, Date_time_picker, File_select } from '@/components/components';
 import COLORS from '@/shared/js/colors';
-import question_mark_tooltip_img from '@/assets/img/icon/question_mark_tooltip.png';
-import paper_airplane from '@/assets/img/icon/paper_airplane.png';
 
 const Edit_assignment = ({ navigation, route }) => {
   const { default_semester_id } = useSelector((state) => state.semester);
@@ -22,44 +19,8 @@ const Edit_assignment = ({ navigation, route }) => {
     assignment_name: '',
     professor_name: '',
     assignment_description: '',
-    obsession_alarm: false,
     file_list: [],
   });
-  const [assignment_status, set_assignment_status] = useState('설정');
-  const [submit_method, set_submit_method] = useState('E-mail');
-  const [submit_assignment_id, set_submit_assignment_id] = useState('');
-  const [assignment_email_input, set_assignment_email_input] = useState({
-    submit_date_time: route.params.submit_date_time ? new Date(route.params.submit_date_time) : new Date(),
-    email_address: route.params.email_address ?? '',
-    title: route.params.title ?? '',
-    description: route.params.description ?? '',
-    file_list: route.params.file_list ?? [],
-  });
-  const [assignment_lms_input, set_assignment_lms_input] = useState({
-    url: route.params.url ?? '',
-    file_list: route.params.file_list ?? [],
-  });
-
-  const [submit_tooltip, set_submit_tooltip] = useState(false);
-
-  const status_color_map = {
-    설정: {
-      backgroundColor: COLORS.primary_500,
-      color: COLORS.white,
-    },
-    예약: {
-      backgroundColor: COLORS.primary_490,
-      color: COLORS.primary_500,
-    },
-    LMS: {
-      backgroundColor: "#FFE1E1",
-      color: "#FF5454",
-    },
-    완료: {
-      backgroundColor: COLORS.gray_480,
-      color: COLORS.black_500,
-    },
-  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -80,7 +41,7 @@ const Edit_assignment = ({ navigation, route }) => {
           />
         </Pressable>)
     });
-  }, [navigation, assignment_input, assignment_status, submit_method, submit_assignment_id, assignment_email_input, assignment_lms_input]);
+  }, [navigation, assignment_input]);
 
   useEffect(() => {
     const fetch_data = async () => {
@@ -92,74 +53,11 @@ const Edit_assignment = ({ navigation, route }) => {
         assignment_name: assignment_info.assignment_name,
         professor_name: assignment_info.professor_name,
         assignment_description: assignment_info.assignment_description,
-        obsession_alarm: assignment_info.obsession_alarm,
         file_list: assignment_info.file_list,
       });
-      set_assignment_status(assignment_info.status);
-
-      if (assignment_info.status === 'LMS') {
-        set_submit_assignment_id(assignment_info.submit_assignment_id);
-        set_submit_method('LMS');
-        const assignment_submit_info = await api_assignment_get_submit_lms(route.params.assignment_id);
-        set_assignment_lms_input(() => ({
-          url: assignment_submit_info.url,
-          file_list: assignment_submit_info.file_list,
-        }));
-      } else if (assignment_info.status === '예약' || assignment_info.status === '완료') {
-        set_submit_assignment_id(assignment_info.submit_assignment_id);
-        set_submit_method('E-mail');
-        const assignment_submit_info = await api_assignment_get_submit_email(route.params.assignment_id);
-        set_assignment_email_input(() => ({
-          submit_date_time: new Date(assignment_submit_info.submit_date_time),
-          email_address: assignment_submit_info.email_address,
-          title: assignment_submit_info.title,
-          description: assignment_submit_info.description,
-          file_list: assignment_submit_info.file_list,
-        }))
-      } else {  //status가 설정일때
-        set_submit_method('E-mail');
-      }
     }
     fetch_data();
   }, []);
-
-  /**
-   * submit_assignmet에서 assignment_status을 받아올때만 업데이트
-   */
-  useEffect(() => {
-    if (route.params?.assignment_status === '설정') {
-      set_assignment_status(route.params.assignment_status);
-      set_submit_method(route.params.submit_method);
-      set_assignment_email_input(() => ({
-        submit_date_time: new Date(),
-        email_address: '',
-        title: '',
-        description: '',
-        file_list: [],
-      }));
-      set_assignment_lms_input(() => ({
-        url: '',
-        file_list: [],
-      }));
-    } else if (route.params?.assignment_status === '예약') {
-      set_assignment_status(route.params.assignment_status);
-      set_submit_method(route.params.submit_method);
-      set_assignment_email_input(() => ({
-        submit_date_time: new Date(route.params.submit_date_time),
-        email_address: route.params.email_address,
-        title: route.params.title,
-        description: route.params.description,
-        file_list: route.params.file_list,
-      }));
-    } else if (route.params?.assignment_status === 'LMS') {
-      set_assignment_status(route.params.assignment_status);
-      set_submit_method(route.params.submit_method);
-      set_assignment_lms_input(() => ({
-        url: route.params.url,
-        file_list: route.params.file_list,
-      }));
-    }
-  }, [route.params?.assignment_status]);
 
   const edit_assignment = async () => {
     const { file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
@@ -177,49 +75,12 @@ const Edit_assignment = ({ navigation, route }) => {
 
     await api_assignment_edit_assignment();
 
-    if (submit_assignment_id === '') {
-      if (assignment_status === '예약') {
-        await api_assignment_submit_email();
-      } else if (assignment_status === 'LMS') {
-        await api_assignment_submit_lms();
-      }
-    } else {
-      if (route.params?.assignment_status === '설정') {  //과제 제출값을 삭제했을 때
-        await api_assignment_delete_submit_assignment();
-      } else if (route.params?.assignment_status === '예약') {
-        await api_assignment_edit_submit_email();
-      } else if (route.params?.assignment_status === 'LMS') {
-        await api_assignment_edit_submit_lms();
-      }
-    }
-
     const assignment_list = await api_assignment_get_assignment_list();
 
     set_store_info('assignment', 'assignment_list', assignment_list);
     navigation.navigate('Bottom_navigation', { screen: '홈' });
     show_toast('과제가 수정되었습니다.');
   };
-
-  const open_submit_assignment = async () => {
-    if (submit_method === 'E-mail') {
-      navigation.navigate('과제 제출 수정', {
-        assignment_status: assignment_status,
-        submit_method: submit_method,
-        submit_date_time: kor_iso_string(assignment_email_input.submit_date_time),
-        email_address: assignment_email_input.email_address,
-        title: assignment_email_input.title,
-        description: assignment_email_input.description,
-        email_file_list: assignment_email_input.file_list,
-      });
-    } else if (submit_method === 'LMS') {
-      navigation.navigate('과제 제출 수정', {
-        assignment_status: assignment_status,
-        submit_method: submit_method,
-        url: assignment_lms_input.url,
-        lms_file_list: assignment_lms_input.file_list
-      });
-    }
-  }
 
   const delete_assignment = () => {
     Alert.alert('삭제하시겠습니까?', '삭제후 되돌릴 수 없습니다', [
@@ -242,13 +103,11 @@ const Edit_assignment = ({ navigation, route }) => {
     const form_data = new FormData();
     form_data.append('assignment_id', assignment_input.assignment_id);
     form_data.append('semester_id', default_semester_id);
-    form_data.append('status', assignment_status);
     form_data.append('completion_status', assignment_input.completion_status);
     form_data.append('registration_date', kor_iso_string(assignment_input.registration_date));
     form_data.append('assignment_name', assignment_input.assignment_name);
     form_data.append('professor_name', assignment_input.professor_name);
     form_data.append('assignment_description', assignment_input.assignment_description);
-    form_data.append('obsession_alarm', assignment_input.obsession_alarm);
     Array.from(assignment_input.file_list).forEach((file) => {
       form_data.append('file_list', file);
     });
@@ -278,148 +137,10 @@ const Edit_assignment = ({ navigation, route }) => {
     }
   };
 
-  const api_assignment_get_submit_email = async (assignment_id) => {
-    const params = {
-      url: 'assignment/get_submit_email',
-      assignment_id: assignment_id
-    };
-
-    const result = await exec_request(params, navigation);
-
-    if (result.status === 'ok') {
-      return result.data;
-    }
-  };
-
-  const api_assignment_get_submit_lms = async (assignment_id) => {
-    const params = {
-      url: 'assignment/get_submit_lms',
-      assignment_id: assignment_id
-    };
-
-    const result = await exec_request(params, navigation);
-
-    if (result.status === 'ok') {
-      return result.data;
-    }
-  };
-
-  const api_assignment_submit_email = async () => {
-    const form_data = new FormData();
-    form_data.append('assignment_id', assignment_input.assignment_id);
-    form_data.append('submit_method', submit_method);
-    form_data.append('status', '예약');
-    form_data.append('submit_date_time', kor_iso_string(assignment_email_input.submit_date_time));
-    form_data.append('email_address', assignment_email_input.email_address);
-    form_data.append('title', assignment_email_input.title);
-    form_data.append('description', assignment_email_input.description);
-    Array.from(assignment_email_input.file_list).forEach((file) => {
-      form_data.append('file_list', file);
-    });
-
-    const params = {
-      url: 'assignment/submit_email',
-      form_data: form_data
-    };
-
-    const result = await exec_request_multipart(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_submit_lms = async () => {
-    const form_data = new FormData();
-    form_data.append('assignment_id', assignment_input.assignment_id);
-    form_data.append('submit_method', submit_method);
-    form_data.append('status', 'LMS');
-    form_data.append('url', assignment_lms_input.url);
-    Array.from(assignment_lms_input.file_list).forEach((file) => {
-      form_data.append('file_list', file);
-    });
-
-    const params = {
-      url: 'assignment/submit_lms',
-      form_data: form_data
-    };
-
-    const result = await exec_request_multipart(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_edit_submit_email = async () => {
-    const form_data = new FormData();
-    form_data.append('assignment_id', assignment_input.assignment_id);
-    form_data.append('submit_assignment_id', submit_assignment_id);
-    form_data.append('submit_method', submit_method);
-    form_data.append('status', '예약');
-    form_data.append('submit_date_time', kor_iso_string(assignment_email_input.submit_date_time));
-    form_data.append('email_address', assignment_email_input.email_address);
-    form_data.append('title', assignment_email_input.title);
-    form_data.append('description', assignment_email_input.description);
-    Array.from(assignment_email_input.file_list).forEach((file) => {
-      form_data.append('file_list', file);
-    });
-
-    const params = {
-      url: 'assignment/edit_submit_email',
-      form_data: form_data
-    };
-
-    const result = await exec_request_multipart(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_edit_submit_lms = async () => {
-    const form_data = new FormData();
-    form_data.append('assignment_id', assignment_input.assignment_id);
-    form_data.append('submit_assignment_id', submit_assignment_id);
-    form_data.append('submit_method', submit_method);
-    form_data.append('status', 'LMS');
-    form_data.append('url', assignment_lms_input.url);
-    Array.from(assignment_lms_input.file_list).forEach((file) => {
-      form_data.append('file_list', file);
-    });
-
-    const params = {
-      url: 'assignment/edit_submit_lms',
-      form_data: form_data
-    };
-
-    const result = await exec_request_multipart(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
   const api_assignment_delete_assignment = async () => {
     const params = {
       url: 'assignment/delete_assignment',
       assignment_id: assignment_input.assignment_id,
-      submit_assignment_id: submit_assignment_id
-    };
-
-    const result = await exec_request(params, navigation);
-
-    if (result.status === 'ok') {
-      return true;
-    }
-  };
-
-  const api_assignment_delete_submit_assignment = async () => {
-    const params = {
-      url: 'assignment/delete_submit_assignment',
-      assignment_id: assignment_input.assignment_id,
-      submit_assignment_id: submit_assignment_id,
-      submit_method: submit_method,
     };
 
     const result = await exec_request(params, navigation);
@@ -511,34 +232,6 @@ const Edit_assignment = ({ navigation, route }) => {
               })}
             />
           </View>
-
-          <Pressable onPress={open_submit_assignment} style={{ flexDirection: 'row', alignItems: 'baseline', marginTop: 34, justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={paper_airplane} style={{ width: 18, height: 18, marginRight: 10 }} />
-              <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5, }}>예약 제출</Custom_text>
-              <Tooltip
-                visible={submit_tooltip}
-                onOpen={() => set_submit_tooltip(true)}
-                onClose={() => set_submit_tooltip(false)}
-                width={220}
-                backgroundColor={'#EBEBEB'}
-                popover={<Custom_text style={{ fontSize: 10, }}>날짜를 설정하면 자동으로 메일이 전송됩니다.😊</Custom_text>}
-              >
-                <Image source={question_mark_tooltip_img} style={{ width: 14, height: 14, }} />
-              </Tooltip>
-            </View>
-
-            <Ionicons
-              name="chevron-forward"
-              size={24}
-              color={COLORS.gray_500} />
-          </Pressable>
-
-          {
-            <View style={{ backgroundColor: status_color_map[assignment_status].backgroundColor, width: 52, height: 26, alignItems: 'center', justifyContent: 'center', marginTop: 10, marginLeft: 30 }}>
-              <Custom_text style={{ color: status_color_map[assignment_status].color, fontSize: 12 }}>{assignment_status}</Custom_text>
-            </View>
-          }
 
           <File_select
             value={assignment_input.file_list}
