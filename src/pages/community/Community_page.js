@@ -111,7 +111,7 @@ const Community_page = () => {
         <View style={{ alignItems: 'flex-end', marginVertical: 30 }}>
           <Image
             source={owl_left_nav}
-            style={{ width: 160, height: 230, }} />
+            style={{ width: 350, height: 230, }} />
 
         </View>
       </View>
