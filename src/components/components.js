@@ -13,7 +13,6 @@ import Custom_text_input from '@/components/ui/Custom_text_input';
 import Custom_text from '@/components/ui/Custom_text';
 import Date_time_picker from '@/components/ui/Date_time_picker';
 import File_select from '@/components/ui/File_select';
-import Alarm_select from '@/components/ui/Alarm_select';
 
 /**
  * setting
@@ -31,5 +30,4 @@ export {
   Custom_text,
   Date_time_picker,
   File_select,
-  Alarm_select
 };
