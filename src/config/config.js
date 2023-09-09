@@ -1,7 +1,3 @@
-import Constants from 'expo-constants'
-
-const { manifest } = Constants;
-
 export const CARRER_NET_KEY = '06c2cdaf1d5fe582073b2ed44573c969';
 export const CARRER_NET_UNIVERSITY =
   "www.career.go.kr/cnet/openapi/getOpenApi?" +
@@ -11,7 +7,7 @@ export const CARRER_NET_UNIVERSITY =
   "contentType=json&" +
   "gubun=univ_list";
 
-export const SERVER_URL = `http://${manifest.debuggerHost.split(':').shift()}:3000`;
+export const SERVER_URL = `https://port-0-submit-server-ac2nlkq7twkt.sel4.cloudtype.app`;
 
 export const REDIRECT_URI = 'https://auth.expo.io/@sangminleee/submit_expo';
 

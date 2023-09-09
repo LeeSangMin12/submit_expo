@@ -23,3 +23,16 @@ export const GOOGLE_AUTH_URL =
   "scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://mail.google.com/&" +
   "access_type=offline&" +  //refresh token 발급
   "prompt=consent";  //refresh token 발급
+
+export const KAKAO_AUTH_URL =
+  "https://kauth.kakao.com/oauth/authorize?" +
+  "response_type=code&" +
+  "client_id=9b30b72ca7e9bda54e84d9d91a65e1c7&" +
+  `redirect_uri=${REDIRECT_URI}&` +
+  `scope=openid&`;
+
+export const APPLE_AUTH_URL =
+  "https://appleid.apple.com/auth/authorize?" +
+  "response_type=code&" +
+  "client_id=com.expo.submit&" +
+  `redirect_uri=${REDIRECT_URI}&`;
