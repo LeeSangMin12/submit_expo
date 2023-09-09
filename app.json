@@ -2,7 +2,6 @@
   "expo": {
     "name": "submit_expo",
     "slug": "submit_expo",
-    "sdkVersion": "34.0.0",
     "scheme": "com.submitexpo.rn",
     "version": "1.0.7",
     "orientation": "portrait",
@@ -34,6 +33,18 @@
       "eas": {
         "projectId": "db17479e-bf3f-42f9-a0aa-82c416e12768"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "buildToolsVersion": "33.0.0"
+          }
+        }
+      ]
+    ]
   }
 }
