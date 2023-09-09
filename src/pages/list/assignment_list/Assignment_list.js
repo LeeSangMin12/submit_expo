@@ -4,16 +4,9 @@ import { useSelector } from 'react-redux';
 import Checkbox from 'expo-checkbox';
 
 import { exec_request } from '@/shared/js/api';
-import { set_store_info, kor_iso_string } from '@/shared/js/common_function';
+import { set_store_info } from '@/shared/js/common_function';
 import COLORS from '@/shared/js/colors';
 import { Custom_text, Chip } from '@/components/components';
-
-const assignment_status_color_map = {
-  ['설정']: COLORS.primary_500,
-  ['예약']: COLORS.primary_490,
-  ['LMS']: '#FFE1E1',
-  ['완료']: COLORS.gray_480
-};
 
 const Assignment_list = () => {
   const navigation = useNavigation();
@@ -109,7 +102,6 @@ const Assignment_list = () => {
             <View >
               <Chip
                 label={assignment.status}
-                background_color={assignment_status_color_map[assignment.status]}
                 on_press={() => open_assignment(assignment.assignment_id)}
               />
             </View>

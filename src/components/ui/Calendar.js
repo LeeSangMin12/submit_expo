@@ -15,13 +15,6 @@ import Custom_modal from '@/components/ui/Custom_modal.js';
 import Chip from '@/components/ui/Chip.js';
 import adsense_png from '@/assets/img/my/adsense.png';
 
-const assignment_status_color_map = {
-  ['설정']: COLORS.primary_500,
-  ['예약']: COLORS.primary_490,
-  ['LMS']: '#FFE1E1',
-  ['완료']: COLORS.gray_480
-};
-
 /**
  * 캘린더 그리기
  */
@@ -126,7 +119,6 @@ const render_calender = (year, month, open_assignment_list_modal, date_width) =>
             key={idx}
             on_press={() => open_assignment_list_modal(date)}
             title={assignment.assignment_name}
-            background_color={assignment_status_color_map[assignment.status]}
             container_style={{ paddingVertical: 2, borderRadius: 4, width: '100%', alignItems: 'center', }}
             title_style={{ fontSize: 11, }} />
         )) : null}
@@ -317,7 +309,6 @@ const Calendar = () => {
                 <View >
                   <Chip
                     label={assignment.status}
-                    background_color={assignment_status_color_map[assignment.status]}
                     on_press={() => open_assignment(assignment.assignment_id)}
                   />
                 </View>

@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initial_state = {
   assignment_list: [],
-  assignment_status: '설정'
 };
 
 const assignment_slice = createSlice({
