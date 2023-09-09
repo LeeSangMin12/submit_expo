@@ -3,7 +3,6 @@ import { StyleSheet, Image, ScrollView, Pressable } from "react-native"
 import guide_1 from '@/assets/img/guide/guide_1.png';
 import guide_2 from '@/assets/img/guide/guide_2.png';
 import guide_3 from '@/assets/img/guide/guide_3.png';
-import guide_4 from '@/assets/img/guide/guide_4.png';
 
 const Guide_page = ({ navigation }) => {
   return (
@@ -21,10 +20,6 @@ const Guide_page = ({ navigation }) => {
         />
         <Image
           source={guide_3}
-          style={styles.guide_img}
-        />
-        <Image
-          source={guide_4}
           style={styles.guide_img}
         />
       </Pressable>
