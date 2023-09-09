@@ -6,7 +6,6 @@ import { set_semester_list } from '@/store/modules/semester_slice';
 import { set_calendar } from '@/store/modules/calendar_slice';
 import { set_assignment_add } from '@/store/modules/assignment_add_slice';
 import { set_assignment } from '@/store/modules/assignment_slice';
-import { set_assignment_submit } from '@/store/modules/assignment_submit_slice';
 import store from '@/store/store';
 
 /**
@@ -22,7 +21,6 @@ export const set_store_info = (store_name, key, value) => {
     calendar: set_calendar,
     assignment: set_assignment,
     assignment_add: set_assignment_add,
-    assignment_submit: set_assignment_submit
   };
 
   //useDispatch 훅은 함수형 컴포넌트 내부에서만 사용 가능하기에 store를 직접 부름.
