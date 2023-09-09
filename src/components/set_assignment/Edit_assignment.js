@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable, Image, Switch, Text } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Alert, StatusBar, Pressable, Image } from 'react-native';
 import { Tooltip } from '@rneui/themed';
 import { useSelector } from 'react-redux';
 import { Feather, Ionicons } from '@expo/vector-icons'
@@ -10,7 +10,6 @@ import { set_store_info, show_toast, do_once, kor_iso_string } from '@/shared/js
 import { Custom_text, Custom_text_input, Date_time_picker, File_select } from '@/components/components';
 import COLORS from '@/shared/js/colors';
 import question_mark_tooltip_img from '@/assets/img/icon/question_mark_tooltip.png';
-import alarm_img from '@/assets/img/icon/alarm.png';
 import paper_airplane from '@/assets/img/icon/paper_airplane.png';
 
 const Edit_assignment = ({ navigation, route }) => {
@@ -42,7 +41,6 @@ const Edit_assignment = ({ navigation, route }) => {
   });
 
   const [submit_tooltip, set_submit_tooltip] = useState(false);
-  const [alarm_tooltip, set_alarm_tooltip] = useState(false);
 
   const status_color_map = {
     설정: {
@@ -62,10 +60,6 @@ const Edit_assignment = ({ navigation, route }) => {
       color: COLORS.black_500,
     },
   };
-
-  const toggle_obsession_alarm = () => set_assignment_input((prev_state) => {
-    return { ...prev_state, obsession_alarm: !prev_state.obsession_alarm }
-  });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -545,39 +539,6 @@ const Edit_assignment = ({ navigation, route }) => {
               <Custom_text style={{ color: status_color_map[assignment_status].color, fontSize: 12 }}>{assignment_status}</Custom_text>
             </View>
           }
-
-          {/* <Pressable style={{ flexDirection: 'row', alignItems: 'center', marginTop: 25, justifyContent: 'space-between' }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={alarm_img} style={{ width: 18, height: 18, marginRight: 10 }} />
-              <Custom_text style={{ color: COLORS.gray_500, fontSize: 16, paddingRight: 5 }}>집착 알림</Custom_text>
-              <Tooltip
-                visible={alarm_tooltip}
-                onOpen={() => set_alarm_tooltip(true)}
-                onClose={() => set_alarm_tooltip(false)}
-                width={220}
-                height={50}
-                backgroundColor={'#EBEBEB'}
-                containerStyle={{ alignItems: 'baseline' }}
-                popover={
-                  <>
-                    <Custom_text style={{ fontSize: 10, }}>집착알람은 <Custom_text style={{ color: COLORS.primary_500 }}>하루전, 한시간 간격</Custom_text>으로 울려요 😊</Custom_text>
-                    <Custom_text style={{ fontSize: 10, }}><Custom_text style={{ color: COLORS.primary_500 }}>과제 수행 완료 체크</Custom_text>시 작동이 멈춥니다.</Custom_text>
-                    <Custom_text style={{ fontSize: 10, }}>집착알람은 <Custom_text style={{ color: COLORS.primary_500 }}>8시 부터 23시</Custom_text>까지 울려요~!</Custom_text>
-                  </>
-                }
-              >
-                <Image source={question_mark_tooltip_img} style={{ width: 14, height: 14 }} />
-              </Tooltip>
-            </View>
-
-            <Switch
-              trackColor={{ false: '#767577', true: COLORS.primary_500 }}
-              thumbColor={assignment_input.obsession_alarm ? COLORS.white : '#f4f3f4'}
-              onValueChange={toggle_obsession_alarm}
-              value={!!assignment_input.obsession_alarm}
-              style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }] }}
-            />
-          </Pressable> */}
 
           <File_select
             value={assignment_input.file_list}

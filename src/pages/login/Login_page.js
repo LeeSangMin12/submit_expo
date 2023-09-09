@@ -6,7 +6,6 @@ import { exec_login, check_exp_token } from "@/shared/js/api";
 import Login_modal from "@/pages/login/login_modal/Login_modal";
 import { REDIRECT_URI, GOOGLE_AUTH_URL, KAKAO_AUTH_URL, APPLE_AUTH_URL } from "@/config/config";
 import On_boarding from "@/pages/login/onboarding/Onboarding";
-import btn_google_login from "@/assets/img/login/btn_google_login.png";
 import btn_kakao_login from "@/assets/img/login/btn_kakao_login.png";
 import btn_apple_login from "@/assets/img/login/btn_apple_login.png";
 
