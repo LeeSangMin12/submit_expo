@@ -32,6 +32,7 @@ const My_page = () => {
    * redux안에 유저 정보를 넣어준다.
    */
   const set_user_info = (user_data) => {
+    set_store_info('user', 'name', user_data.name);
     set_store_info('user', 'admission_year', user_data.admission_year);
     set_store_info('user', 'department', user_data.department);
     set_store_info('user', 'nickname', user_data.nickname);

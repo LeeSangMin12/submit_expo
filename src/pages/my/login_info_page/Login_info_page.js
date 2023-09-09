@@ -9,7 +9,7 @@ import COLORS from '@/shared/js/colors';
 import google_logo from '@/assets/img/logo/google_logo.png';
 
 const Login_info_page = ({ navigation }) => {
-  const { user_email } = useSelector((state) => state.user);
+  const { name, university } = useSelector((state) => state.user);
 
   const [log_out_modal, set_log_out_modal] = useState(false);
 
@@ -43,8 +43,7 @@ const Login_info_page = ({ navigation }) => {
         <Custom_text style={{ fontSize: 12 }}>로그인 계정</Custom_text>
 
         <View style={styles.login_account_contianer}>
-          <Image source={google_logo} style={styles.login_account_contianer.google_img} />
-          <Custom_text style={{ fontSize: 16 }}>{user_email}</Custom_text>
+          <Custom_text style={{ fontSize: 16 }}>{name} {university}</Custom_text>
         </View>
       </View>
 
