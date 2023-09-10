@@ -69,7 +69,9 @@ const Setting_page = ({
    * : 후 홈화면으로 이동
    */
   const handle_page_count = async () => {
-    if (page_count === 3 && await check_nickname()) {
+    if (page_count === 3) {
+      if (await check_nickname() === false) return;
+
       if (await api_user_initial_setting()) {  //유저정보 저장 성공
         set_page_count(1);
         navigation.navigate('Bottom_navigation', { screen: '홈' });
