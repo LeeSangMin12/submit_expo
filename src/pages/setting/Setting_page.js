@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { exec_request } from '@/shared/js/api';
 import COLORS from '@/shared/js/colors';
 import { Button } from '@/components/components';
-import Set_basic from '@/components/setting/Set_basic';
 import Set_university from '@/components/setting/Set_university';
 import Set_nickname from '@/components/setting/Set_nickname';
 
@@ -17,9 +16,6 @@ const Setting_page = ({
   const navigation = useNavigation();
 
   const [user_input, set_user_input] = useState({
-    name: '',
-    age: '',
-    gender: '',
     university: '',
     department: '',
     admission_year: '',
@@ -34,28 +30,26 @@ const Setting_page = ({
    * : 데이터 입력시 progress bar 증가
    */
   useEffect(() => {
-    const input_data = [user_input.name, user_input.age, user_input.gender, user_input.university, user_input.department, user_input.admission_year, user_input.nickname];
+    const input_data = [user_input.university, user_input.department, user_input.admission_year, user_input.nickname];
     const filled_data_count = input_data.filter(item => item).length;
     const progress = filled_data_count / input_data.length;
     set_progress(progress);
-  }, [user_input.name, user_input.age, user_input.gender, user_input.university, user_input.department, user_input.admission_year, user_input.nickname]);
+  }, [user_input.university, user_input.department, user_input.admission_year, user_input.nickname]);
 
   /**
    * button disabled 상태 업데이트
    */
   useEffect(() => {
     set_btn_next_disabled(check_btn_next_disabled());
-  }, [user_input.page_count, user_input.name, user_input.age, user_input.gender, user_input.university, user_input.department, user_input.admission_year, user_input.nickname]);
+  }, [user_input.page_count, user_input.university, user_input.department, user_input.admission_year, user_input.nickname]);
 
   /**
    * 유저가 모든 데이터를 입력했는지 확인 후 disabled 풀어줌
    */
   const check_btn_next_disabled = () => {
-    if (page_count === 1 && user_input.name && user_input.age && user_input.gender) {
+    if (page_count === 1 && user_input.university && user_input.department && user_input.admission_year) {
       return false;
-    } else if (page_count === 2 && user_input.university && user_input.department && user_input.admission_year) {
-      return false;
-    } else if (page_count === 3 && user_input.nickname) {
+    } else if (page_count === 2 && user_input.nickname) {
       return false;
     }
     return true;
@@ -69,7 +63,7 @@ const Setting_page = ({
    * : 후 홈화면으로 이동
    */
   const handle_page_count = async () => {
-    if (page_count === 3) {
+    if (page_count === 2) {
       if (await check_nickname() === false) return;
 
       if (await api_user_initial_setting()) {  //유저정보 저장 성공
@@ -121,9 +115,6 @@ const Setting_page = ({
   const api_user_initial_setting = async () => {
     const params = {
       url: "user/initial_setting",
-      name: user_input.name,
-      age: user_input.age,
-      gender: user_input.gender,
       university: user_input.university,
       department: user_input.department,
       admission_year: user_input.admission_year,
@@ -164,9 +155,8 @@ const Setting_page = ({
           contentContainerStyle={{ flexGrow: 1 }}>
 
           {
-            page_count === 1 ? <Set_basic name={user_input.name} age={user_input.age} gender={user_input.gender} set_value={set_user_input} /> :
-              page_count === 2 ? <Set_university admission_year={user_input.admission_year} set_value={set_user_input} /> :
-                page_count === 3 ? <Set_nickname nickname={user_input.nickname} err_nickname={err_nickname} set_value={set_user_input} /> : null
+            page_count === 1 ? <Set_university admission_year={user_input.admission_year} set_value={set_user_input} /> :
+              page_count === 2 ? <Set_nickname nickname={user_input.nickname} err_nickname={err_nickname} set_value={set_user_input} /> : null
           }
 
         </ScrollView>
