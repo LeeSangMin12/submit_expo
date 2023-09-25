@@ -10,21 +10,13 @@ import COLORS from '@/shared/js/colors';
  * @param {function} value - dropdown에 들어갈 값
  * @param {*} set_items - dropdown에 들어갈 arr를 설정하는 function
  * @param {function} set_value - dropdown에 들어갈 값을 설정하는 function
- * @param {string} place_holder - placeholder 안에 들어갈 text
  */
-const Drop_down = ({
-  items,
-  value,
-  set_items,
-  set_value,
-  place_holder,
-  container_style
-}) => {
+const Drop_down = ({ items, value, set_items, set_value }) => {
   const [open, set_open] = useState(false);
 
   /**
    * 현재 값을 받아와 값을 변경
-   * @param {val} value - 현재 값
+   * @param {function} value - 현재 값
    */
   const handle_set_value = (value) => {
     const now_value = value();
@@ -33,7 +25,7 @@ const Drop_down = ({
 
   return (
     <DropDownPicker
-      placeholder={place_holder}
+      placeholder='입학년도를 선택해주세요'
       open={open}
       value={value}
       items={items}
@@ -45,7 +37,6 @@ const Drop_down = ({
       placeholderStyle={styles.drop_down_placeholder}
       dropDownContainerStyle={styles.drop_down_container}
       listItemContainerStyle={styles.drop_down_list_item_container}
-      containerStyle={container_style}
     />
   );
 };
@@ -56,7 +47,7 @@ const styles = StyleSheet.create({
   drop_down_picker: {
     borderWidth: 1,
     borderColor: COLORS.gray_480,
-    borderRadius: 8,
+    borderRadius: 6,
   },
   drop_down_placeholder: {
     color: COLORS.gray_500,

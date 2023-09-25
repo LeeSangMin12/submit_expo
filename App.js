@@ -17,7 +17,6 @@ import Login_page from '@/pages/login/Login_page';
 import Setting_page from '@/pages/setting/Setting_page';
 import Home_page from '@/pages/home/Home_page';
 import Guide_page from '@/pages/home/guide_page/Guide_page';
-import Search_assignment_page from '@/pages/Search_assignment_page/Search_assignment_page.js';
 import List_page from '@/pages/list/List_page';
 import Community_page from '@/pages/community/Community_page';
 import My_page from '@/pages/my/My_page';
@@ -208,19 +207,14 @@ const App = () => {
             })}
           />
           <Stack.Screen
-            name="과제 찾기"
-            component={Search_assignment_page}
-            options={common_style.assignment_header_options('과제 찾기', '#EB4F5D')}
-          />
-          <Stack.Screen
             name="과제 등록"
             component={Add_assignment}
-            options={common_style.assignment_header_options('과제 일정', COLORS.primary_500)}
+            options={common_style.assignment_header_options('과제 일정')}
           />
           <Stack.Screen
             name="과제 수정"
             component={Edit_assignment}
-            options={common_style.assignment_header_options('과제 일정', COLORS.primary_500)}
+            options={common_style.assignment_header_options('과제 일정')}
           />
           <Stack.Screen
             name="프로필 수정"
