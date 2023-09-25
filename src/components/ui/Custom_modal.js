@@ -6,7 +6,7 @@ import COLORS from '@/shared/js/colors';
  * @param {obj} modal_visible - modal 표시 여부
  * @param {component} content_component - modal안에 들어갈 component값
  */
-const Custom_modal = ({ modal_visible, position, bottom_height, content_component }) => {
+const Custom_modal = ({ modal_visible, position, bottom_height, container_style, content_component }) => {
   const view_position =
     position === 'center' ? styles.centered_view :
       position === 'bottom' ? { ...styles.bottom_view, container: { ...styles.bottom_view.container, height: bottom_height } } : null;
@@ -16,7 +16,7 @@ const Custom_modal = ({ modal_visible, position, bottom_height, content_componen
       <View style={styles.overlay} />
       {/* 기존의 컨텐츠와 같은 레이아웃을 유지한 채로 다음과 같이 추가 */}
       <View style={view_position.container}>
-        <View style={view_position.modal}>
+        <View style={[view_position.modal, container_style]}>
           {content_component()}
         </View>
       </View>
@@ -67,8 +67,6 @@ const styles = StyleSheet.create({
     },
     modal: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center'
     }
   }
 });

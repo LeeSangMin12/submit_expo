@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
       height: 28,
       borderRadius: 7,
       borderWidth: 1,
-      borderColor: COLORS.gray_480,
+      borderColor: COLORS.gray_500,
       backgroundColor: '#F4F4F4'
     },
     checkbox_title: {

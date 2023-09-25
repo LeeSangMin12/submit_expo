@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Image, View, StyleSheet, Pressable } from 'react-native';
+import { Image, View, StyleSheet, Pressable, Modal } from 'react-native';
 import { LinearProgress } from '@rneui/themed';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { Ionicons, Fontisto } from '@expo/vector-icons';
 import COLORS from '@/shared/js/colors';
 import { go_prev_month, go_next_month, go_today } from '@/store/modules/calendar_slice';
 import { Custom_text } from "@/components/components";
+import Add_assignment_modal from './add_assignment_modal/Add_assignment_modal'
 import go_today_img from '@/assets/img/logo/go_today.png';
 import guide from '@/assets/img/icon/guide.png';
 
@@ -24,6 +25,7 @@ const Assignment_month_info = () => {
     remaining_num: '',
     completion_num: '',
   });
+  const [add_assignment_modal, set_add_assignment_modal] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -76,15 +78,14 @@ const Assignment_month_info = () => {
               style={{ width: 30, height: 30, marginRight: 13 }} />
           </Pressable>
 
-          <Pressable onPress={() => navigation.navigate('과제 등록')}>
+          <Pressable onPress={() => set_add_assignment_modal(true)}>
             <Fontisto
               name="plus-a"
               size={23}
               color={COLORS.gray_520} />
           </Pressable>
         </View>
-
-      </View>
+      </View >
 
       <View style={styles.remaining_assignment_container}>
         <Custom_text style={styles.text_remaining_assignment}>{nickname}님,</Custom_text>
@@ -126,6 +127,11 @@ const Assignment_month_info = () => {
         variant='determine'
         animation={{ duration: 700 }}
         style={styles.assignment_progress} />
+
+      <Add_assignment_modal
+        is_visialbe={add_assignment_modal}
+        set_visible={set_add_assignment_modal}
+      />
     </>
   );
 };

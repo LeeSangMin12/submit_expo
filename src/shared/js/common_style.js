@@ -15,14 +15,14 @@ export default StyleSheet.create({
       fontFamily: 'medium'
     },
   }),
-  assignment_header_options: (title) => ({
+  assignment_header_options: (title, background_color) => ({
     title,
     headerTitleStyle: {
       fontSize: 16,
       fontFamily: 'medium'
     },
     headerStyle: {
-      backgroundColor: COLORS.primary_500,
+      backgroundColor: background_color,
     },
     headerTintColor: COLORS.white,
   })
