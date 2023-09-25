@@ -340,6 +340,7 @@ const Calendar = () => {
         modal_visible={assignment_list_modal}
         position='bottom'
         bottom_height='80%'
+        container_style={{ justifyContent: 'center', alignItems: 'center' }}
         content_component={() => <Modal_assignment_list />} />
     </View>
   );
@@ -407,7 +408,7 @@ const styles = StyleSheet.create({
       height: 28,
       borderRadius: 7,
       borderWidth: 1,
-      borderColor: COLORS.gray_480,
+      borderColor: COLORS.gray_500,
       backgroundColor: '#F4F4F4'
     },
     checkbox_title: {

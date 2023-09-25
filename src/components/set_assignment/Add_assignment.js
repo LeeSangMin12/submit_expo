@@ -83,7 +83,7 @@ const Add_assignment = ({ navigation, route }) => {
     const result = await exec_request_multipart(params, navigation);
 
     if (result.status === 'ok') {
-      return result.data.assignment_id;
+      return true;
     }
   };
 

@@ -143,6 +143,7 @@ const Set_university = ({
           value={admission_year}
           set_items={set_admission_year_arr}
           set_value={admission_year_set_value}
+          place_holder='입학년도를 선택해주세요'
         />
       </View >
 
