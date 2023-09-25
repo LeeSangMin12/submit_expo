@@ -60,7 +60,7 @@ const Edit_assignment = ({ navigation, route }) => {
   }, []);
 
   const edit_assignment = async () => {
-    const { file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
+    const { professor_name, assignment_description, file_list, ...rest } = assignment_input;  //파일빼고 나머지 값 비어있는지 확인
     const any_empty = Object.values(rest).some((value) => value === '');
     if (any_empty) {
       Alert.alert('내용을 입력하세요.');
