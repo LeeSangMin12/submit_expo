@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from 'react';
-import { View, Image, StyleSheet, Alert, Pressable } from 'react-native';
+import { View, Image, StyleSheet, Alert, Pressable, ScrollView, Linking } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Feather } from '@expo/vector-icons'
 import Checkbox from 'expo-checkbox';
@@ -10,6 +10,7 @@ import { Drop_down, Custom_text, Custom_modal } from '@/components/components';
 import Assignment_detail_modal from './Assignment_detail_modal/Assignment_detail_modal.js';
 import COLORS from '@/shared/js/colors';
 import search from '@/assets/img/icon/search.png';
+import img_no_assignment_list from '@/assets/img/icon/no_assignment_list.png';
 
 const Search_assignment_page = ({ navigation }) => {
   const { default_semester_id } = useSelector((state) => state.semester);
@@ -26,11 +27,14 @@ const Search_assignment_page = ({ navigation }) => {
     { label: 'B반', value: 'b' },
     { label: 'C반', value: 'c' },
     { label: 'D반', value: 'd' },
+    { label: 'E반', value: 'e' },
+    { label: 'F반', value: 'f' },
   ]);
   const [university_grade, set_university_grade] = useState('');
   const [university_class, set_university_class] = useState('');
 
   const [assignment_detail_modal, set_assignment_detail_modal] = useState(false);
+  const [selected_assignment, set_selected_assignment] = useState('');
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -189,34 +193,55 @@ const Search_assignment_page = ({ navigation }) => {
 
       <View style={[styles.divider, { height: 8 }]} />
 
-      {university_assignment_list.map((assignment, idx) => (
-        <View style={styles.assignment_list_container} key={idx}>
-          <Pressable
-            onPress={() => set_assignment_detail_modal(true)}
-            style={styles.assignment_container}>
-            <View>
-              <Custom_text style={styles.text_assignment_name}>{assignment.assignment_name} -
-                <Custom_text style={styles.text_assignment_classfication}>{assignment.classfication}</Custom_text>
-              </Custom_text>
-              <Custom_text style={styles.text_assignment_d_day}>{show_d_day(assignment.assignment_d_day)}</Custom_text>
-            </View>
-            <Checkbox
-              value={assignment.is_checked === 'false' ? false : true}
-              onValueChange={() => toggle_checkbox(assignment.assignment_id)}
-              style={styles.assignment_checkbox}
-              color={assignment.is_checked === 'false' ? null : '#EB4F5D'}
-            />
-          </Pressable>
-          <View style={styles.divider} />
+      {
+        university_assignment_list.length === 0 ?
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Pressable onPress={() => Linking.openURL('https://forms.gle/FdMSfs5E1E1v1rLG9')}>
+              <Image
+                source={img_no_assignment_list}
+                style={{ width: 190, height: 250 }} />
+            </Pressable>
 
-          <Custom_modal
-            modal_visible={assignment_detail_modal}
-            position='bottom'
-            bottom_height='85%'
-            content_component={() => <Assignment_detail_modal assignment_info={assignment} on_close={on_modal_close} />}
-          />
-        </View>
-      ))}
+          </View>
+          :
+          <ScrollView>
+            {university_assignment_list.map((assignment, idx) => (
+              <View style={styles.assignment_list_container} key={idx}>
+                <Pressable
+                  onPress={() => {
+                    set_assignment_detail_modal(true)
+                    set_selected_assignment(assignment);
+                  }}
+                  style={styles.assignment_container}>
+                  <View>
+                    <Custom_text style={styles.text_assignment_name}>{assignment.assignment_name} -
+                      <Custom_text style={styles.text_assignment_classfication}>{assignment.classfication}</Custom_text>
+                    </Custom_text>
+                    <Custom_text style={styles.text_assignment_d_day}>{show_d_day(assignment.assignment_d_day)}</Custom_text>
+                  </View>
+                  <Checkbox
+                    value={assignment.is_checked === 'false' ? false : true}
+                    onValueChange={() => toggle_checkbox(assignment.assignment_id)}
+                    style={styles.assignment_checkbox}
+                    color={assignment.is_checked === 'false' ? null : '#EB4F5D'}
+                  />
+                </Pressable>
+                <View style={styles.divider} />
+
+                <Custom_modal
+                  modal_visible={assignment_detail_modal}
+                  position='bottom'
+                  bottom_height='85%'
+                  content_component={() => <Assignment_detail_modal
+                    assignment_info={selected_assignment}
+                    on_close={on_modal_close} />}
+                />
+              </View>
+            ))}
+
+          </ScrollView>
+      }
+
     </>
   );
 }

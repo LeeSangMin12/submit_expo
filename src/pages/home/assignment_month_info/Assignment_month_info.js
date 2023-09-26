@@ -19,7 +19,7 @@ const Assignment_month_info = () => {
   const { assignment_list } = useSelector((state) => state.assignment);
   const { default_semester } = useSelector((state) => state.semester);
   const { year, month } = useSelector((state) => state.calendar);
-  const { nickname } = useSelector((state) => state.user);
+  const { nickname, university } = useSelector((state) => state.user);
 
   const [assignment_info, set_assignment_info] = useState({
     remaining_num: '',
@@ -39,6 +39,15 @@ const Assignment_month_info = () => {
       };
     }, [assignment_list])
   );
+
+  const add_assignment = () => {
+    if (university === '대동대학교') {
+      set_add_assignment_modal(true);
+    } else {
+      set_add_assignment_modal(false);
+      navigation.navigate('과제 등록');
+    }
+  }
 
   const calculate_assignments = () => {
     const remaining_assignments_num = assignment_list.filter((val) => {
@@ -78,7 +87,7 @@ const Assignment_month_info = () => {
               style={{ width: 30, height: 30, marginRight: 13 }} />
           </Pressable>
 
-          <Pressable onPress={() => set_add_assignment_modal(true)}>
+          <Pressable onPress={add_assignment}>
             <Fontisto
               name="plus-a"
               size={23}
