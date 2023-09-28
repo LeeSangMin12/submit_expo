@@ -8,6 +8,7 @@ import * as Font from "expo-font";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
+import 'react-native-gesture-handler';
 
 import COLORS from '@/shared/js/colors';
 import common_style from '@/shared/js/common_style';

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { View, StyleSheet, Image, Pressable, ScrollView, useWindowDimensions } from "react-native";
+import { View, StyleSheet, Image, Pressable, ScrollView, useWindowDimensions, Animated } from "react-native";
 import { useSelector, useDispatch } from 'react-redux';
 import { Feather, Fontisto } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import { exec_request } from '@/shared/js/api';
 import { go_prev_month, go_next_month } from '@/store/modules/calendar_slice';
@@ -143,6 +144,35 @@ const Calendar = () => {
   const [assignment_list_modal, set_assignment_list_modal] = useState(false);
   const [today_assignment_list, set_today_assignment_list] = useState([]);
 
+  const translate_x = new Animated.Value(0);
+  const on_gesture_event = Animated.event(
+    [
+      {
+        nativeEvent: {
+          translationX: translate_x,
+        },
+      },
+    ],
+    { useNativeDriver: true }
+  );
+
+  const on_handler_state_change = ({ nativeEvent }) => {
+    if (nativeEvent.oldState === State.ACTIVE) {
+      // 스와이프가 끝난 후 위치 초기화
+      Animated.spring(translate_x, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+
+      // 스와이프 했는지 확인 (translationX는 오른쪽으로 이동하면 양수, 왼쪽으로 이동하면 음수)
+      if (nativeEvent.translationX < -120) {  //오른쪽
+        dispatch(go_next_month())
+      } else if (nativeEvent.translationX > 120) { //왼쪽
+        dispatch(go_prev_month())
+      }
+    }
+  };
+
   const toggle_checkbox = async (assignment_id, completion_status, date) => {
     const change_completion_status = await api_assignment_set_completion_status(assignment_id, completion_status);
 
@@ -259,7 +289,6 @@ const Calendar = () => {
     }
   };
 
-
   const Modal_assignment_list = () => {
     return (
       <View style={{ flex: 1, width: '100%' }}>
@@ -332,9 +361,15 @@ const Calendar = () => {
         <Custom_text style={[styles.day, { width: date_width }]}>금</Custom_text>
         <Custom_text style={[styles.day, { color: 'blue', width: date_width }]}>토</Custom_text>
       </View>
-      <View style={styles.dates_container}>
-        {render_calender(year, month, open_assignment_list_modal, date_width)}
-      </View>
+
+      <PanGestureHandler
+        onGestureEvent={on_gesture_event}
+        onHandlerStateChange={on_handler_state_change}
+      >
+        <Animated.View style={[styles.dates_container, { transform: [{ translateX: translate_x }] }]}>
+          {render_calender(year, month, open_assignment_list_modal, date_width)}
+        </Animated.View>
+      </PanGestureHandler>
 
       <Custom_modal
         modal_visible={assignment_list_modal}
