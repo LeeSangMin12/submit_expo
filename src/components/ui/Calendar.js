@@ -165,9 +165,9 @@ const Calendar = () => {
       }).start();
 
       // 스와이프 했는지 확인 (translationX는 오른쪽으로 이동하면 양수, 왼쪽으로 이동하면 음수)
-      if (nativeEvent.translationX < -120) {  //오른쪽
+      if (nativeEvent.translationX < -10) {  //오른쪽
         dispatch(go_next_month())
-      } else if (nativeEvent.translationX > 120) { //왼쪽
+      } else if (nativeEvent.translationX > 10) { //왼쪽
         dispatch(go_prev_month())
       }
     }
