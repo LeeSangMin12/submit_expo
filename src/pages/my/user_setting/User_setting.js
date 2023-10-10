@@ -76,7 +76,7 @@ const User_setting = () => {
         </Pressable>
         <Pressable style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>버전정보</Custom_text>
-          <Custom_text style={{ fontSize: 16 }}>V.1.0.11</Custom_text>
+          <Custom_text style={{ fontSize: 16 }}>V.1.0.14</Custom_text>
         </Pressable>
       </View>
       <View style={styles.divider} />
@@ -84,7 +84,7 @@ const User_setting = () => {
       <View style={styles.setting_container}>
         <Custom_text style={styles.setting_container.title}>문의 및 지원</Custom_text>
         <Pressable
-          onPress={() => Linking.openURL('https://open.kakao.com/o/szDGGGCf')}
+          onPress={() => Linking.openURL('http://pf.kakao.com/_xasuuG')}
           style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>카카오톡 문의</Custom_text>
           <Ionicons name="chevron-forward" size={25} color={COLORS.gray_500} />

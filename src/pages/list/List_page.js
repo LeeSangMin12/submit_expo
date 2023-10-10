@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { View, SafeAreaView, StyleSheet, Image } from 'react-native';
+import { View, SafeAreaView, StyleSheet, Image, Pressable, Linking } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
@@ -44,12 +44,16 @@ const List_page = () => {
   return (
     <>
       <View style={styles.semester_info_container}>
+
         <SafeAreaView>
           <Semester_info />
         </SafeAreaView>
       </View>
+      <Pressable
+        onPress={() => Linking.openURL('http://pf.kakao.com/_Fxjdmxj')}>
+        <Image source={adsense_png} style={styles.adsense} />
+      </Pressable>
       <Assignment_list />
-      {/* <Image source={adsense_png} style={styles.adsense} /> */}
     </>
   );
 }

@@ -3,7 +3,7 @@
     "name": "submit_expo",
     "slug": "submit_expo",
     "scheme": "com.submitexpo.rn",
-    "version": "1.0.11",
+    "version": "1.0.14",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,15 +14,18 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.11",
+      "buildNumber": "1.0.14",
       "supportsTablet": true,
       "bundleIdentifier": "com.submitexpo.rn",
       "entitlements": {
         "com.apple.developer.applesignin": ["Default"]
+      },
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": true
       }
     },
     "android": {
-      "versionCode": 11,
+      "versionCode": 14,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,6 +34,9 @@
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "locales": {
+      "ko": "./locales/ko.json"
     },
     "extra": {
       "eas": {
