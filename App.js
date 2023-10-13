@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, StatusBar, Alert, Pressable } from 'react-native';
+import { useEffect, useState, useRef } from 'react';
+import { View, Image, StyleSheet, StatusBar, Alert, Pressable, Platform } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux'
@@ -9,6 +9,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Toast from 'react-native-toast-message';
 import store from '@/store/store'
 import 'react-native-gesture-handler';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 
 import COLORS from '@/shared/js/colors';
 import common_style from '@/shared/js/common_style';
@@ -43,6 +45,14 @@ import success_check from '@/assets/img/icon/success_check.png';
 
 const Stack = createNativeStackNavigator();
 const Bottom_tab = createBottomTabNavigator();
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Bottom_navigation = () => {
   return (
@@ -116,11 +126,58 @@ const App = () => {
   const [page_count, set_page_count] = useState(1);
   const [font_loaded, set_font_loaded] = useState(false);
 
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    register_for_push_notifications_async()
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
   useEffect(() => {
     fetch_fonts()
       .then(() => set_font_loaded(true))
       .catch((err) => console.log(err));
   }, []);
+
+  const register_for_push_notifications_async = async () => {
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  }
 
   const fetch_fonts = async () => {
     await Font.loadAsync({
@@ -143,7 +200,6 @@ const App = () => {
   if (!font_loaded) {
     return <View />;
   }
-
 
   return (
     <Provider store={store}>

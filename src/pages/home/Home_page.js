@@ -1,10 +1,12 @@
 import { useEffect, } from "react";
-import { View, SafeAreaView, StyleSheet } from "react-native";
+import { View, SafeAreaView, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
+
 
 import { set_store_info } from '@/shared/js/common_function';
 import { exec_request } from "@/shared/js/api";
-import { Calendar } from '@/components/components.js'
+import { Calendar, Custom_text } from '@/components/components.js'
 import COLORS from '@/shared/js/colors';
 import Assignment_month_info from "@/pages/home/assignment_month_info/Assignment_month_info.js";
 
@@ -29,10 +31,34 @@ const Home_page = () => {
       set_store_info('calendar', 'year', parseInt(default_semester.semester.split(' ')[0].replace('년', '')));
       set_store_info('calendar', 'month', now_month);
       set_store_info('assignment', 'assignment_list', assignment_list);
+
+      await schedule_daily_assignment_notification(assignment_list);
     };
     fetch_data();
   }, []);
 
+  const schedule_daily_assignment_notification = async (assignment_list) => {
+
+    const alarm_assignment_list = assignment_list.filter((assignment) => {
+      return assignment.assignment_d_day === 1 && assignment.completion_status === 'false'
+    })
+
+    if (alarm_assignment_list.length >= 1) {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "서브밋",
+          body: `과제 제출일까지 하루 남았어요!
+잊으신거 아니죠?!`,
+          sound: 'default'
+        },
+        trigger: {
+          hour: 20, // show this notification every day
+          minute: 0,  //안드로이드에선 minute없이 오류가 난다. 필수로 넣어주자.
+          repeats: true
+        },
+      });
+    }
+  }
 
   /**
    * 유저 정보 가져옴
@@ -84,7 +110,6 @@ const Home_page = () => {
           <Assignment_month_info />
         </SafeAreaView>
       </View>
-
       <Calendar />
     </>
   );
