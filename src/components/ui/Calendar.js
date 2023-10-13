@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Feather, Fontisto } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
-import { PanGestureHandler, State } from 'react-native-gesture-handler';
+import { GestureHandlerRootView, PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import { exec_request } from '@/shared/js/api';
 import { go_prev_month, go_next_month } from '@/store/modules/calendar_slice';
@@ -134,8 +134,7 @@ const Calendar = () => {
   const navigation = useNavigation();
   const window = useWindowDimensions();
 
-  //소수점이 너무길면 달력의 넓이가 이상하게 되는 버그가 있어서 toFixed로 소수점 2자리까지만 가져옴.
-  const date_width = parseFloat((window.width / 7).toFixed(2));
+  const date_width = Math.floor(parseFloat((window.width / 7)))
 
   const { year, month } = useSelector((state) => state.calendar);
   const { default_semester_id } = useSelector((state) => state.semester);
@@ -207,14 +206,13 @@ const Calendar = () => {
     } else {
       const assignment_list = await api_assignment_get_assignment_list();
       const today_assignment_list = assignment_list.filter((assignment) => {
-        return new Date(assignment.registration_date).toLocaleString().slice(0, 11) === new Date(select_date).toLocaleString().slice(0, 11);
+        return new Date(assignment.registration_date).toLocaleString().slice(0, 12) === new Date(select_date).toLocaleString().slice(0, 12);
       });
 
       set_today_assignment_list(today_assignment_list);
       set_assignment_list_modal(true);
       set_selected_date(date.date)
     }
-
   };
 
   const open_assignment = async (assignment_id) => {
@@ -362,15 +360,16 @@ const Calendar = () => {
         <Custom_text style={[styles.day, { color: 'blue', width: date_width }]}>토</Custom_text>
       </View>
 
-      <PanGestureHandler
-        onGestureEvent={on_gesture_event}
-        onHandlerStateChange={on_handler_state_change}
-      >
-        <Animated.View style={[styles.dates_container, { transform: [{ translateX: translate_x }] }]}>
-          {render_calender(year, month, open_assignment_list_modal, date_width)}
-        </Animated.View>
-      </PanGestureHandler>
-
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <PanGestureHandler
+          onGestureEvent={on_gesture_event}
+          onHandlerStateChange={on_handler_state_change}
+        >
+          <Animated.View style={[styles.dates_container, { transform: [{ translateX: translate_x }] }]}>
+            {render_calender(year, month, open_assignment_list_modal, date_width)}
+          </Animated.View>
+        </PanGestureHandler>
+      </GestureHandlerRootView>
       <Custom_modal
         modal_visible={assignment_list_modal}
         position='bottom'

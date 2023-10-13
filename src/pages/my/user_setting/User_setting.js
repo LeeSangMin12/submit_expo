@@ -76,7 +76,7 @@ const User_setting = () => {
         </Pressable>
         <Pressable style={styles.setting_container.sub_title_container}>
           <Custom_text style={styles.setting_container.sub_title}>버전정보</Custom_text>
-          <Custom_text style={{ fontSize: 16 }}>V.1.0.14</Custom_text>
+          <Custom_text style={{ fontSize: 16 }}>V.1.0.17</Custom_text>
         </Pressable>
       </View>
       <View style={styles.divider} />

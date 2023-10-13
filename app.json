@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "submit_expo",
+    "name": "서브밋",
     "slug": "submit_expo",
     "scheme": "com.submitexpo.rn",
-    "version": "1.0.14",
+    "version": "1.0.17",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -12,9 +12,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "notification": {
+      "icon": "./src/assets/notification_icon.png",
+      "color": "#59ff59"
+    },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.14",
+      "buildNumber": "1.0.17",
       "supportsTablet": true,
       "bundleIdentifier": "com.submitexpo.rn",
       "entitlements": {
@@ -25,7 +29,7 @@
       }
     },
     "android": {
-      "versionCode": 14,
+      "versionCode": 17,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -58,6 +62,12 @@
         "expo-image-picker",
         {
           "photosPermission": "프로필 사진 설정 및 변경을 위해 카메라 권한을 허락해 주세요."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/notification_icon.png"
         }
       ]
     ]
